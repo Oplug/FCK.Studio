@@ -1,4 +1,9 @@
 ﻿<!-- Content Header (Page header) -->
+<div class="alert alert-success alert-dismissible hide" id="alert-success">
+    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+    <h4><i class="icon fa fa-check"></i> Alert!</h4>
+    Success alert preview. This alert is dismissable.
+</div>
 <section class="content-header">
     <h1>
         文章编辑
@@ -52,6 +57,8 @@
             <!-- /.box-body -->
             <div class="box-footer">
                 <input type="hidden" v-model="Id">
+                <input type="hidden" v-model="CategoryId" value="1">
+                <input type="hidden" v-model="TenantId" value="1">
                 <button type="button" class="btn btn-primary" v-on:click="dosubmit">发布</button>
                 <button type="button" class="btn btn-default" v-on:click="reset">重置</button>
             </div>
@@ -78,7 +85,7 @@
                         type: "POST",
                         data: response,
                         success: function (data) {
-                            console.log(data);
+                            $("#alert-success").fadeIn();
                         }
                     });
                     return false;

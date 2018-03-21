@@ -79,20 +79,22 @@
                 'info': true,
                 'autoWidth': false
             })
-            var data = null;
-            var vm = new Vue({
-                el: '#DataTable',
-                data: {
-                    mydata: data
-                },
-                methods: {
-                    udelete: function (_id) //删除  
-                    {
+            $.post('/Articles/GetLists', { page: 1,pageSize:50 }, function (response) {
+                var vm = new Vue({
+                    el: '#DataTable',
+                    data: {
+                        mydata: response.datas
                     },
-                    updateu: function (item) //更新  
-                    {
+                    methods: {
+                        udelete: function (_id) //删除  
+                        {
+                        },
+                        updateu: function (item) //更新  
+                        {
+                        }
                     }
-                }
+                });
             });
+            
         })
 </script>

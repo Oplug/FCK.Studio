@@ -29,24 +29,28 @@ namespace FCK.Studio.Web.Controllers
                 return Json(model);
             }
         }
-        public JsonResult InsertOrUpdate(ArticleInput input)
+        public JsonResult InsertOrUpdate(Articles input)
         {
             using (ArticlesService Article = new ArticlesService())
             {
-                Mapper.Initialize(x => x.CreateMap<Articles, ArticleInput>());
-                var entity = Mapper.Map<Articles>(input);
-                var result = Article.Reposity.InsertOrUpdate(entity);
+                //Mapper.Initialize(x => x.CreateMap<Articles, ArticleInput>());
+                //var entity = Mapper.Map<Articles>(input);
+                if (input.Id == 0)
+                {
+                    input.CreationTime = DateTime.Now;
+                    input.TenantId = 1;
+                    input.CategoryId = 1;
+                }
+                var result = Article.Reposity.InsertOrUpdate(input);
                 return Json(result);
             }
         }
 
         public JsonResult GetLists(int page, int pageSize)
         {
-            using (ArticlesService Article = new ArticlesService())
-            {
-                var result = Article.Reposity.GetPageList(page, pageSize);
-                return Json(result);
-            }
+            ArticlesService Article = new ArticlesService();
+            var result = Article.Reposity.GetPageList(page, pageSize);
+            return Json(result);
         }
     }
 }

@@ -164,7 +164,7 @@ namespace FCK.Studio.Repositories
 
         public TEntity InsertOrUpdate(TEntity entity)
         {
-            if (entity.Id.Equals(0))
+            if (entity.Id.Equals(Convert.ChangeType(0, typeof(TPrimaryKey))))
             {
                 return Insert(entity);
             }
@@ -184,7 +184,7 @@ namespace FCK.Studio.Repositories
 
         public TPrimaryKey InsertOrUpdateAndGetId(TEntity entity)
         {
-            if (entity.Id.Equals(0))
+            if (entity.Id.Equals(Convert.ChangeType(0, typeof(TPrimaryKey))))
             {
                 Insert(entity);
                 return entity.Id;
