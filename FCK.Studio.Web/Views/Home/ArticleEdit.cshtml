@@ -67,8 +67,8 @@
 </section>
 <!-- /.content -->
 <script> 
-    
-    $.post('/Articles/GetModel', { id :0}, function (response) {
+    var _Id = localStorage.PageId == null ? 0 : localStorage.PageId;
+    $.post('/Articles/GetModel', { id: _Id }, function (response) {
         Vue.use(VueHtml5Editor, {
             showModuleName: false
         })
@@ -77,9 +77,10 @@
             data: function (){ return response },
             methods: {
                 updateData: function (data) {
-                    response.Contents = data
+                    response.Contents = data;
                 },
                 dosubmit: function () {
+                    response.Contents = escape(response.Contents);
                     $.ajax({
                         url: '/Articles/InsertOrUpdate',
                         type: "POST",

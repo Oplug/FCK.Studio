@@ -20,27 +20,24 @@ namespace FCK.Studio.Web.Controllers
 
         public JsonResult GetModel(int id)
         {
-            using (ArticlesService Article = new ArticlesService())
-            {
-                Articles model = new Articles();
-                var result = Article.Reposity.FirstOrDefault(id);
-                if (result != null)
-                    model = result;
-                return Json(model);
-            }
+            Articles model = new Articles();
+            ArticlesService Article = new ArticlesService();
+            var result = Article.Reposity.FirstOrDefault(id);
+            if (result != null)
+                model = result;
+            return Json(model);
         }
         public JsonResult InsertOrUpdate(Articles input)
         {
             using (ArticlesService Article = new ArticlesService())
             {
-                //Mapper.Initialize(x => x.CreateMap<Articles, ArticleInput>());
-                //var entity = Mapper.Map<Articles>(input);
                 if (input.Id == 0)
                 {
                     input.CreationTime = DateTime.Now;
                     input.TenantId = 1;
                     input.CategoryId = 1;
                 }
+                input.Contents = HttpUtility.UrlDecode(input.Contents);
                 var result = Article.Reposity.InsertOrUpdate(input);
                 return Json(result);
             }

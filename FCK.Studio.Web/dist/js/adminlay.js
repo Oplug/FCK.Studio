@@ -345,25 +345,5 @@ $(function () {
 
     setup()
 
-    $('[data-toggle="tooltip"]').tooltip()
-
-    $.ajax({
-        url: '/Home/Dashboard',
-        type: "Post",
-        success: function (data) {
-            $("#content-wrapper").html(data);
-        }
-    })
-    $("a[name='navlink']").click(function () {
-        $.ajax({
-            url: $(this).attr('href'),
-            type: "Post",
-            success: function (data) {
-                $("#content-wrapper").html(data);
-            },
-            error: function (XMLHttpRequest, textStatus, errorThrown) {
-            }
-        });
-        return false;
-    })
+    $('[data-toggle="tooltip"]').tooltip()    
 })

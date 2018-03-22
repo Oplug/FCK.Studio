@@ -39,7 +39,7 @@
                                 <td>{{item.CreationTime}}</td>
                                 <td>
                                     <a href="#" v-on:click="udelete(item.Id)">删除</a>
-                                    <a href="#" v-on:click="updateu(item)">编辑</a>
+                                    <a href="#" v-on:click="updateu(item.Id)">编辑</a>
                                 </td>
                             </tr>
                         </tbody>
@@ -89,8 +89,10 @@
                         udelete: function (_id) //删除  
                         {
                         },
-                        updateu: function (item) //更新  
+                        updateu: function (_id) //更新  
                         {
+                            localStorage.PageId = _id;
+                            getURL('/Home/ArticleEdit', 'content-wrapper')
                         }
                     }
                 });
