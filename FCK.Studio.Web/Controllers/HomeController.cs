@@ -29,24 +29,7 @@ namespace FCK.Studio.Web.Controllers
         public ActionResult NotFound()
         {
             return View();
-        }
-
-        public ActionResult Category()
-        {
-            return View();
-        }
-        public ActionResult Article()
-        {
-            return View();
-        }
-        public ActionResult ArticleEdit()
-        {
-            return View();
-        }
-        public ActionResult Comment()
-        {
-            return View();
-        }
+        }       
 
         public void Test()
         {

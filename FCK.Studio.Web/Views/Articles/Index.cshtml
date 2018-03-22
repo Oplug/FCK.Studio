@@ -1,12 +1,12 @@
 ﻿<!-- Content Header (Page header) -->
 <section class="content-header">
     <h1>
-        文章管理
+        内容管理
         <small>Article Manage</small>
     </h1>
     <ol class="breadcrumb">
         <li><a href="/Home/Dashboard"><i class="fa fa-dashboard"></i> Home</a></li>
-        <li class="active">文章管理</li>
+        <li class="active">内容管理</li>
     </ol>
 </section>
 <!-- Main content -->
@@ -15,7 +15,7 @@
         <div class="col-xs-12">
             <div class="box">
                 <div class="box-header">
-                    <h3 class="box-title">Hover Data Table</h3>
+                    <h3 class="box-title">所有内容</h3>
                 </div>
                 <!-- /.box-header -->
                 <div class="box-body">
@@ -23,9 +23,9 @@
                         <thead>
                             <tr>
                                 <th>标题</th>
-                                <th>创建时间</th>
                                 <th>标签</th>
                                 <th>作者</th>
+                                <th>更新时间</th>
                                 <th>创建时间</th>
                                 <th>操作</th>
                             </tr>
@@ -33,10 +33,10 @@
                         <tbody>
                             <tr v-for="item in mydata">
                                 <td>{{item.Title}}</td>
-                                <td>{{item.UpdateTime}}</td>
                                 <td>{{item.Tags}}</td>
                                 <td>{{item.Author}}</td>
-                                <td>{{item.CreationTime}}</td>
+                                <td><small>{{item.UpdateTime}}</small></td>
+                                <td><small>{{item.CreationTime}}</small></td>
                                 <td>
                                     <a href="#" v-on:click="udelete(item.Id)">删除</a>
                                     <a href="#" v-on:click="updateu(item.Id)">编辑</a>
@@ -46,9 +46,9 @@
                         <tfoot>
                             <tr>
                                 <th>标题</th>
-                                <th>创建时间</th>
                                 <th>标签</th>
                                 <th>作者</th>
+                                <th>更新时间</th>
                                 <th>创建时间</th>
                                 <th>操作</th>
                             </tr>
@@ -65,38 +65,40 @@
 <!-- /.content -->
 
 @section scripts{
-    
+
 }
 <script src="/bower_components/datatables.net/js/jquery.dataTables.min.js"></script>
 <script src="/bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
 <script>
-        $(function () {
-            $('#DataTable').DataTable({
-                'paging': true,
-                'lengthChange': false,
-                'searching': false,
-                'ordering': true,
-                'info': true,
-                'autoWidth': false
-            })
-            $.post('/Articles/GetLists', { page: 1,pageSize:50 }, function (response) {
-                var vm = new Vue({
-                    el: '#DataTable',
-                    data: {
-                        mydata: response.datas
+    $(function () {
+
+        $.post('/Articles/GetLists', { page: 1, pageSize: 50 }, function (response) {
+            setDataTable('DataTable');
+            var vm = new Vue({
+                el: '#DataTable',
+                data: {
+                    mydata: response.datas
+                },
+                methods: {
+                    udelete: function (_id) //删除
+                    {
+                        $.ajax({
+                            url: '/Articles/Del',
+                            type: "POST",
+                            data: { id: _id },
+                            success: function (resp) {
+                                alert(resp.message);
+                            }
+                        });
                     },
-                    methods: {
-                        udelete: function (_id) //删除  
-                        {
-                        },
-                        updateu: function (_id) //更新  
-                        {
-                            localStorage.PageId = _id;
-                            getURL('/Home/ArticleEdit', 'content-wrapper')
-                        }
+                    updateu: function (_id) //更新
+                    {
+                        localStorage.PageId = _id;
+                        getURL('/Articles/Edit', 'content-wrapper');
                     }
-                });
+                }
             });
-            
-        })
+        });
+
+    })
 </script>

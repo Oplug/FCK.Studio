@@ -255,12 +255,15 @@
     <Content Include="plugins\timepicker\bootstrap-timepicker.js" />
     <Content Include="plugins\timepicker\bootstrap-timepicker.min.css" />
     <Content Include="plugins\timepicker\bootstrap-timepicker.min.js" />
-    <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\ArticlesController.cs" />
+    <Compile Include="Controllers\CategoriesController.cs" />
+    <Compile Include="Controllers\CommentsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\IControllerBase.cs" />
+    <Compile Include="Controllers\ProductsController.cs" />
     <Compile Include="Controllers\SysManageController.cs" />
     <Compile Include="Dto\Article.cs" />
     <Compile Include="Global.asax.cs">
@@ -282,26 +285,15 @@
     <Content Include="Views\Shared\_PartialLefSide.cshtml" />
     <Content Include="Views\Home\Dashboard.cshtml" />
     <Content Include="Views\Home\NotFound.cshtml" />
-    <Content Include="Views\Home\Category.cshtml" />
-    <Content Include="Views\Home\Article.cshtml" />
-    <Content Include="Views\Home\Comment.cshtml" />
     <Content Include="Views\SysManage\Index.cshtml" />
     <Content Include="Views\SysManage\Logs.cshtml" />
     <Content Include="Views\SysManage\Admins.cshtml" />
     <Content Include="Views\SysManage\Databack.cshtml" />
-    <Content Include="Views\Home\ArticleEdit.cshtml" />
-    <None Include="Web.Debug.config">
-      <DependentUpon>Web.config</DependentUpon>
-    </None>
-    <None Include="Web.Release.config">
-      <DependentUpon>Web.config</DependentUpon>
-    </None>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="bower_components\" />
     <Folder Include="Models\" />
-    <Folder Include="Views\Articles\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\FCK.Studio.Application\FCK.Studio.Application.csproj">
@@ -316,6 +308,22 @@
       <Project>{8865240b-ba26-4e98-9a1c-5937aac496dd}</Project>
       <Name>FCK.Studio</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Web.config" />
+    <Content Include="Views\Articles\Index.cshtml" />
+    <Content Include="Views\Articles\Edit.cshtml" />
+    <Content Include="Views\Products\Index.cshtml" />
+    <Content Include="Views\Products\Edit.cshtml" />
+    <Content Include="Views\Categories\Index.cshtml" />
+    <Content Include="Views\Categories\Edit.cshtml" />
+    <Content Include="Views\Comments\Index.cshtml" />
+    <None Include="Web.Debug.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </None>
+    <None Include="Web.Release.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </None>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

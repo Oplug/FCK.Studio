@@ -10,15 +10,19 @@ using System.Web.Mvc;
 
 namespace FCK.Studio.Web.Controllers
 {
-    public class ArticlesController : Controller
+    public class ArticlesController : Controller, IControllerBase<Articles, long>
     {
         // GET: Articles
         public ActionResult Index()
         {
             return View();
         }
+        public ActionResult Edit()
+        {
+            return View();
+        }
 
-        public JsonResult GetModel(int id)
+        public JsonResult GetModel(long id)
         {
             Articles model = new Articles();
             ArticlesService Article = new ArticlesService();
@@ -37,6 +41,10 @@ namespace FCK.Studio.Web.Controllers
                     input.TenantId = 1;
                     input.CategoryId = 1;
                 }
+                else
+                {
+                    input.UpdateTime = DateTime.Now;
+                }
                 input.Contents = HttpUtility.UrlDecode(input.Contents);
                 var result = Article.Reposity.InsertOrUpdate(input);
                 return Json(result);
@@ -47,6 +55,22 @@ namespace FCK.Studio.Web.Controllers
         {
             ArticlesService Article = new ArticlesService();
             var result = Article.Reposity.GetPageList(page, pageSize);
+            return Json(result);
+        }
+
+        public JsonResult Del(long id)
+        {
+            Studio.Dto.ResultDto<string> result = new Studio.Dto.ResultDto<string>();
+            try {
+                ArticlesService Article = new ArticlesService();
+                Article.Reposity.Delete(id);
+                result.code = 100;
+                result.message = "success";
+            }
+            catch(Exception ex)
+            {
+                result.message = ex.Message;
+            }
             return Json(result);
         }
     }
