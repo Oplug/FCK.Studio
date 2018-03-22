@@ -1,4 +1,5 @@
 ﻿using System;
+using FCK.Studio.Application;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -14,6 +15,7 @@ namespace FCK.Studio.Web.Controllers
         {
             return View();
         }
+
         public ActionResult Edit()
         {
             return View();
@@ -21,22 +23,56 @@ namespace FCK.Studio.Web.Controllers
 
         public JsonResult GetModel(long id)
         {
-            throw new NotImplementedException();
+            Products model = new Products();
+            ProductsService Product = new ProductsService();
+            var result = Product.Reposity.FirstOrDefault(id);
+            if (result != null)
+                model = result;
+            return Json(model);
         }
 
         public JsonResult GetLists(int page, int pageSize)
         {
-            throw new NotImplementedException();
+            ProductsService Product = new ProductsService();
+            var result = Product.Reposity.GetPageList(page, pageSize);
+            return Json(result);
         }
 
         public JsonResult Del(long id)
         {
-            throw new NotImplementedException();
+            Studio.Dto.ResultDto<string> result = new Studio.Dto.ResultDto<string>();
+            try
+            {
+                ProductsService Product = new ProductsService();
+                Product.Reposity.Delete(id);
+                result.code = 100;
+                result.message = "success";
+            }
+            catch (Exception ex)
+            {
+                result.message = ex.Message;
+            }
+            return Json(result);
         }
 
         public JsonResult InsertOrUpdate(Products input)
         {
-            throw new NotImplementedException();
+            using (ProductsService Product = new ProductsService())
+            {
+                if (input.Id == 0)
+                {
+                    input.CreationTime = DateTime.Now;
+                    input.TenantId = 1;
+                    input.CategoryId = 1;
+                }
+                else
+                {
+                    //input.UpdateTime = DateTime.Now;
+                }
+                input.Contents = HttpUtility.UrlDecode(input.Contents);
+                var result = Product.Reposity.InsertOrUpdate(input);
+                return Json(result);
+            }
         }
     }
 }

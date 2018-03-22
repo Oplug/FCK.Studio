@@ -22,6 +22,13 @@ namespace FCK.Studio.Web.Controllers
             return View();
         }
 
+        public JsonResult GetLists(int page, int pageSize)
+        {
+            ArticlesService Article = new ArticlesService();
+            var result = Article.Reposity.GetPageList(page, pageSize);
+            return Json(result);
+        }
+
         public JsonResult GetModel(long id)
         {
             Articles model = new Articles();
@@ -31,6 +38,7 @@ namespace FCK.Studio.Web.Controllers
                 model = result;
             return Json(model);
         }
+
         public JsonResult InsertOrUpdate(Articles input)
         {
             using (ArticlesService Article = new ArticlesService())
@@ -49,13 +57,6 @@ namespace FCK.Studio.Web.Controllers
                 var result = Article.Reposity.InsertOrUpdate(input);
                 return Json(result);
             }
-        }
-
-        public JsonResult GetLists(int page, int pageSize)
-        {
-            ArticlesService Article = new ArticlesService();
-            var result = Article.Reposity.GetPageList(page, pageSize);
-            return Json(result);
         }
 
         public JsonResult Del(long id)
