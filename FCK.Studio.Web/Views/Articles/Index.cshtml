@@ -38,8 +38,8 @@
                                 <td><small>{{item.UpdateTime}}</small></td>
                                 <td><small>{{item.CreationTime}}</small></td>
                                 <td>
-                                    <a href="#" v-on:click="udelete(item.Id)">删除</a>
-                                    <a href="#" v-on:click="updateu(item.Id)">编辑</a>
+                                    <a class="btn btn-danger btn-xs" href="#" v-on:click="udelete(item.Id)">删除</a>
+                                    <a class="btn btn-primary btn-xs" href="#" v-on:click="updateu(item.Id)">编辑</a>
                                 </td>
                             </tr>
                         </tbody>
@@ -87,7 +87,8 @@
                             type: "POST",
                             data: { id: _id },
                             success: function (resp) {
-                                alert(resp.message);
+                                toastr.success('删除成功！');
+                                getURL('/Articles/', 'content-wrapper');
                             }
                         });
                     },

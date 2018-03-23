@@ -1,7 +1,7 @@
 ﻿$(function () {
     getURL('/Home/Dashboard', 'content-wrapper')
 
-    $(".sidebar-menu a[name='navlink']").click(function () {
+    $("a[name='navlink']").click(function () {
         getURL($(this).attr('href'), 'content-wrapper');
         localStorage.PageId = 0;
         return false;
@@ -14,6 +14,7 @@ function getURL(_url, renderid) {
         type: "Post",
         success: function (data) {
             $("#" + renderid).html(data);
+            $('html,body').animate({ scrollTop: 0 }, 'fast');
         },
         error: function (XMLHttpRequest, textStatus, errorThrown) {
         }

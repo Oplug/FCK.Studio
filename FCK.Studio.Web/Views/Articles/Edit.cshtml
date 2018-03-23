@@ -1,18 +1,13 @@
 ﻿<!-- Content Header (Page header) -->
-<div class="alert alert-success alert-dismissible hide" id="alert-success">
-    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-    <h4><i class="icon fa fa-check"></i> Alert!</h4>
-    Success alert preview. This alert is dismissable.
-</div>
 <section class="content-header">
     <h1>
-        文章编辑
+        内容编辑
         <small>Article Edit</small>
     </h1>
     <ol class="breadcrumb">
         <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-        <li><a href="#">文章管理</a></li>
-        <li class="active">文章编辑</li>
+        <li><a href="/Articles/" name="navlink">内容管理</a></li>
+        <li class="active">内容编辑</li>
     </ol>
 </section>
 <!-- Main content -->
@@ -52,7 +47,7 @@
                         <input type="checkbox" v-model="IsTop"> 置顶
                     </label>
                 </div>
-                <vue-html5-editor content="Contents" height="300" ref="editor" v-model="Contents" v-on:change="updateData"></vue-html5-editor>
+                <vue-html5-editor :content="Contents" :height="300" ref="editor" v-model="Contents" v-on:change="updateData"></vue-html5-editor>
             </div>
             <!-- /.box-body -->
             <div class="box-footer">
@@ -87,7 +82,7 @@
                         type: "POST",
                         data: response,
                         success: function (data) {
-                            $("#alert-success").fadeIn();
+                            toastr.success('保存成功！');
                         }
                     });
                     return false;

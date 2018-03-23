@@ -102,6 +102,15 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="bower_components\toast\bootstrap-combined.min.css" />
+    <Content Include="bower_components\toast\glimpse.js" />
+    <Content Include="bower_components\toast\glimpse.toastr.js" />
+    <Content Include="bower_components\toast\Gruntfile.js" />
+    <Content Include="bower_components\toast\toastr-icon.png" />
+    <Content Include="bower_components\toast\toastr.css" />
+    <Content Include="bower_components\toast\toastr.js" />
+    <Content Include="bower_components\toast\toastr.min.css" />
+    <Content Include="bower_components\toast\toastr.min.js" />
     <Content Include="dist\js\adminlte.js" />
     <Content Include="dist\js\adminlte.min.js" />
     <Content Include="dist\js\adminlay.js" />
@@ -292,7 +301,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="bower_components\" />
     <Folder Include="Models\" />
   </ItemGroup>
   <ItemGroup>
