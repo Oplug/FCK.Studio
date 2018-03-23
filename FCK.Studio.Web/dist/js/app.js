@@ -49,3 +49,25 @@ function setDataTable(renderid)
         }
     })
 }
+
+function alertE(msg) {
+    $.alert(msg);
+}
+
+function confirmE(msg, okFun) {    
+    $.confirm({
+        title: 'Confirm!',
+        content: msg,
+        buttons: {
+            confirm: {
+                text: '是',
+                btnClass: 'btn-red',
+                action: okFun
+            },
+            cancel: {
+                text: '否',
+                btnClass: 'btn-blue',
+            }
+        }
+    });
+}

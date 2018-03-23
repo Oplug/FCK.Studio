@@ -11,8 +11,6 @@
 </section>
 <!-- Main content -->
 <section class="content">
-    <div class="row">
-        <div class="col-xs-12">
             <div class="box">
                 <div class="box-header">
                     <h3 class="box-title">所有内容</h3>
@@ -57,10 +55,6 @@
                 </div>
                 <!-- /.box-body -->
             </div>
-        </div>
-        <!-- /.col -->
-    </div>
-    <!-- /.row -->
 </section>
 <!-- /.content -->
 
@@ -82,14 +76,16 @@
                 methods: {
                     udelete: function (_id) //删除
                     {
-                        $.ajax({
-                            url: '/Articles/Del',
-                            type: "POST",
-                            data: { id: _id },
-                            success: function (resp) {
-                                toastr.success('删除成功！');
-                                getURL('/Articles/', 'content-wrapper');
-                            }
+                        confirmE('确定删除？', function () {
+                            $.ajax({
+                                url: '/Articles/Del',
+                                type: "POST",
+                                data: { id: _id },
+                                success: function (resp) {
+                                    $.alert('删除成功!');
+                                    getURL('/Articles/', 'content-wrapper');
+                                }
+                            });
                         });
                     },
                     updateu: function (_id) //更新

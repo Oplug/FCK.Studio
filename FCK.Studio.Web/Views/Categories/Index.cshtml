@@ -8,3 +8,73 @@
         <li class="active">分类管理</li>
     </ol>
 </section>
+<section class="content">
+    <div class="box">
+        <div class="box-header">
+            <h3 class="box-title">所有分类</h3>
+        </div>
+        <!-- /.box-header -->
+        <div class="box-body no-padding">
+            <table class="table table-condensed" id="DataTable">
+                <tr>
+                    <th style="width: 10px">#</th>
+                    <th>分类名称</th>
+                    <th>所属模型</th>
+                    <th style="width: 100px">操作</th>
+                </tr>
+                <tr v-for="item in mydata">
+                    <td>{{item.Id}}.</td>
+                    <td>{{item.CategoryName}}</td>
+                    <td>{{item.Layout}}</td>
+                    <td>
+                        <a class="btn btn-danger btn-xs" href="#" v-on:click="udelete(item.Id)">删除</a>
+                        <a class="btn btn-primary btn-xs" href="#" v-on:click="updateu(item.Id)">编辑</a>
+                    </td>
+                </tr>                
+            </table>
+        </div>
+        <!-- /.box-body -->
+        <div class="box-footer clearfix no-border">
+            <button type="button" class="btn btn-default pull-right" onclick="AddCate(0)"><i class="fa fa-plus"></i> 添加分类</button>
+        </div>
+    </div>
+</section>
+<script>
+    function AddCate(_id) {
+        localStorage.PageId = _id;
+        getURL('/Categories/Edit', 'content-wrapper');
+    }
+    $(function () {
+
+        $.post('/Categories/GetLists', { page: 1, pageSize: 5000 }, function (response) {
+            var vm = new Vue({
+                el: '#DataTable',
+                data: {
+                    mydata: response.datas
+                },
+                methods: {
+                    udelete: function (_id) //删除
+                    {   
+                        confirmE('确定删除？', function () {
+                            $.ajax({
+                                url: '/Categories/Del',
+                                type: "POST",
+                                data: { id: _id },
+                                success: function (resp) {
+                                    $.alert('删除成功!');
+                                    getURL('/Categories/', 'content-wrapper');
+                                }
+                            });
+                        });
+                    },
+                    updateu: function (_id) //更新
+                    {
+                        localStorage.PageId = _id;
+                        getURL('/Categories/Edit', 'content-wrapper');
+                    }
+                }
+            });
+        });
+
+    })
+</script>

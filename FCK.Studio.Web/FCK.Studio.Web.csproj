@@ -102,6 +102,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="bower_components\jqueryconfirm\jquery-confirm.css" />
+    <Content Include="bower_components\jqueryconfirm\jquery-confirm.js" />
     <Content Include="bower_components\toast\bootstrap-combined.min.css" />
     <Content Include="bower_components\toast\glimpse.js" />
     <Content Include="bower_components\toast\glimpse.toastr.js" />
@@ -344,7 +346,7 @@
     <VisualStudio>
       <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
         <WebProjectProperties>
-          <UseIIS>True</UseIIS>
+          <UseIIS>False</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>9173</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>

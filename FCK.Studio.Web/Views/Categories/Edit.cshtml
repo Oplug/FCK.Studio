@@ -1,10 +1,85 @@
 ﻿<section class="content-header">
     <h1>
-        内容管理
-        <small>Article Manage</small>
+        分类管理
+        <small>Category Manage</small>
     </h1>
     <ol class="breadcrumb">
         <li><a href="/Home/Dashboard"><i class="fa fa-dashboard"></i> Home</a></li>
-        <li class="active">内容管理</li>
+        <li class="active">分类管理</li>
     </ol>
 </section>
+<!-- Main content -->
+<section class="content">
+    <div class="box box-primary" id="formArticleEdit">
+        <div class="box-header with-border">
+            <h3 class="box-title">分类管理</h3>
+        </div>
+        <!-- /.box-header -->
+        <!-- form start -->
+        <form role="form" id="formEdit">
+            <div class="box-body">
+                <div class="form-group">
+                    <label for="CategoryName">分类名称</label>
+                    <input type="text" class="form-control" v-model="CategoryName" placeholder="Enter CategoryName">
+                </div>
+                <div class="form-group">
+                    <label for="CategoryIndex">分类索引</label>
+                    <input type="text" class="form-control" v-model="CategoryIndex" placeholder="Enter CategoryIndex">
+                </div>
+                <div class="form-group">
+                    <label for="Layout">所属模型</label>
+                    <input type="text" class="form-control" v-model="Layout" placeholder="Enter Layout">
+                </div>
+                <div class="form-group">
+                    <label for="Intro">上级分类</label>
+                    <select class="form-control"  v-on:change="updateData">
+
+                    </select>
+                </div>
+                
+            </div>
+            <!-- /.box-body -->
+            <div class="box-footer">
+                <input type="hidden" v-model="Id">
+                <input type="hidden" v-model="ParentId" value="0">
+                <button type="button" class="btn btn-primary" v-on:click="dosubmit">确定</button>
+                <button type="button" class="btn btn-default" v-on:click="doback">返回</button>
+            </div>
+        </form>
+    </div>
+</section>
+<!-- /.content -->
+<script>
+
+    var _Id = localStorage.PageId == null ? 0 : localStorage.PageId;
+    $.post('/Categories/GetModel', { id: _Id }, function (response) {
+        new Vue({
+            el: "#formEdit",
+            data: function (){ return response },
+            methods: {
+                updateData: function (data) {
+                    response.ParentId = data;
+                },
+                dosubmit: function () {
+                    $.ajax({
+                        url: '/Categories/InsertOrUpdate',
+                        type: "POST",
+                        data: response,
+                        success: function (data) {
+                            toastr.options = {
+                                "positionClass": "toast-bottom-right",
+                            }
+                            toastr.success('保存成功！');
+                        }
+                    });
+                    return false;
+                },
+                doback: function () {
+                    getURL('/Categories/', 'content-wrapper');
+                }
+            }
+        })
+    });
+
+
+</script>
