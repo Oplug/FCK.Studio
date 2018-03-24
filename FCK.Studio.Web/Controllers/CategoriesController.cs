@@ -5,6 +5,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using FCK.Studio.Core;
+using FCK.Studio.Web.Dto;
 
 namespace FCK.Studio.Web.Controllers
 {
@@ -35,6 +36,20 @@ namespace FCK.Studio.Web.Controllers
             if (result != null)
                 model = result;
             return Json(model);
+        }
+
+        public JsonResult GetModelWithParents(int id)
+        {
+            CategoryWithParents dto = new CategoryWithParents();
+            Categories entity = new Categories();
+            CategoriesService Category = new CategoriesService();
+            var result = Category.Reposity.FirstOrDefault(id);
+            if (result != null)
+                entity = result;
+            dto.Category = entity;
+            var lists = Category.Reposity.GetAllList();
+            dto.ParentLists = lists;
+            return Json(dto);
         }
 
         public JsonResult InsertOrUpdate(Categories input)
