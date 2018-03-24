@@ -53,7 +53,7 @@
                         <input type="checkbox" v-model="Article.IsTop"> 置顶
                     </label>
                 </div>
-                <vue-html5-editor :content="Contents" :height="300" ref="editor" v-model="Article.Contents" v-on:change="updateData"></vue-html5-editor>
+                <vue-html5-editor :content="Article.Contents" :height="300" ref="editor" v-model="Article.Contents" v-on:change="updateData"></vue-html5-editor>
             </div>
             <!-- /.box-body -->
             <div class="box-footer">
@@ -77,10 +77,10 @@
             data: function (){ return response },
             methods: {
                 updateData: function (data) {
-                    response.Contents = data;
+                    response.Article.Contents = data;
                 },
                 dosubmit: function () {
-                    response.Contents = escape(response.Contents);
+                    response.Article.Contents = escape(response.Article.Contents);
                     $.ajax({
                         url: '/Articles/InsertOrUpdate',
                         type: "POST",
