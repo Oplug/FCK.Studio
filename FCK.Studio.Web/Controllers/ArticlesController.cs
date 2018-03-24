@@ -35,7 +35,9 @@ namespace FCK.Studio.Web.Controllers
             ArticlesService Article = new ArticlesService();
             var result = Article.Reposity.FirstOrDefault(id);
             if (result != null)
+            {
                 model = result;
+            }
             return Json(model);
         }
 
@@ -69,6 +71,90 @@ namespace FCK.Studio.Web.Controllers
                 result.message = "success";
             }
             catch(Exception ex)
+            {
+                result.message = ex.Message;
+            }
+            return Json(result);
+        }
+
+        /**
+         * 传入动作，action=top 置顶
+         **/
+        public JsonResult Top(long[] ids,string action)
+        {
+            Studio.Dto.ResultDto<string> result = new Studio.Dto.ResultDto<string>();
+            try
+            {
+                using (ArticlesService Article = new ArticlesService())
+                {
+                    for (int i = 0; i < ids.Length; i++)
+                    {
+                        long id = ids[i];
+                        var input = Article.Reposity.FirstOrDefault(id);
+                        input.IsTop = action.Equals("top")?true:false;
+                        Article.Reposity.InsertOrUpdate(input);
+                    }
+                    result.code = 100;
+                    result.message = "success";
+                }
+            }
+            catch (Exception ex)
+            {
+                result.message = ex.Message;
+            }
+            return Json(result);
+        }
+
+        /**
+         * 传入动作，action=hot 热门
+         **/
+        public JsonResult Hot(long[] ids, string action)
+        {
+            Studio.Dto.ResultDto<string> result = new Studio.Dto.ResultDto<string>();
+            try
+            {
+                using (ArticlesService Article = new ArticlesService())
+                {
+                    for (int i = 0; i < ids.Length; i++)
+                    {
+                        long id = ids[i];
+                        var input = Article.Reposity.FirstOrDefault(id);
+                        input.IsHot = action.Equals("hot") ? true : false;
+                        Article.Reposity.InsertOrUpdate(input);
+                    }
+                    result.code = 100;
+                    result.message = "success";
+                }
+            }
+            catch (Exception ex)
+            {
+                result.message = ex.Message;
+            }
+            return Json(result);
+        }
+
+        /**
+         * 传入动作，action=recommend 推荐
+         **/
+        public JsonResult Recommend(long[] ids, string action)
+        {
+            Studio.Dto.ResultDto<string> result = new Studio.Dto.ResultDto<string>();
+            try
+            {
+                using (ArticlesService Article = new ArticlesService())
+                {
+                    for (int i = 0; i < ids.Length; i++)
+                    {
+                        long id = ids[i];
+                        var input = Article.Reposity.FirstOrDefault(id);
+                        input.IsRecommend = action.Equals("recommend") ? true : false;
+                        Article.Reposity.InsertOrUpdate(input);
+                    }
+                    result.code = 100;
+                    result.message = "success";
+                }
+            }
+            catch (Exception ex)
             {
                 result.message = ex.Message;
             }

@@ -8,9 +8,9 @@ using FCK.Studio.Core;
 
 namespace FCK.Studio.Web.Controllers
 {
-    public class ProductsController : Controller, IControllerBase<Products, long>
+    public class AdminsController : Controller, IControllerBase<Admins, int>
     {
-        // GET: Products
+        // GET: Admins
         public ActionResult Index()
         {
             return View();
@@ -21,11 +21,11 @@ namespace FCK.Studio.Web.Controllers
             return View();
         }
 
-        public JsonResult GetModel(long id)
+        public JsonResult GetModel(int id)
         {
-            Products model = new Products();
-            ProductsService Product = new ProductsService();
-            var result = Product.Reposity.FirstOrDefault(id);
+            Admins model = new Admins();
+            AdminsService Admin = new AdminsService();
+            var result = Admin.Reposity.FirstOrDefault(id);
             if (result != null)
             {
                 model = result;
@@ -35,38 +35,35 @@ namespace FCK.Studio.Web.Controllers
 
         public JsonResult GetLists(int page, int pageSize)
         {
-            ProductsService Product = new ProductsService();
-            var result = Product.Reposity.GetPageList(page, pageSize);
+            AdminsService Admin = new AdminsService();
+            var result = Admin.Reposity.GetPageList(page, pageSize);
             return Json(result);
         }
-
-        public JsonResult InsertOrUpdate(Products input)
+       
+        public JsonResult InsertOrUpdate(Admins input)
         {
-            using (ProductsService Product = new ProductsService())
+            using (AdminsService Admin = new AdminsService())
             {
                 if (input.Id == 0)
                 {
                     input.CreationTime = DateTime.Now;
-                    input.TenantId = 1;
-                    input.CategoryId = 1;
                 }
                 else
                 {
                     //input.UpdateTime = DateTime.Now;
                 }
-                input.Contents = HttpUtility.UrlDecode(input.Contents);
-                var result = Product.Reposity.InsertOrUpdate(input);
+                var result = Admin.Reposity.InsertOrUpdate(input);
                 return Json(result);
             }
         }
 
-        public JsonResult Del(long id)
+        public JsonResult Del(int id)
         {
             Studio.Dto.ResultDto<string> result = new Studio.Dto.ResultDto<string>();
             try
             {
-                ProductsService Product = new ProductsService();
-                Product.Reposity.Delete(id);
+                AdminsService Admin = new AdminsService();
+                Admin.Reposity.Delete(id);
                 result.code = 100;
                 result.message = "success";
             }
@@ -76,5 +73,6 @@ namespace FCK.Studio.Web.Controllers
             }
             return Json(result);
         }
+
     }
 }
