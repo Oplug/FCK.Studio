@@ -30,7 +30,9 @@ namespace FCK.Studio.Web.Controllers
             CommentsService Comment = new CommentsService();
             var result = Comment.Reposity.FirstOrDefault(id);
             if (result != null)
+            {
                 model = result;
+            }
             return Json(model);
         }
 
@@ -41,10 +43,6 @@ namespace FCK.Studio.Web.Controllers
                 if (input.Id == 0)
                 {
                     input.TenantId = 1;
-                }
-                else
-                {
-                    
                 }
                 input.Contents = HttpUtility.UrlDecode(input.Contents);
                 var result = Comment.Reposity.InsertOrUpdate(input);
