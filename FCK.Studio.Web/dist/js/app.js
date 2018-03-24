@@ -24,30 +24,33 @@ function getURL(_url, renderid) {
 function setDataTable(renderid)
 {
     $('#' + renderid).DataTable({
-        'paging': true,
-        'deferRender': true,
-        'lengthChange': false,
-        'searching': true,
-        'ordering': true,
-        'info': true,
+        //'paging': true,
+        //"iDisplayLength": 10, //默认每页数量
+        //'deferRender': true,
+        //'lengthChange': false,
+        //'searching': true,
+        //'ordering': true,
+        //'info': true,
         'autoWidth': false,
-        'language': {
-            "sInfo": "显示第 _START_ 至 _END_ 项结果，共 _TOTAL_ 项",
-            "sInfoEmpty": "显示第 0 至 0 项结果，共 0 项",
-            "sSearch": "搜索:",
-            "sLoadingRecords": "载入中...",
-            "sProcessing": "处理中...",
-            "sLengthMenu": "显示 _MENU_ 项结果",
-            "sZeroRecords": "没有匹配结果",
-            "sInfoFiltered": "(过滤出 _MAX_ 项结果)",
-            "oPaginate": {
-                "sFirst": "首页",
-                "sPrevious": "上页",
-                "sNext": "下页",
-                "sLast": "末页"
-            }
-        }
+        'language': DataTableLanguage
     })
+}
+
+var DataTableLanguage = {
+    "sInfo": "显示第 _START_ 至 _END_ 项结果，共 _TOTAL_ 项",
+    "sInfoEmpty": "显示第 0 至 0 项结果，共 0 项",
+    "sSearch": "搜索:",
+    "sLoadingRecords": "载入中...",
+    "sProcessing": "处理中...",
+    "sLengthMenu": "显示 _MENU_ 项结果",
+    "sZeroRecords": "没有匹配结果",
+    "sInfoFiltered": "(过滤出 _MAX_ 项结果)",
+    "oPaginate": {
+        "sFirst": "首页",
+        "sPrevious": "上页",
+        "sNext": "下页",
+        "sLast": "末页"
+    }
 }
 
 function alertE(msg) {
@@ -56,7 +59,7 @@ function alertE(msg) {
 
 function confirmE(msg, okFun) {    
     $.confirm({
-        title: 'Confirm!',
+        title: 'Confirm',
         content: msg,
         buttons: {
             confirm: {

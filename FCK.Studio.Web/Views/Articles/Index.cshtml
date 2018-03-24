@@ -21,7 +21,7 @@
                         <thead>
                             <tr>
                                 <th>标题</th>
-                                <th>标签</th>
+                                <th>分类</th>
                                 <th>作者</th>
                                 <th>更新时间</th>
                                 <th>创建时间</th>
@@ -31,7 +31,7 @@
                         <tbody>
                             <tr v-for="item in mydata">
                                 <td>{{item.Title}}</td>
-                                <td>{{item.Tags}}</td>
+                                <td>{{item.Category.CategoryName}}</td>
                                 <td>{{item.Author}}</td>
                                 <td><small>{{item.UpdateTime}}</small></td>
                                 <td><small>{{item.CreationTime}}</small></td>
@@ -44,7 +44,7 @@
                         <tfoot>
                             <tr>
                                 <th>标题</th>
-                                <th>标签</th>
+                                <th>分类</th>
                                 <th>作者</th>
                                 <th>更新时间</th>
                                 <th>创建时间</th>
@@ -65,15 +65,20 @@
 <script src="/bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
 <script>
     $(function () {
-
-        $.post('/Articles/GetLists', { page: 1, pageSize: 50 }, function (response) {
-            setDataTable('DataTable');
+        $.post('/Articles/GetLists', { page: 1, pageSize: 0 }, function (response) {            
             var vm = new Vue({
                 el: '#DataTable',
                 data: {
                     mydata: response.datas
                 },
                 methods: {
+                    initDatas: function () {
+                        //setDataTable('DataTable');
+                        $('#DataTable').dataTable({
+                            "order": [[3, "desc"]],
+                            'language': DataTableLanguage
+                        });
+                    },
                     udelete: function (_id) //删除
                     {
                         confirmE('确定删除？', function () {
@@ -95,7 +100,8 @@
                     }
                 }
             });
+            vm.initDatas();
         });
-
+        
     })
 </script>

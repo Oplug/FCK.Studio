@@ -12,6 +12,6 @@ namespace FCK.Studio.Application
 {
     public interface IArticlesService
     {
-        Task<ResultDto<List<Articles>>> GetArticleWithCate(int PageIndex,int PageSize, Expression<Func<Articles, bool>> predicate);
+        Task<ResultDto<List<Articles>>> GetArticleWithCateSync(int PageIndex,int PageSize, Expression<Func<Articles, bool>> predicate);
     }
 }

@@ -1,10 +1,12 @@
 ﻿using AutoMapper;
 using FCK.Studio.Application;
 using FCK.Studio.Core;
+using FCK.Studio.Dto;
 using FCK.Studio.Web.Dto;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 
@@ -25,8 +27,10 @@ namespace FCK.Studio.Web.Controllers
         public JsonResult GetLists(int page, int pageSize)
         {
             ArticlesService Article = new ArticlesService();
-            var result = Article.Reposity.GetPageList(page, pageSize);
-            return Json(result);
+            var result = Article.GetArticleWithCate(page, pageSize);
+            
+            var lists = Mapper.Map<ResultDto<List<Dto.ArticleDto>>>(result);
+            return Json(lists);
         }
 
         public JsonResult GetModel(long id)
@@ -62,18 +66,21 @@ namespace FCK.Studio.Web.Controllers
         {
             using (ArticlesService Article = new ArticlesService())
             {
-                if (input.Id == 0)
+                using (CategoriesService Category = new CategoriesService())
                 {
-                    input.CreationTime = DateTime.Now;
-                    input.TenantId = 1;
+                    if (input.Id == 0)
+                    {
+                        input.CreationTime = DateTime.Now;
+                    }
+                    else
+                    {
+                        input.Category = Category.Reposity.Get(input.CategoryId);
+                        input.UpdateTime = DateTime.Now;
+                    }
+                    input.Contents = HttpUtility.UrlDecode(input.Contents);                    
+                    var result = Article.Reposity.InsertOrUpdate(input);
+                    return Json(result);
                 }
-                else
-                {
-                    input.UpdateTime = DateTime.Now;
-                }
-                input.Contents = HttpUtility.UrlDecode(input.Contents);
-                var result = Article.Reposity.InsertOrUpdate(input);
-                return Json(result);
             }
         }
 
