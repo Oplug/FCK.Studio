@@ -279,7 +279,7 @@
     <Compile Include="Controllers\MembersController.cs" />
     <Compile Include="Controllers\ProductsController.cs" />
     <Compile Include="Controllers\SysManageController.cs" />
-    <Compile Include="Dto\Article.cs" />
+    <Compile Include="Dto\ArticleWithCategory.cs" />
     <Compile Include="Dto\CategoryWithParents.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>

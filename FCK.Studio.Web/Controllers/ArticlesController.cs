@@ -41,6 +41,23 @@ namespace FCK.Studio.Web.Controllers
             return Json(model);
         }
 
+        public JsonResult GetModelWithCategory(long id)
+        {
+            ArticleWithCategory result = new ArticleWithCategory();
+            Articles model = new Articles();
+            ArticlesService Article = new ArticlesService();
+            var entity = Article.Reposity.FirstOrDefault(id);
+            if (entity != null)
+            {
+                model = entity;
+            }
+            CategoriesService Category = new CategoriesService();
+            var lists = Category.Reposity.GetAllList();
+            result.Article = model;
+            result.Category = lists;
+            return Json(result);
+        }
+
         public JsonResult InsertOrUpdate(Articles input)
         {
             using (ArticlesService Article = new ArticlesService())
@@ -49,7 +66,6 @@ namespace FCK.Studio.Web.Controllers
                 {
                     input.CreationTime = DateTime.Now;
                     input.TenantId = 1;
-                    input.CategoryId = 1;
                 }
                 else
                 {

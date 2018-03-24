@@ -21,39 +21,43 @@
         <form role="form">
             <div class="box-body">
                 <div class="form-group">
+                    <label for="ParentId">所属分类</label>
+                    <select class="form-control" v-model="Article.CategoryId">
+                        <option v-for="option in Category" v-bind:value="option.Id">{{option.CategoryName}}</option>
+                    </select>
+                </div>
+                <div class="form-group">
                     <label for="Title">标题</label>
-                    <input type="text" class="form-control" v-model="Title" placeholder="Enter title">
+                    <input type="text" class="form-control" v-model="Article.Title" placeholder="Enter title">
                 </div>
                 <div class="form-group">
                     <label for="Keywords">关键词</label>
-                    <input type="text" class="form-control" v-model="Keywords" placeholder="Enter Keywords">
+                    <input type="text" class="form-control" v-model="Article.Keywords" placeholder="Enter Keywords">
                 </div>
                 <div class="form-group">
                     <label for="Tags">标签</label>
-                    <input type="text" class="form-control" v-model="Tags" placeholder="Enter Tags">
+                    <input type="text" class="form-control" v-model="Article.Tags" placeholder="Enter Tags">
                 </div>
                 <div class="form-group">
                     <label for="Intro">简介</label>
-                    <textarea class="form-control" v-model="Intro" placeholder="add multiple lines"></textarea>
+                    <textarea class="form-control" v-model="Article.Intro" placeholder="add multiple lines"></textarea>
                 </div>
                 <div class="checkbox">
                     <label>
-                        <input type="checkbox" v-model="IsRecommend"> 推荐
+                        <input type="checkbox" v-model="Article.IsRecommend"> 推荐
                     </label>
                     <label>
-                        <input type="checkbox" v-model="IsHot"> 热
+                        <input type="checkbox" v-model="Article.IsHot"> 热
                     </label>
                     <label>
-                        <input type="checkbox" v-model="IsTop"> 置顶
+                        <input type="checkbox" v-model="Article.IsTop"> 置顶
                     </label>
                 </div>
-                <vue-html5-editor :content="Contents" :height="300" ref="editor" v-model="Contents" v-on:change="updateData"></vue-html5-editor>
+                <vue-html5-editor :content="Contents" :height="300" ref="editor" v-model="Article.Contents" v-on:change="updateData"></vue-html5-editor>
             </div>
             <!-- /.box-body -->
             <div class="box-footer">
-                <input type="hidden" v-model="Id">
-                <input type="hidden" v-model="CategoryId" value="1">
-                <input type="hidden" v-model="TenantId" value="1">
+                <input type="hidden" v-model="Article.Id">
                 <button type="button" class="btn btn-primary" v-on:click="dosubmit">发布</button>
                 <button type="button" class="btn btn-default" v-on:click="doback">返回</button>
             </div>
@@ -64,7 +68,7 @@
 <script>
 
     var _Id = localStorage.PageId == null ? 0 : localStorage.PageId;
-    $.post('/Articles/GetModel', { id: _Id }, function (response) {
+    $.post('/Articles/GetModelWithCategory', { id: _Id }, function (response) {
         Vue.use(VueHtml5Editor, {
             showModuleName: false
         })
@@ -80,7 +84,7 @@
                     $.ajax({
                         url: '/Articles/InsertOrUpdate',
                         type: "POST",
-                        data: response,
+                        data: response.Article,
                         success: function (data) {
                             toastr.success('保存成功！');
                         }
