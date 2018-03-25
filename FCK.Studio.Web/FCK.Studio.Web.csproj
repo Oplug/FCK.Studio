@@ -113,6 +113,9 @@
     <Content Include="bower_components\toast\toastr.js" />
     <Content Include="bower_components\toast\toastr.min.css" />
     <Content Include="bower_components\toast\toastr.min.js" />
+    <Content Include="Content\bootstrap.css" />
+    <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\Site.css" />
     <Content Include="dist\js\adminlte.js" />
     <Content Include="dist\js\adminlte.min.js" />
     <Content Include="dist\js\adminlay.js" />
@@ -123,6 +126,7 @@
     <Content Include="dist\js\vue.js" />
     <Content Include="dist\js\vue.min.js" />
     <Content Include="favicon.ico" />
+    <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="plugins\bootstrap-slider\bootstrap-slider.js" />
     <Content Include="plugins\bootstrap-slider\slider.css" />
@@ -270,6 +274,7 @@
   <ItemGroup>
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="AutoMapper\Configuration.cs" />
+    <Compile Include="AutoMapper\Profiles\AdminProfile.cs" />
     <Compile Include="AutoMapper\Profiles\ArticleProfile.cs" />
     <Compile Include="AutoMapper\Profiles\TenantProfile.cs" />
     <Compile Include="Controllers\TenantsController.cs" />
@@ -282,6 +287,7 @@
     <Compile Include="Controllers\MembersController.cs" />
     <Compile Include="Controllers\ProductsController.cs" />
     <Compile Include="Controllers\SysManageController.cs" />
+    <Compile Include="Dto\AdminDto.cs" />
     <Compile Include="Dto\ArticleWithCategory.cs" />
     <Compile Include="Dto\CategoryWithParents.cs" />
     <Compile Include="Dto\TenantDto.cs" />
@@ -291,6 +297,12 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Scripts\bootstrap.js" />
+    <Content Include="Scripts\bootstrap.min.js" />
+    <None Include="Scripts\jquery-1.10.2.intellisense.js" />
+    <Content Include="Scripts\jquery-1.10.2.js" />
+    <Content Include="Scripts\jquery-1.10.2.min.js" />
+    <Content Include="Scripts\modernizr-2.6.2.js" />
     <Content Include="Views\web.config" />
     <Content Include="packages.config" />
     <Content Include="plugins\input-mask\phone-codes\phone-be.json" />
@@ -339,6 +351,13 @@
     <Content Include="Views\Comments\Index.cshtml" />
     <Content Include="Views\Tenants\Index.cshtml" />
     <Content Include="Views\Tenants\Edit.cshtml" />
+    <Content Include="Views\Shared\_Layout.cshtml" />
+    <Content Include="Views\Admins\Index.cshtml" />
+    <Content Include="fonts\glyphicons-halflings-regular.woff" />
+    <Content Include="fonts\glyphicons-halflings-regular.ttf" />
+    <Content Include="fonts\glyphicons-halflings-regular.eot" />
+    <Content Include="Scripts\jquery-1.10.2.min.map" />
+    <Content Include="Views\Admins\Edit.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

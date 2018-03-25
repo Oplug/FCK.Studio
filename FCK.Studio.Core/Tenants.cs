@@ -27,5 +27,9 @@ namespace FCK.Studio.Core
         public string TenantConfig { get; set; }
 
         public DateTime CreationTime { get; set; }
+        public Tenants()
+        {
+            CreationTime = DateTime.Now;
+        }
     }
 }

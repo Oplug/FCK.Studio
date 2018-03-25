@@ -3,11 +3,11 @@ using FCK.Studio.Core;
 
 namespace FCK.Studio.Web.AutoMapper.Profiles
 {
-    public class TenantProfile: Profile
+    public class AdminProfile:Profile
     {
-        public TenantProfile()
+        public AdminProfile()
         {
-            CreateMap<Tenants, Dto.TenantDto>();
+            CreateMap<Admins, Dto.AdminDto>();
         }
     }
 }

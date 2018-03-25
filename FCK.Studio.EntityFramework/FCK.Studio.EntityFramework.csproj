@@ -108,6 +108,10 @@
     <Compile Include="Migrations\201803250604334_UptTenants.Designer.cs">
       <DependentUpon>201803250604334_UptTenants.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201803252200352_UptAdmin.cs" />
+    <Compile Include="Migrations\201803252200352_UptAdmin.Designer.cs">
+      <DependentUpon>201803252200352_UptAdmin.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -163,6 +167,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201803250604334_UptTenants.resx">
       <DependentUpon>201803250604334_UptTenants.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201803252200352_UptAdmin.resx">
+      <DependentUpon>201803252200352_UptAdmin.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

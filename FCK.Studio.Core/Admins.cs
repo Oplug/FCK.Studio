@@ -16,7 +16,6 @@ namespace FCK.Studio.Core
         public string LoginName { get; set; }
         [Required, MaxLength(50)]
         public string Password { get; set; }
-        [Required]
         public string Powers { get; set; }
         public DateTime CreationTime { get; set; }
         public Admins()

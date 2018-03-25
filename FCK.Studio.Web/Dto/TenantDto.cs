@@ -12,6 +12,7 @@ namespace FCK.Studio.Web.Dto
         public string SecretKey { get; set; }
         public string AppDomain { get; set; }
         public string WXAppId { get; set; }
+        public bool IsRoot { get; set; }
         public string CreationTime { get; set; }
     }
 }

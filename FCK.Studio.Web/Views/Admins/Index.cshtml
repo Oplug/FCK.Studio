@@ -1,32 +1,30 @@
 ﻿<section class="content-header">
     <h1>
-        站点管理
-        <small>Tenants Manage</small>
+        管理员
+        <small>Admins Manage</small>
     </h1>
     <ol class="breadcrumb">
         <li><a href="/Home/Dashboard" name="syclink"><i class="fa fa-dashboard"></i> Home</a></li>
-        <li class="active">站点管理</li>
+        <li class="active">管理员</li>
     </ol>
 </section>
 <section class="content">
     <div class="box">
         <div class="box-header">
-            <h3 class="box-title">所有站点</h3>
+            <h3 class="box-title">管理员</h3>
         </div>
         <!-- /.box-header -->
         <div class="box-body no-padding">
             <table class="table table-condensed" id="DataTable">
                 <tr>
                     <th style="width: 20px"> </th>
-                    <th>站点名称</th>
-                    <th>微信AppID</th>
-                    <th>创建时间</th>                    
+                    <th>登录名</th>
+                    <th>创建时间</th>
                     <th style="width: 100px">操作</th>
                 </tr>
                 <tr v-for="item in mydata">
                     <td><input type="checkbox" value="item.Id" /></td>
-                    <td>{{item.TenantName}} <span v-if="item.IsRoot" class="text-green"><i class="fa fa-globe" title="主站点"></i></span></td>
-                    <td>{{item.WXAppId}}</td>
+                    <td>{{item.LoginName}}</td>
                     <td>{{item.CreationTime}}</td>
                     <td>
                         <a class="btn btn-danger btn-xs" href="#" v-on:click="udelete(item.Id)">删除</a>
@@ -37,18 +35,18 @@
         </div>
         <!-- /.box-body -->
         <div class="box-footer clearfix no-border">
-            <button type="button" class="btn btn-default pull-right" onclick="AddModel(0)"><i class="fa fa-plus"></i> 添加站点</button>
+            <button type="button" class="btn btn-default pull-right" onclick="AddModel(0)"><i class="fa fa-plus"></i> 添加管理员</button>
         </div>
     </div>
 </section>
 <script>
     function AddModel(_id) {
         localStorage.PageId = _id;
-        getURL('/Tenants/Edit', 'content-wrapper');
+        getURL('/Admins/Edit', 'content-wrapper');
     }
     $(function () {
 
-        $.post('/Tenants/GetLists', { page: 1, pageSize: 0 }, function (response) {
+        $.post('/Admins/GetLists', { page: 1, pageSize: 0 }, function (response) {
             var vm = new Vue({
                 el: '#DataTable',
                 data: {
@@ -59,12 +57,12 @@
                     {
                         confirmE('确定删除？', function () {
                             $.ajax({
-                                url: '/Tenants/Del',
+                                url: '/Admins/Del',
                                 type: "POST",
                                 data: { id: _id },
                                 success: function (resp) {
                                     $.alert('删除成功!');
-                                    getURL('/Tenants/', 'content-wrapper');
+                                    getURL('/Admins/', 'content-wrapper');
                                 }
                             });
                         });
@@ -72,7 +70,7 @@
                     updateu: function (_id) //更新
                     {
                         localStorage.PageId = _id;
-                        getURL('/Tenants/Edit', 'content-wrapper');
+                        getURL('/Admins/Edit', 'content-wrapper');
                     }
                 }
             });

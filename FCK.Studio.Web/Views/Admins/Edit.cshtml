@@ -1,18 +1,18 @@
 ﻿<section class="content-header">
     <h1>
-        站点管理
-        <small>Tenants Manage</small>
+        管理员
+        <small>Admins Manage</small>
     </h1>
     <ol class="breadcrumb">
         <li><a href="/Home/Dashboard"><i class="fa fa-dashboard"></i> Home</a></li>
-        <li class="active">站点管理</li>
+        <li class="active">管理员</li>
     </ol>
 </section>
 <!-- Main content -->
 <section class="content">
     <div class="box box-primary" id="formArticleEdit">
         <div class="box-header with-border">
-            <h3 class="box-title">租户管理</h3>
+            <h3 class="box-title">管理员</h3>
         </div>
         <!-- /.box-header -->
         <!-- form start -->
@@ -20,31 +20,22 @@
         <form role="form" id="formEdit">
             <div class="box-body">
                 <div class="form-group">
-                    <label for="TenantName">站点名称</label>
-                    <input type="text" class="form-control" v-model="TenantName" placeholder="Enter TenantName">
+                    <label for="LoginName">登录名</label>
+                    <input type="text" class="form-control" v-model="LoginName" placeholder="Enter LoginName">
                 </div>
                 <div class="form-group">
-                    <label for="AppDomain">绑定域名</label>
-                    <input type="text" class="form-control" v-model="AppDomain" placeholder="Enter AppDomain">
+                    <label for="Password">密码</label>
+                    <input type="password" class="form-control" v-model="Password" placeholder="Enter Password">
                 </div>
                 <div class="form-group">
-                    <label for="WXAppId">微信APPId</label>
-                    <input type="text" class="form-control" v-model="WXAppId" placeholder="Enter WXAppId">
-                </div>
-                <div class="form-group">
-                    <label for="WXAppSecret">微信AppSecret</label>
-                    <input type="text" class="form-control" v-model="WXAppSecret" placeholder="Enter WXAppSecret">
-                </div>
-                <div class="checkbox">
-                    <label>
-                        <input type="checkbox" v-model="IsRoot"> 主站点
-                    </label>
+                    <label for="Password2">确认密码</label>
+                    <input type="password" class="form-control" placeholder="Confirm Password">
                 </div>
             </div>
             <!-- /.box-body -->
             <div class="box-footer">
                 <input type="hidden" v-model="Id">
-                <input type="hidden" v-model="CreationTime">
+                <input type="hidden" v-model="Powers">
                 <button type="button" class="btn btn-primary" v-on:click="dosubmit">确定</button>
                 <button type="button" class="btn btn-default" v-on:click="doback">返回</button>
             </div>
@@ -55,14 +46,14 @@
 <script>
 
     var _Id = localStorage.PageId == null ? 0 : localStorage.PageId;
-    $.post('/Tenants/GetModel', { id: _Id }, function (response) {
+    $.post('/Admins/GetModel', { id: _Id }, function (response) {
         new Vue({
             el: "#formEdit",
             data: function () { return response },
             methods: {
                 dosubmit: function () {
                     $.ajax({
-                        url: '/Tenants/InsertOrUpdate',
+                        url: '/Admins/InsertOrUpdate',
                         type: "POST",
                         data: response,
                         success: function (data) {
@@ -75,7 +66,7 @@
                     return false;
                 },
                 doback: function () {
-                    getURL('/Tenants/', 'content-wrapper');
+                    getURL('/Admins/', 'content-wrapper');
                 }
             }
         })

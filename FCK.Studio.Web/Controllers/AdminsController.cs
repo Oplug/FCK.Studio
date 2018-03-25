@@ -5,6 +5,8 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using FCK.Studio.Core;
+using AutoMapper;
+using FCK.Studio.Dto;
 
 namespace FCK.Studio.Web.Controllers
 {
@@ -37,7 +39,8 @@ namespace FCK.Studio.Web.Controllers
         {
             AdminsService Admin = new AdminsService();
             var result = Admin.Reposity.GetPageList(page, pageSize);
-            return Json(result);
+            var lists = Mapper.Map<ResultDto<List<Dto.AdminDto>>>(result);
+            return Json(lists);
         }
        
         public JsonResult InsertOrUpdate(Admins input)
