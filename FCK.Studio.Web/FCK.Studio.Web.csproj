@@ -269,6 +269,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="AutoMapper\Configuration.cs" />
+    <Compile Include="AutoMapper\Profiles\ArticleProfile.cs" />
+    <Compile Include="AutoMapper\Profiles\TenantProfile.cs" />
     <Compile Include="Controllers\TenantsController.cs" />
     <Compile Include="Controllers\ArticlesController.cs" />
     <Compile Include="Controllers\CategoriesController.cs" />
@@ -281,6 +284,7 @@
     <Compile Include="Controllers\SysManageController.cs" />
     <Compile Include="Dto\ArticleWithCategory.cs" />
     <Compile Include="Dto\CategoryWithParents.cs" />
+    <Compile Include="Dto\TenantDto.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -333,6 +337,8 @@
     <Content Include="Views\Categories\Index.cshtml" />
     <Content Include="Views\Categories\Edit.cshtml" />
     <Content Include="Views\Comments\Index.cshtml" />
+    <Content Include="Views\Tenants\Index.cshtml" />
+    <Content Include="Views\Tenants\Edit.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

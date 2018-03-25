@@ -5,6 +5,8 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using FCK.Studio.Core;
+using AutoMapper;
+using FCK.Studio.Dto;
 
 namespace FCK.Studio.Web.Controllers
 {
@@ -37,13 +39,19 @@ namespace FCK.Studio.Web.Controllers
         {
             TenantsService Tenant = new TenantsService();
             var result = Tenant.Reposity.GetPageList(page, pageSize);
-            return Json(result);
+            var lists = Mapper.Map<ResultDto<List<Dto.TenantDto>>>(result);
+            return Json(lists);
         }
 
         public JsonResult InsertOrUpdate(Tenants input)
         {
             using (TenantsService Tenant = new TenantsService())
             {
+                if(input.Id==0)
+                {
+                    input.CreationTime = DateTime.Now;
+                    input.SecretKey = new Guid();
+                }
                 var result = Tenant.Reposity.InsertOrUpdate(input);
                 return Json(result);
             }

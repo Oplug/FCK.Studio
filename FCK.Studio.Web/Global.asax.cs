@@ -15,8 +15,7 @@ namespace FCK.Studio.Web
         {
             AreaRegistration.RegisterAllAreas();
             RouteConfig.RegisterRoutes(RouteTable.Routes);
-
-            Mapper.Initialize(x => x.CreateMap<Articles, Dto.ArticleDto>());
+            AutoMapper.Configuration.Configure();
         }
     }
 }
