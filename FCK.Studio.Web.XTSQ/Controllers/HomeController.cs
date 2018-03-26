@@ -11,10 +11,8 @@ namespace FCK.Studio.Web.XTSQ.Controllers
     {
         // GET: Home
         public ActionResult Index()
-        {
-            ArticlesService article = new ArticlesService();
-            var lists = article.Reposity.GetPageList(1, 10, (o => o.TenantId == tenant.Id)).datas.OrderByDescending(o=>o.UpdateTime).ToList();
-            return View(lists);
+        {            
+            return View();
         }
         public ActionResult About()
         {
@@ -30,11 +28,33 @@ namespace FCK.Studio.Web.XTSQ.Controllers
         {
             return View();
         }
+        public ActionResult Service()
+        {
+            return View();
+        }
         public ActionResult Detail(long id)
         {
             ArticlesService article = new ArticlesService();
             var model = article.Reposity.Get(id);
             return View(model);
+        }
+        //portfolio
+        public ActionResult Portfolio()
+        {
+            return View();
+        }
+        public ActionResult _PartialArticles(int page, int pageSize, string catename, string orderindex, int isrec)
+        {
+            using (ArticlesService article = new ArticlesService())
+            {
+                var lists = article.GetArticleWithCate(page, pageSize, tenant.Id).datas
+                    .Where(o => o.Category.CategoryName == catename)
+                    .ToList();
+                if (isrec == 1)
+                    lists = lists.Where(o => o.IsRecommend).ToList();
+                return PartialView(lists);
+            }
+            
         }
     }
 }

@@ -96,7 +96,17 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\bootstrap.css" />
+    <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\Site.css" />
+    <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
+    <Content Include="Scripts\bootstrap.js" />
+    <Content Include="Scripts\bootstrap.min.js" />
+    <None Include="Scripts\jquery-1.10.2.intellisense.js" />
+    <Content Include="Scripts\jquery-1.10.2.js" />
+    <Content Include="Scripts\jquery-1.10.2.min.js" />
+    <Content Include="Scripts\modernizr-2.6.2.js" />
     <Content Include="template\about.html" />
     <Content Include="template\contact.html" />
     <Content Include="template\css\clean-blog.css" />
@@ -107,6 +117,7 @@
     <Content Include="template\img\home-bg.jpg" />
     <Content Include="template\img\post-bg.jpg" />
     <Content Include="template\img\post-sample-image.jpg" />
+    <Content Include="template\img\xtsq-bg.jpg" />
     <Content Include="template\index.html" />
     <Content Include="template\js\clean-blog.js" />
     <Content Include="template\js\clean-blog.min.js" />
@@ -205,6 +216,15 @@
     <Content Include="Views\Home\Contact.cshtml" />
     <Content Include="Views\Home\Feedback.cshtml" />
     <Content Include="Views\Home\Detail.cshtml" />
+    <Content Include="Views\_ViewStart.cshtml" />
+    <Content Include="Views\Shared\_Layout.cshtml" />
+    <Content Include="Views\Home\_PartialArticles.cshtml" />
+    <Content Include="fonts\glyphicons-halflings-regular.woff" />
+    <Content Include="fonts\glyphicons-halflings-regular.ttf" />
+    <Content Include="fonts\glyphicons-halflings-regular.eot" />
+    <Content Include="Scripts\jquery-1.10.2.min.map" />
+    <Content Include="Views\Home\Service.cshtml" />
+    <Content Include="Views\Home\Portfolio.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

@@ -1,0 +1,12 @@
+﻿
+@{
+    ViewBag.Title = "志愿服务";
+    Layout = "~/Views/Shared/_LayoutPage.cshtml";
+}
+<div class="container">
+    <div class="row">
+        <div class="col-lg-8 col-md-10 mx-auto">
+            @Html.Action("_PartialArticles", "Home", new { page = 1, pageSize = 0, catename = "志愿服务", orderindex = "timedesc", isrec = 0 })
+        </div>
+    </div>
+</div>

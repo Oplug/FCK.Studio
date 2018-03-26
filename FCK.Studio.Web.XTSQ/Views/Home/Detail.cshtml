@@ -11,8 +11,8 @@
                 @(Html.Raw(Model.Contents))
                 <p>
                     Poster by
-                    <a href="http://spaceipsum.com/">@(Model.Author)</a>. Photographs by
-                    <a href="https://www.flickr.com/photos/nasacommons/">NASA on The Commons</a>.
+                    <a href="#">@(Model.Author)</a>. Wright in
+                    <span>@(Model.CreationTime.ToString("yyyy-MM-dd hh:mm:ss"))</span>.
                 </p>
             </div>
         </div>
