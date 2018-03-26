@@ -272,11 +272,13 @@
     <Content Include="plugins\timepicker\bootstrap-timepicker.min.js" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AppBase.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="AutoMapper\Configuration.cs" />
     <Compile Include="AutoMapper\Profiles\AdminProfile.cs" />
     <Compile Include="AutoMapper\Profiles\ArticleProfile.cs" />
     <Compile Include="AutoMapper\Profiles\TenantProfile.cs" />
+    <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\TenantsController.cs" />
     <Compile Include="Controllers\ArticlesController.cs" />
     <Compile Include="Controllers\CategoriesController.cs" />
@@ -291,6 +293,7 @@
     <Compile Include="Dto\ArticleWithCategory.cs" />
     <Compile Include="Dto\CategoryWithParents.cs" />
     <Compile Include="Dto\TenantDto.cs" />
+    <Compile Include="Filters\FilterAdminLogin.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -324,7 +327,9 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Models\" />
+    <Folder Include="Views\Base\" />
     <Folder Include="Views\ControllerBase\" />
+    <Folder Include="Views\FilterCheckManagerLogin\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\FCK.Studio.Application\FCK.Studio.Application.csproj">

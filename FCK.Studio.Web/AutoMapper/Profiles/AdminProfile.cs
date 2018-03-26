@@ -8,6 +8,7 @@ namespace FCK.Studio.Web.AutoMapper.Profiles
         public AdminProfile()
         {
             CreateMap<Admins, Dto.AdminDto>();
+            CreateMap<Admins, Dto.AdminLogin>();
         }
     }
 }

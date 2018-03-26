@@ -5,7 +5,14 @@
         getURL($(this).attr('href'), 'content-wrapper');
         localStorage.PageId = 0;
         return false;
-    })    
+    })
+
+    $("#Logout").click(function () {
+        $.post("/SysManage/Logout", {}, function (response) {
+            if (response == true)
+                window.location = '/Home/Login';
+        });
+    });
 })
 
 function getURL(_url, renderid) {
@@ -21,8 +28,7 @@ function getURL(_url, renderid) {
     });
 }
 
-function setDataTable(renderid)
-{
+function setDataTable(renderid) {
     $('#' + renderid).DataTable({
         //'paging': true,
         //"iDisplayLength": 10, //默认每页数量
@@ -57,7 +63,7 @@ function alertE(msg) {
     $.alert(msg);
 }
 
-function confirmE(msg, okFun) {    
+function confirmE(msg, okFun) {
     $.confirm({
         title: 'Confirm',
         content: msg,

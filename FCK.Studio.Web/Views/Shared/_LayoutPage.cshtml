@@ -74,12 +74,19 @@
     <script src="/dist/js/vue.js"></script>
     <script src="/dist/js/vue-html5-editor.js"></script>
     <script src="/bower_components/jqueryconfirm/jquery-confirm.js"></script>
+    
 </head>
 <body class="hold-transition skin-blue sidebar-mini">
     @RenderBody()
     <!-- Page Params -->
     <input type="hidden" id="param-id" value="0">
     @RenderSection("scripts", required: false)
+    @*<!-- Morris.js charts -->
+    <script src="/bower_components/raphael/raphael.min.js"></script>
+    <script src="/bower_components/morris.js/morris.min.js"></script>
+    <!-- jvectormap -->
+    <script src="/plugins/jvectormap/jquery-jvectormap-1.2.2.min.js"></script>
+    <script src="/plugins/jvectormap/jquery-jvectormap-world-mill-en.js"></script>*@
     <!-- AdminLTE for demo purposes -->
     <script src="/dist/js/adminlay.js"></script>   
     <script src="/dist/js/app.js"></script>

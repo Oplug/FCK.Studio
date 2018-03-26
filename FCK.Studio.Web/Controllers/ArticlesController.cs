@@ -12,7 +12,7 @@ using System.Web.Mvc;
 
 namespace FCK.Studio.Web.Controllers
 {
-    public class ArticlesController : Controller, IControllerBase<Articles, long>
+    public class ArticlesController : BaseController, IControllerBase<Articles, long>
     {
         // GET: Articles
         public ActionResult Index()
@@ -27,8 +27,7 @@ namespace FCK.Studio.Web.Controllers
         public JsonResult GetLists(int page, int pageSize)
         {
             ArticlesService Article = new ArticlesService();
-            var result = Article.GetArticleWithCate(page, pageSize);
-            
+            var result = Article.GetArticleWithCate(page, pageSize, TenantId);            
             var lists = Mapper.Map<ResultDto<List<Dto.ArticleDto>>>(result);
             return Json(lists);
         }
@@ -56,9 +55,9 @@ namespace FCK.Studio.Web.Controllers
                 model = entity;
             }
             CategoriesService Category = new CategoriesService();
-            var lists = Category.Reposity.GetAllList();
+            var lists = Category.Reposity.GetPageList(1,0, (o => o.TenantId == TenantId));
             result.Article = model;
-            result.Category = lists;
+            result.Category = lists.datas;
             return Json(result);
         }
 
@@ -70,14 +69,16 @@ namespace FCK.Studio.Web.Controllers
                 {
                     if (input.Id == 0)
                     {
-                        input.CreationTime = DateTime.Now;
+                        input.CreationTime = DateTime.Now;                        
                     }
                     else
                     {
                         input.Category = Category.Reposity.Get(input.CategoryId);
                         input.UpdateTime = DateTime.Now;
                     }
-                    input.Contents = HttpUtility.UrlDecode(input.Contents);                    
+                    input.Contents = HttpUtility.UrlDecode(input.Contents);
+                    input.TenantId = TenantId;
+
                     var result = Article.Reposity.InsertOrUpdate(input);
                     return Json(result);
                 }

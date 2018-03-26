@@ -10,7 +10,7 @@ using System.Data.Entity;
 
 namespace FCK.Studio.Application
 {
-    public class ArticlesService: FCKStudioAppBase, IArticlesService
+    public class ArticlesService : FCKStudioAppBase, IArticlesService
     {
         public readonly IRepository<Articles, long> Reposity;
         public ArticlesService()
@@ -21,6 +21,18 @@ namespace FCK.Studio.Application
         {
             ResultDto<List<Articles>> result = new ResultDto<List<Articles>>();
             var query = Reposity.GetPageList(PageIndex, PageSize);
+            result.pages = query.pages;
+            result.total = query.total;
+            result.datas = query.datas.AsQueryable()
+                .OrderByDescending(entity => entity.CreationTime)
+                .Include(entity => entity.CategoryId)
+                .ToList();
+            return result;
+        }
+        public ResultDto<List<Articles>> GetArticleWithCate(int PageIndex, int PageSize, int TenantId)
+        {
+            ResultDto<List<Articles>> result = new ResultDto<List<Articles>>();
+            var query = Reposity.GetPageList(PageIndex, PageSize, (o => o.TenantId == TenantId));
             result.pages = query.pages;
             result.total = query.total;
             result.datas = query.datas.AsQueryable()

@@ -8,7 +8,7 @@ using FCK.Studio.Core;
 
 namespace FCK.Studio.Web.Controllers
 {
-    public class ProductsController : Controller, IControllerBase<Products, long>
+    public class ProductsController : BaseController, IControllerBase<Products, long>
     {
         // GET: Products
         public ActionResult Index()
@@ -36,7 +36,7 @@ namespace FCK.Studio.Web.Controllers
         public JsonResult GetLists(int page, int pageSize)
         {
             ProductsService Product = new ProductsService();
-            var result = Product.Reposity.GetPageList(page, pageSize);
+            var result = Product.Reposity.GetPageList(page, pageSize, (o => o.TenantId == TenantId));
             return Json(result);
         }
 
@@ -47,14 +47,9 @@ namespace FCK.Studio.Web.Controllers
                 if (input.Id == 0)
                 {
                     input.CreationTime = DateTime.Now;
-                    input.TenantId = 1;
-                    input.CategoryId = 1;
-                }
-                else
-                {
-                    //input.UpdateTime = DateTime.Now;
                 }
                 input.Contents = HttpUtility.UrlDecode(input.Contents);
+                input.TenantId = TenantId;
                 var result = Product.Reposity.InsertOrUpdate(input);
                 return Json(result);
             }
