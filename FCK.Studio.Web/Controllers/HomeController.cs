@@ -29,7 +29,16 @@ namespace FCK.Studio.Web.Controllers
                 using (TenantsService tenantS = new TenantsService())
                 {
                     var model = tenantS.Reposity.Get(AppBase.GetTenantId());
-                    models.Tenant = Mapper.Map<TenantDto>(model);
+                    if (model != null)
+                        models.Tenant = Mapper.Map<TenantDto>(model);
+                    else
+                    {
+                        models.Tenant = new TenantDto()
+                        {
+                            TenantName = "暂无站点",
+                            Id = 0
+                        };
+                    }
                 }
             }
             return View(models);

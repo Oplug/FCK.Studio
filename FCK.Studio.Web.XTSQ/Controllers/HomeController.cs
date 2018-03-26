@@ -13,7 +13,7 @@ namespace FCK.Studio.Web.XTSQ.Controllers
         public ActionResult Index()
         {
             ArticlesService article = new ArticlesService();
-            var lists = article.Reposity.GetPageList(1, 10, (o => o.TenantId == tenant.Id)).datas;
+            var lists = article.Reposity.GetPageList(1, 10, (o => o.TenantId == tenant.Id)).datas.OrderByDescending(o=>o.UpdateTime).ToList();
             return View(lists);
         }
         public ActionResult About()
