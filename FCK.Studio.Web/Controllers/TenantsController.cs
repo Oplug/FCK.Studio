@@ -50,7 +50,7 @@ namespace FCK.Studio.Web.Controllers
                 if(input.Id==0)
                 {
                     input.CreationTime = DateTime.Now;
-                    input.SecretKey = new Guid();
+                    input.SecretKey = Guid.NewGuid();
                 }
                 var result = Tenant.Reposity.InsertOrUpdate(input);
                 return Json(result);

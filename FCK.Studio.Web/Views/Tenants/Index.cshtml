@@ -20,14 +20,14 @@
                     <th style="width: 20px"> </th>
                     <th>站点名称</th>
                     <th>微信AppID</th>
-                    <th>创建时间</th>                    
+                    <th>Secret Key</th>                    
                     <th style="width: 100px">操作</th>
                 </tr>
                 <tr v-for="item in mydata">
                     <td><input type="checkbox" value="item.Id" /></td>
                     <td>{{item.TenantName}} <span v-if="item.IsRoot" class="text-green"><i class="fa fa-globe" title="主站点"></i></span></td>
                     <td>{{item.WXAppId}}</td>
-                    <td>{{item.CreationTime}}</td>
+                    <td>{{item.SecretKey}}</td>
                     <td>
                         <a class="btn btn-danger btn-xs" href="#" v-on:click="udelete(item.Id)">删除</a>
                         <a class="btn btn-primary btn-xs" href="#" v-on:click="updateu(item.Id)">编辑</a>

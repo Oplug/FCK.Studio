@@ -1,0 +1,35 @@
+﻿@model List<FCK.Studio.Core.Articles>
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_LayoutPage.cshtml";
+}
+<div class="container">
+    <div class="row">
+        <div class="col-lg-8 col-md-10 mx-auto">
+            @foreach (var item in Model)
+            {
+            <div class="post-preview">
+                <a href="/Home/Detail/@item.Id">
+                    <h2 class="post-title">
+                        @item.Title
+                    </h2>
+                    <h3 class="post-subtitle">
+                        @item.Intro
+                    </h3>
+                </a>
+                <p class="post-meta">
+                    Posted by
+                    <a href="#">@item.Author</a>
+                    @(item.UpdateTime==null? item.CreationTime.ToShortDateString() : item.UpdateTime.Value.ToShortDateString())
+                </p>
+            </div>
+            <hr>
+            }
+            <!-- Pager -->
+            <div class="clearfix">
+                <a class="btn btn-primary float-right" href="#">Older Posts &rarr;</a>
+            </div>
+        </div>
+    </div>
+</div>
+

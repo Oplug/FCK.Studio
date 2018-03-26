@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.23107.0
+VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FCK.Studio", "FCK.Studio\FCK.Studio.csproj", "{8865240B-BA26-4E98-9A1C-5937AAC496DD}"
 EndProject
@@ -14,6 +14,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FCK.Studio.WebApi", "FCK.Studio.WebApi\FCK.Studio.WebApi.csproj", "{2FF3EB36-D948-4401-BC4F-63284E4D1A5E}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FCK.Studio.Web", "FCK.Studio.Web\FCK.Studio.Web.csproj", "{A0A10C2F-7061-41B9-AA2D-FB4BCC795AF8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FCK.Studio.Web.XTSQ", "FCK.Studio.Web.XTSQ\FCK.Studio.Web.XTSQ.csproj", "{8BCDE8DF-4E53-4BDD-8C0A-401CDA9B7A7A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -45,6 +47,10 @@ Global
 		{A0A10C2F-7061-41B9-AA2D-FB4BCC795AF8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A0A10C2F-7061-41B9-AA2D-FB4BCC795AF8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A0A10C2F-7061-41B9-AA2D-FB4BCC795AF8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8BCDE8DF-4E53-4BDD-8C0A-401CDA9B7A7A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8BCDE8DF-4E53-4BDD-8C0A-401CDA9B7A7A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8BCDE8DF-4E53-4BDD-8C0A-401CDA9B7A7A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8BCDE8DF-4E53-4BDD-8C0A-401CDA9B7A7A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
