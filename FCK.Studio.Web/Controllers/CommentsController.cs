@@ -8,7 +8,7 @@ using System.Web.Mvc;
 
 namespace FCK.Studio.Web.Controllers
 {
-    public class CommentsController : Controller, IControllerBase<Comments, long>
+    public class CommentsController : BaseController, IControllerBase<Comments, long>
     {
 
         // GET: Comment
@@ -20,7 +20,7 @@ namespace FCK.Studio.Web.Controllers
         public JsonResult GetLists(int page, int pageSize)
         {
             CommentsService Comment = new CommentsService();
-            var result = Comment.Reposity.GetPageList(page, pageSize);
+            var result = Comment.Reposity.GetPageList(page, pageSize, (o => o.TenantId == TenantId));
             return Json(result);
         }
 
@@ -40,11 +40,8 @@ namespace FCK.Studio.Web.Controllers
         {
             using (CommentsService Comment = new CommentsService())
             {
-                if (input.Id == 0)
-                {
-                    input.TenantId = 1;
-                }
                 input.Contents = HttpUtility.UrlDecode(input.Contents);
+                input.TenantId = TenantId;
                 var result = Comment.Reposity.InsertOrUpdate(input);
                 return Json(result);
             }

@@ -9,7 +9,7 @@ using FCK.Studio.Web.Dto;
 
 namespace FCK.Studio.Web.Controllers
 {
-    public class CategoriesController : Controller, IControllerBase<Categories, int>
+    public class CategoriesController : BaseController, IControllerBase<Categories, int>
     {
         // GET: Categories
         public ActionResult Index()
@@ -20,11 +20,11 @@ namespace FCK.Studio.Web.Controllers
         {
             return View();
         }
-        
+
         public JsonResult GetLists(int page, int pageSize)
         {
             CategoriesService Category = new CategoriesService();
-            var result = Category.Reposity.GetPageList(page, pageSize);
+            var result = Category.Reposity.GetPageList(page, pageSize, (o => o.TenantId == TenantId));
             return Json(result);
         }
 
@@ -47,8 +47,8 @@ namespace FCK.Studio.Web.Controllers
             if (result != null)
                 entity = result;
             dto.Category = entity;
-            var lists = Category.Reposity.GetAllList();
-            dto.ParentLists = lists;
+            var lists = Category.Reposity.GetPageList(1, 0, (o => o.TenantId == TenantId));
+            dto.ParentLists = lists.datas;
             return Json(dto);
         }
 
@@ -56,13 +56,7 @@ namespace FCK.Studio.Web.Controllers
         {
             using (CategoriesService Category = new CategoriesService())
             {
-                if (input.Id == 0)
-                {
-                    input.TenantId = 1;
-                }
-                else
-                {
-                }
+                input.TenantId = TenantId;
                 var result = Category.Reposity.InsertOrUpdate(input);
                 return Json(result);
             }

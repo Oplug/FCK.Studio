@@ -1,0 +1,76 @@
+﻿<section class="content-header">
+    <h1>
+        管理员
+        <small>Admins Manage</small>
+    </h1>
+    <ol class="breadcrumb">
+        <li><a href="/Home/Dashboard"><i class="fa fa-dashboard"></i> Home</a></li>
+        <li class="active">管理员</li>
+    </ol>
+</section>
+<!-- Main content -->
+<section class="content">
+    <div class="box box-primary" id="formArticleEdit">
+        <div class="box-header with-border">
+            <h3 class="box-title">管理员</h3>
+        </div>
+        <!-- /.box-header -->
+        <!-- form start -->
+
+        <form role="form" id="formEdit">
+            <div class="box-body">
+                <div class="form-group">
+                    <label for="LoginName">登录名</label>
+                    <input type="text" class="form-control" v-model="LoginName" placeholder="Enter LoginName">
+                </div>
+                <div class="form-group">
+                    <label for="Password">密码</label>
+                    <input type="password" class="form-control" v-model="Password" placeholder="Enter Password">
+                </div>
+                <div class="form-group">
+                    <label for="Password2">确认密码</label>
+                    <input type="password" class="form-control" placeholder="Confirm Password">
+                </div>
+            </div>
+            <!-- /.box-body -->
+            <div class="box-footer">
+                <input type="hidden" v-model="Id">
+                <input type="hidden" v-model="Powers">
+                <button type="button" class="btn btn-primary" v-on:click="dosubmit">确定</button>
+                <button type="button" class="btn btn-default" v-on:click="doback">返回</button>
+            </div>
+        </form>
+    </div>
+</section>
+<!-- /.content -->
+<script>
+
+    var _Id = localStorage.PageId == null ? 0 : localStorage.PageId;
+    $.post('/Admins/GetModel', { id: _Id }, function (response) {
+        new Vue({
+            el: "#formEdit",
+            data: function () { return response },
+            methods: {
+                dosubmit: function () {
+                    $.ajax({
+                        url: '/Admins/InsertOrUpdate',
+                        type: "POST",
+                        data: response,
+                        success: function (data) {
+                            toastr.options = {
+                                "positionClass": "toast-bottom-right",
+                            }
+                            toastr.success('保存成功！');
+                        }
+                    });
+                    return false;
+                },
+                doback: function () {
+                    getURL('/Admins/', 'content-wrapper');
+                }
+            }
+        })
+    });
+
+
+</script>

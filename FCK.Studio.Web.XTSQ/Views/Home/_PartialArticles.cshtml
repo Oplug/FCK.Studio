@@ -1,0 +1,20 @@
+﻿@model List<FCK.Studio.Core.Articles>
+@foreach (var item in Model)
+            {
+    <div class="post-preview">
+        <a href="/Home/Detail/@item.Id">
+            <h4 class="post-title">
+                @item.Title
+            </h4>
+            <h5 class="post-subtitle">
+                @item.Intro
+            </h5>
+        </a>
+        <p class="post-meta">
+            Posted by
+            <a href="#">@item.Author</a>
+            @(item.UpdateTime == null ? item.CreationTime.ToShortDateString() : item.UpdateTime.Value.ToShortDateString())
+        </p>
+    </div>
+            <hr>
+}

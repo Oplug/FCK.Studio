@@ -10,15 +10,50 @@ using System.Data.Entity;
 
 namespace FCK.Studio.Application
 {
-    public class ArticlesService: FCKStudioAppBase, IArticlesService
+    public class ArticlesService : FCKStudioAppBase, IArticlesService
     {
         public readonly IRepository<Articles, long> Reposity;
         public ArticlesService()
         {
             Reposity = new Repository<Articles, long>(dbContext);
         }
-        
-        public async Task<ResultDto<List<Articles>>> GetArticleWithCate(int PageIndex, int PageSize, Expression<Func<Articles, bool>> predicate)
+        public ResultDto<List<Articles>> GetArticleWithCate(int PageIndex, int PageSize)
+        {
+            ResultDto<List<Articles>> result = new ResultDto<List<Articles>>();
+            var query = Reposity.GetPageList(PageIndex, PageSize);
+            result.pages = query.pages;
+            result.total = query.total;
+            result.datas = query.datas.AsQueryable()
+                .OrderByDescending(entity => entity.CreationTime)
+                .Include(entity => entity.CategoryId)
+                .ToList();
+            return result;
+        }
+        public ResultDto<List<Articles>> GetArticleWithCate(int PageIndex, int PageSize, int TenantId)
+        {
+            ResultDto<List<Articles>> result = new ResultDto<List<Articles>>();
+            var query = Reposity.GetPageList(PageIndex, PageSize, (o => o.TenantId == TenantId));
+            result.pages = query.pages;
+            result.total = query.total;
+            result.datas = query.datas.AsQueryable()
+                .OrderByDescending(entity => entity.CreationTime)
+                .Include(entity => entity.CategoryId)
+                .ToList();
+            return result;
+        }
+        public async Task<ResultDto<List<Articles>>> GetArticleWithCateSync(int PageIndex, int PageSize)
+        {
+            ResultDto<List<Articles>> result = new ResultDto<List<Articles>>();
+            var query = await Reposity.GetPageListAsync(PageIndex, PageSize);
+            result.pages = query.pages;
+            result.total = query.total;
+            result.datas = query.datas.AsQueryable()
+                .OrderByDescending(entity => entity.CreationTime)
+                .Include(entity => entity.CategoryId)
+                .ToList();
+            return result;
+        }
+        public async Task<ResultDto<List<Articles>>> GetArticleWithCateSync(int PageIndex, int PageSize, Expression<Func<Articles, bool>> predicate)
         {
             ResultDto<List<Articles>> result = new ResultDto<List<Articles>>();
             var query = await Reposity.GetPageListAsync(PageIndex, PageSize, predicate);
@@ -29,7 +64,6 @@ namespace FCK.Studio.Application
                 .Include(entity => entity.CategoryId)
                 .ToList();
             return result;
-
         }
     }
 
