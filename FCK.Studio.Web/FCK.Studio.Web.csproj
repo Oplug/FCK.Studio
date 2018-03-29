@@ -104,6 +104,16 @@
   <ItemGroup>
     <Content Include="bower_components\jqueryconfirm\jquery-confirm.css" />
     <Content Include="bower_components\jqueryconfirm\jquery-confirm.js" />
+    <Content Include="bower_components\pekeUpload\css\custom.css" />
+    <Content Include="bower_components\pekeUpload\css\themes\bootstrap\css\bootstrap-responsive.css" />
+    <Content Include="bower_components\pekeUpload\css\themes\bootstrap\css\bootstrap-responsive.min.css" />
+    <Content Include="bower_components\pekeUpload\css\themes\bootstrap\css\bootstrap.css" />
+    <Content Include="bower_components\pekeUpload\css\themes\bootstrap\css\bootstrap.min.css" />
+    <Content Include="bower_components\pekeUpload\css\themes\bootstrap\img\glyphicons-halflings-white.png" />
+    <Content Include="bower_components\pekeUpload\css\themes\bootstrap\img\glyphicons-halflings.png" />
+    <Content Include="bower_components\pekeUpload\index.html" />
+    <Content Include="bower_components\pekeUpload\js\pekeUpload.js" />
+    <Content Include="bower_components\pekeUpload\js\pekeUpload.min.js" />
     <Content Include="bower_components\toast\bootstrap-combined.min.css" />
     <Content Include="bower_components\toast\glimpse.js" />
     <Content Include="bower_components\toast\glimpse.toastr.js" />
@@ -113,6 +123,10 @@
     <Content Include="bower_components\toast\toastr.js" />
     <Content Include="bower_components\toast\toastr.min.css" />
     <Content Include="bower_components\toast\toastr.min.js" />
+    <Content Include="bower_components\webuploader\Uploader.swf" />
+    <Content Include="bower_components\webuploader\webuploader.css" />
+    <Content Include="bower_components\webuploader\webuploader.js" />
+    <Content Include="bower_components\webuploader\webuploader.min.js" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\Site.css" />
@@ -302,6 +316,8 @@
   <ItemGroup>
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
+    <Content Include="bower_components\pekeUpload\pekeUpload.jquery.json" />
+    <Content Include="bower_components\webuploader\README.md" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
@@ -326,6 +342,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="ashx\" />
     <Folder Include="Models\" />
     <Folder Include="Views\Base\" />
     <Folder Include="Views\ControllerBase\" />

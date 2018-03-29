@@ -46,6 +46,16 @@
                     <label for="Intro">简介</label>
                     <textarea class="form-control" v-model="Article.Intro" placeholder="add multiple lines"></textarea>
                 </div>
+                <div class="form-group">
+                    <div id="uploader" class="wu-example">
+                        <!--用来存放文件信息-->
+                        <div id="thelist" class="uploader-list"></div>
+                        <div class="btns">
+                            <div id="picker">选择文件</div>
+                            <button id="PickBtn" class="btn btn-default"  v-on:click="filePick">开始上传</button>
+                        </div>
+                    </div>
+                </div>
                 <div class="checkbox">
                     <label>
                         <input type="checkbox" v-model="Article.IsRecommend"> 推荐
@@ -88,6 +98,12 @@
                 updateData: function (data) {
                     response.Article.Contents = data;
                 },
+                updateImg: function (data) {
+                    response.Article.Images = data;
+                },
+                filePick: function () {
+                    $(".webuploader-element-invisible").click();
+                },
                 dosubmit: function () {
                     response.Article.Contents = escape(response.Article.Contents);
                     $.ajax({
@@ -107,5 +123,21 @@
         })
     });
 
-
+    var uploader = WebUploader.create({
+        auto: true, // 选完文件后，是否自动上传 
+        swf: '/bower_components/webuploader/Uploader.swf', // swf文件路径 
+        server: 'upload.php', // 文件接收服务端 
+        pick: '#PickBtn', // 选择文件的按钮。可选
+        // 只允许选择图片文件。 
+        accept: {
+            title: 'Images',
+            extensions: 'jpg,jpeg,png',
+            mimeTypes: 'image/jpg,image/jpeg,image/png'
+        },
+        thumb: {
+            type: 'image/jpg,jpeg,png'
+        },
+        fileNumLimit: 8, //限制上传个数
+        fileSingleSizeLimit: 2048000 //限制单个上传图片的大小
+    });
 </script>
