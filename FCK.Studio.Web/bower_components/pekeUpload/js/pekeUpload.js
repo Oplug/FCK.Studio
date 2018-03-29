@@ -92,11 +92,12 @@
             type: 'POST',
             data: formData,
                     // dataType: 'json',
-            success: function(data){
+            success: function(resp){
               var percent = 100;
               obj.next('a').next('div').find('.pekeup-progress-bar:first').width(percent+'%');
-                obj.next('a').next('div').find('.pekeup-progress-bar:first').text(percent+"%");
-                if (data==1){
+              obj.next('a').next('div').find('.pekeup-progress-bar:first').text(percent + "%");
+              var data = JSON.parse(resp);
+                if (data.error == 0) {
                   if (options.multi==false){
                     obj.attr('disabled','disabled');
                   }

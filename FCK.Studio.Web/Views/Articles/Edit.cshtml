@@ -105,7 +105,7 @@
                             toastr.error("error on file: " + file.name + " error: " + error + "")
                         },
                         onFileSuccess: function (file, data) {
-                            toastr.error("上传成功");
+                            toastr.success("上传成功");
                             response.Article.Images = data.url;
                         }
                     });
