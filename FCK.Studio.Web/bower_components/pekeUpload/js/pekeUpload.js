@@ -45,10 +45,10 @@
       obj = $(this);
       //HTML code depends of theme
       if (options.theme == "bootstrap"){
-      var html = '<a href="javascript:void(0)" class="btn btn-primary btn-upload"> <span class="icon-upload icon-white"></span> '+options.btnText+'</a><div class="pekecontainer"></div>';
+          var html = '<a href="javascript:void(0)" class="btn btn-primary btn-upload"> <span class="icon-upload icon-white"></span> ' + options.btnText + '</a><div class="pekecontainer"></div>';
       }
       if (options.theme == "custom"){
-        var html = '<a href="javascript:void(0)" class="btn-pekeupload">'+options.btnText+'</a><div class="pekecontainer"></div>';
+          var html = '<a href="javascript:void(0)" class="btn-pekeupload">' + options.btnText + '</a><div class="pekecontainer"></div>';
       }
       obj.after(html);
       obj.hide();
