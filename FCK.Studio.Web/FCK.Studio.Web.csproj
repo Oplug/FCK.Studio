@@ -326,6 +326,7 @@
     <Content Include="bower_components\pekeUpload\pekeUpload.jquery.json" />
     <Content Include="bower_components\webuploader\README.md" />
     <Content Include="ashx\upload.ashx" />
+    <None Include="Properties\PublishProfiles\FCK_Studio_Pub.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
