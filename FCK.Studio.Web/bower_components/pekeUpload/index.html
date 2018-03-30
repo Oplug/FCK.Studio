@@ -1,0 +1,75 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+ <title>jQuery HTML5文件上传插件演示DEMO PekeUpload jQuery Plugin Demo</title>
+ <meta http-equiv="content-type" content="text/html;charset=UTF-8" />
+ <meta name="keywords" content="jQuery文件上传插件,jQuery HTML5文件上传插件,jQuery文件上传,jQuery图片上传,HTML5文件上传" />
+ <meta name="description" content="jQuery HTML5文件上传插件演示DEMO" />
+  <link href="css/themes/bootstrap/css/bootstrap.min.css" rel="stylesheet">   
+  <link href="css/custom.css" rel="stylesheet">   
+  <script type="text/javascript" src="js/jquery-1.9.0.min.js"></script>
+  <script type="text/javascript" src="js/pekeUpload.js"></script>
+  <script type="text/javascript">
+    $(document).ready(function(){ 
+      $("#file").pekeUpload({maxSize:1,allowedExtensions:"jpeg|jpg|png|gif"});
+      $("#file2").pekeUpload({maxSize:1,theme:'bootstrap',allowedExtensions:"jpeg|jpg|png|gif"});
+      $("#file3").pekeUpload({maxSize:1,theme:'bootstrap', allowedExtensions:"jpeg|jpg|png|gif"});
+      $("#file4").pekeUpload({maxSize:1,theme:'bootstrap', multi:false,allowedExtensions:"jpeg|jpg|png|gif"});
+      $("#file5").pekeUpload({maxSize:1,theme:'bootstrap', allowedExtensions:"jpeg|jpg|png|gif", onFileError:function(file,error){alert("error on file: "+file.name+" error: "+error+"")}});
+
+    });
+  </script>
+  
+</head>
+<body>
+
+ <div class="container">
+
+  <div id="header">
+    <h2>jQuery HTML5文件上传插件 PekeUpload jQuery Plugin</h2>
+  </div>
+
+  <div id="content">
+    <h2>Demos</h2>
+    <div class="row">
+      <!--BASIC CONFIGURATION -->
+      <div class="span9">
+        <h4>1. - 基础版</h4>
+            <p>Sample Code:
+            <pre>$("#file").pekeUpload({maxSize:1,allowedExtensions:"jpeg|jpg|png|gif"});</pre></p>
+          <input type="file" id="file" name="file" />
+      </div>
+       <!--Twitter Bootstrap Theme -->
+      <div class="span9">
+        <h4>2. - Twitter bootstrap 主题版</h4>
+            <p>Sample Code:
+            <pre> $("#file2").pekeUpload({maxSize:1,theme:'bootstrap',allowedExtensions:"jpeg|jpg|png|gif"});</pre></p>
+          <input type="file" id="file2" name="file2" />
+      </div>
+      <!--Restrict extensions -->
+      <div class="span9">
+        <h4>3. - 文件限制版</h4>
+            <p>Sample Code:
+            <pre>$("#file3").pekeUpload({maxSize:1,theme:'bootstrap', allowedExtensions:"jpeg|jpg|png|gif"});</pre></p>
+          <input type="file" id="file3" name="file3" />
+       </div>
+       <div class="span9">
+        <h4>4. - 单文件版</h4>
+            <p>Sample Code:
+            <pre> $("#file4").pekeUpload({maxSize:1,theme:'bootstrap', multi:false,allowedExtensions:"jpeg|jpg|png|gif"});</pre></p>
+          <input type="file" id="file4" name="file4" />
+       </div>
+       <div class="span9">
+        <h4>5. - 带错误提示版</h4>
+            <p>Sample Code:
+            <pre>$("#file5").pekeUpload({maxSize:1,theme:'bootstrap', allowedExtensions:"jpeg|jpg|png|gif", onFileError:function(file,error){alert("error on file: "+file.name+" error: "+error+"")}});</pre></p>
+          <input type="file" id="file5" name="file5" />
+       </div>
+      </div>
+</div>
+  </div>
+
+</div>
+
+</body>
+</html>

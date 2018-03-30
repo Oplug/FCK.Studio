@@ -1,40 +1,63 @@
 ﻿<!DOCTYPE html>
+
 <html>
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@ViewBag.Title - My ASP.NET Application</title>
-    <link href="~/Content/Site.css" rel="stylesheet" type="text/css" />
-    <link href="~/Content/bootstrap.min.css" rel="stylesheet" type="text/css" />
-    <script src="~/Scripts/modernizr-2.6.2.js"></script>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>@ViewBag.Title</title>
+    <!-- Bootstrap core CSS -->
+    <link href="/template/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom fonts for this template -->
+    <link href="/template/vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <link href='https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
+    <!-- Custom styles for this template -->
+    <link href="/template/css/clean-blog.css" rel="stylesheet">
 </head>
 <body>
-    <div class="navbar navbar-inverse navbar-fixed-top">
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-light fixed-top" id="mainNav">
         <div class="container">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                @Html.ActionLink("Application name", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
-            </div>
-            <div class="navbar-collapse collapse">
-                <ul class="nav navbar-nav">
+            <a class="navbar-brand" href="/Home/"><img src="/template/img/logo.png" /></a>
+            <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+                导航
+                <i class="fa fa-bars"></i>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarResponsive">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/Home/">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/Home/About">关于我们</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/Home/Service">志愿服务</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/Home/Portfolio">社区美景</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/Home/Feedback">访客心声</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/Home/Contact">联系我们</a>
+                    </li>
                 </ul>
             </div>
         </div>
-    </div>
-
-    <div class="container body-content">
+    </nav>
+    <!-- Main Content -->
+    <div class="container">
         @RenderBody()
-        <hr />
-        <footer>
-            <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
-        </footer>
     </div>
-
-    <script src="~/Scripts/jquery-1.10.2.min.js"></script>
-    <script src="~/Scripts/bootstrap.min.js"></script>
+        <!-- Footer -->
+        <!-- Bootstrap core JavaScript -->
+        <script src="/template/vendor/jquery/jquery.min.js"></script>
+        <script src="/template/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+        <!-- Custom scripts for this template -->
+        <script src="/template/js/clean-blog.min.js"></script>
 </body>
 </html>

@@ -103,6 +103,7 @@
     <Content Include="Global.asax" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
+    <None Include="Properties\PublishProfiles\FCK_Studio_XTSQ_Pub.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
@@ -115,9 +116,23 @@
     <Content Include="template\img\about-bg.jpg" />
     <Content Include="template\img\contact-bg.jpg" />
     <Content Include="template\img\home-bg.jpg" />
+    <Content Include="template\img\logo.png" />
+    <Content Include="template\img\portfolio\01-full.jpg" />
+    <Content Include="template\img\portfolio\01-thumbnail.jpg" />
+    <Content Include="template\img\portfolio\02-full.jpg" />
+    <Content Include="template\img\portfolio\02-thumbnail.jpg" />
+    <Content Include="template\img\portfolio\03-full.jpg" />
+    <Content Include="template\img\portfolio\03-thumbnail.jpg" />
+    <Content Include="template\img\portfolio\04-full.jpg" />
+    <Content Include="template\img\portfolio\04-thumbnail.jpg" />
+    <Content Include="template\img\portfolio\05-full.jpg" />
+    <Content Include="template\img\portfolio\05-thumbnail.jpg" />
+    <Content Include="template\img\portfolio\06-full.jpg" />
+    <Content Include="template\img\portfolio\06-thumbnail.jpg" />
     <Content Include="template\img\post-bg.jpg" />
     <Content Include="template\img\post-sample-image.jpg" />
     <Content Include="template\img\xtsq-bg.jpg" />
+    <Content Include="template\img\xtsq-bg2.jpg" />
     <Content Include="template\index.html" />
     <Content Include="template\js\clean-blog.js" />
     <Content Include="template\js\clean-blog.min.js" />
@@ -143,8 +158,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Controllers\ActivityController.cs" />
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\LiveController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -225,6 +242,10 @@
     <Content Include="Scripts\jquery-1.10.2.min.map" />
     <Content Include="Views\Home\Service.cshtml" />
     <Content Include="Views\Home\Portfolio.cshtml" />
+    <Content Include="Views\Activity\Index.cshtml" />
+    <Content Include="Views\Activity\Register.cshtml" />
+    <Content Include="Views\Live\Index.cshtml" />
+    <Content Include="Views\Live\Search.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

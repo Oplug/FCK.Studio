@@ -60,6 +60,10 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.11.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
@@ -104,6 +108,16 @@
   <ItemGroup>
     <Content Include="bower_components\jqueryconfirm\jquery-confirm.css" />
     <Content Include="bower_components\jqueryconfirm\jquery-confirm.js" />
+    <Content Include="bower_components\pekeUpload\css\custom.css" />
+    <Content Include="bower_components\pekeUpload\css\themes\bootstrap\css\bootstrap-responsive.css" />
+    <Content Include="bower_components\pekeUpload\css\themes\bootstrap\css\bootstrap-responsive.min.css" />
+    <Content Include="bower_components\pekeUpload\css\themes\bootstrap\css\bootstrap.css" />
+    <Content Include="bower_components\pekeUpload\css\themes\bootstrap\css\bootstrap.min.css" />
+    <Content Include="bower_components\pekeUpload\css\themes\bootstrap\img\glyphicons-halflings-white.png" />
+    <Content Include="bower_components\pekeUpload\css\themes\bootstrap\img\glyphicons-halflings.png" />
+    <Content Include="bower_components\pekeUpload\index.html" />
+    <Content Include="bower_components\pekeUpload\js\pekeUpload.js" />
+    <Content Include="bower_components\pekeUpload\js\pekeUpload.min.js" />
     <Content Include="bower_components\toast\bootstrap-combined.min.css" />
     <Content Include="bower_components\toast\glimpse.js" />
     <Content Include="bower_components\toast\glimpse.toastr.js" />
@@ -113,6 +127,10 @@
     <Content Include="bower_components\toast\toastr.js" />
     <Content Include="bower_components\toast\toastr.min.css" />
     <Content Include="bower_components\toast\toastr.min.js" />
+    <Content Include="bower_components\webuploader\Uploader.swf" />
+    <Content Include="bower_components\webuploader\webuploader.css" />
+    <Content Include="bower_components\webuploader\webuploader.js" />
+    <Content Include="bower_components\webuploader\webuploader.min.js" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\Site.css" />
@@ -274,6 +292,9 @@
   <ItemGroup>
     <Compile Include="AppBase.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="ashx\upload.ashx.cs">
+      <DependentUpon>upload.ashx</DependentUpon>
+    </Compile>
     <Compile Include="AutoMapper\Configuration.cs" />
     <Compile Include="AutoMapper\Profiles\AdminProfile.cs" />
     <Compile Include="AutoMapper\Profiles\ArticleProfile.cs" />
@@ -302,6 +323,9 @@
   <ItemGroup>
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
+    <Content Include="bower_components\pekeUpload\pekeUpload.jquery.json" />
+    <Content Include="bower_components\webuploader\README.md" />
+    <Content Include="ashx\upload.ashx" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
