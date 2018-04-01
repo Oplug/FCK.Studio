@@ -112,6 +112,14 @@
     <Compile Include="Migrations\201803252200352_UptAdmin.Designer.cs">
       <DependentUpon>201803252200352_UptAdmin.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201804011401393_AddSignUpBespeak.cs" />
+    <Compile Include="Migrations\201804011401393_AddSignUpBespeak.Designer.cs">
+      <DependentUpon>201804011401393_AddSignUpBespeak.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201804011440207_ModSignUpBespeak.cs" />
+    <Compile Include="Migrations\201804011440207_ModSignUpBespeak.Designer.cs">
+      <DependentUpon>201804011440207_ModSignUpBespeak.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -170,6 +178,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201803252200352_UptAdmin.resx">
       <DependentUpon>201803252200352_UptAdmin.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201804011401393_AddSignUpBespeak.resx">
+      <DependentUpon>201804011401393_AddSignUpBespeak.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201804011440207_ModSignUpBespeak.resx">
+      <DependentUpon>201804011440207_ModSignUpBespeak.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -107,7 +107,13 @@
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
+    <Content Include="Scripts\jquery.validate.js" />
+    <Content Include="Scripts\jquery.validate.min.js" />
+    <Content Include="Scripts\localization\messages_zh.js" />
+    <Content Include="Scripts\localization\messages_zh.min.js" />
     <Content Include="Scripts\modernizr-2.6.2.js" />
+    <Content Include="Scripts\vue.js" />
+    <Content Include="Scripts\vue.min.js" />
     <Content Include="template\about.html" />
     <Content Include="template\contact.html" />
     <Content Include="template\css\clean-blog.css" />
@@ -247,6 +253,8 @@
     <Content Include="Views\Activity\Register.cshtml" />
     <Content Include="Views\Live\Index.cshtml" />
     <Content Include="Views\Live\Search.cshtml" />
+    <Content Include="Views\Activity\Bespeak.cshtml" />
+    <Content Include="Views\Activity\SignUp.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

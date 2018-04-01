@@ -8,12 +8,18 @@
         <div class="row">
             <div class="col-lg-8 col-md-10 mx-auto post-detail">
                 <h2>@(Model.Title)</h2>
-                @(Html.Raw(Model.Contents))
                 <p class="post-meta">
                     Poster by
                     <a href="#">@(Model.Author)</a>. Wright in
                     <span>@(Model.CreationTime.ToString("yyyy-MM-dd hh:mm:ss"))</span>.
                 </p>
+                @(Html.Raw(Model.Contents))
+                <p>
+                    <a href="/Activity/Bespeak/@(Model.Id)" class="btn btn-success">我要预约</a>
+                    <a href="/Activity/SignUp/@(Model.Id)" class="btn btn-primary">我要报名</a>
+                    <a href="/" class="btn btn-warning">分享</a>
+                </p>
+                
             </div>
         </div>
     </div>

@@ -18,7 +18,7 @@
                         </h5>
                     </a>
                     <p class="post-meta">
-                        Posted by
+                        分类：@(item.Category.CategoryName) Posted by
                         <a href="#">@item.Author</a>
                         @(item.UpdateTime == null ? item.CreationTime.ToString() : item.UpdateTime.Value.ToString())
                     </p>
@@ -36,7 +36,7 @@
                 </h5>
             </a>
                     <p class="post-meta">
-                        Posted by
+                        分类：@(item.Category.CategoryName) Posted by
                         <a href="#">@item.Author</a>
                         @(item.UpdateTime == null ? item.CreationTime.ToString() : item.UpdateTime.Value.ToString())
                     </p>

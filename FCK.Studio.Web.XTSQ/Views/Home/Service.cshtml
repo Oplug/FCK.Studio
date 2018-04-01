@@ -1,12 +1,24 @@
-﻿
+﻿@model List<FCK.Studio.Core.Articles>
 @{
-    ViewBag.Title = "志愿服务";
+    ViewBag.Title = "办事流程";
     Layout = "~/Views/Shared/_LayoutPage.cshtml";
 }
 <div class="container">
-    <div class="row">
-        <div class="col-lg-8 col-md-10 mx-auto">
-            @Html.Action("_PartialArticles", "Home", new { page = 1, pageSize = 0, catename = "志愿服务", orderindex = "timedesc", isrec = 0 })
+    <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+@foreach (var item in Model)
+{
+        <div class="panel panel-default">
+            <div class="panel-heading" role="tab" id="headingOne">
+                <h4 class="panel-title">
+                    <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse@(item.Id)" aria-expanded="true" aria-controls="collapse@(item.Id)">
+                        @item.Title
+                    </a>
+                </h4>
+            </div>
+            <div id="collapse@(item.Id)" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="heading@(item.Id)">
+                <div class="panel-body"><a href="/Home/Detail/@item.Id">@item.Intro</a></div>
+            </div>
         </div>
+}
     </div>
 </div>

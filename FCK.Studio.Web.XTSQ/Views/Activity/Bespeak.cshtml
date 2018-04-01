@@ -1,0 +1,70 @@
+﻿@model FCK.Studio.Core.Articles
+@{
+    ViewBag.Title = "办事预约";
+    Layout = "~/Views/Shared/_LayoutPage.cshtml";
+}
+<div class="container">
+    <form id="formEdit">
+        <div class="form-group">
+            <label for="BespeakEvent">预约事项</label>
+            <input type="text" class="form-control" id="BespeakEvent"  v-model="ActvTitle" readonly="readonly">
+        </div>
+        <div class="form-group">
+            <label for="UserName">姓名</label>
+            <input type="text" class="form-control" id="UserName"  v-model="UserName" placeholder="Your name" required>
+        </div>
+        <div class="form-group">
+            <label for="Telphone">联系电话</label>
+            <input type="tel" class="form-control" id="Telphone" v-model="Telphone" placeholder="Your Telphone" required>
+        </div>
+        <div class="form-group">
+            <label for="Email">电子邮件</label>
+            <input type="email" class="form-control" id="Email" v-model="Email" placeholder="Your email" required>
+        </div>
+        <input type="hidden" v-model="ActvID">
+        <button type="button" class="btn btn-primary" v-on:click="dosubmit">提交</button>
+    </form>
+</div>
+@section scripts{
+    <script>
+    $(function () {
+        $.post('/Activity/GetModel/', { id: 0 }, function (response) {
+            response.ActvID = '@Model.Id';
+            response.ActvTitle = '@Model.Title';
+            var vue = new Vue({
+                el: "#formEdit",
+                data: function () { return response },
+                methods: {
+                    dosubmit: function () {
+                        if (response.UserName == "") {
+                            alert('姓名必填'); $('#UserName').focus();
+                        }
+                        else
+                        {
+                            $.ajax({
+                                url: '/Activity/InsertOrUpdate',
+                                type: "POST",
+                                data: response,
+                                success: function (data) {
+                                    if (data.code == 100) {
+                                        alert('您已预约成功！请耐心等待工作人员给您答复。');
+                                    }
+                                    else if (data.code == 101) {
+                                        alert('不能重复预约。');
+                                    }
+                                    else {
+                                        alert(data.message);
+                                    }
+                                }
+                            });
+                        }
+                        
+                        return false;
+                    }
+                }
+            })
+        });
+    });
+    </script>
+}
+

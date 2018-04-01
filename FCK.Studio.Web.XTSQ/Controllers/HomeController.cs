@@ -30,7 +30,13 @@ namespace FCK.Studio.Web.XTSQ.Controllers
         }
         public ActionResult Service()
         {
-            return View();
+            using (ArticlesService article = new ArticlesService())
+            {
+                var lists = article.GetArticleWithCate(1, 0, tenant.Id).datas
+                    .Where(o => o.Category.CategoryName == "办事流程")
+                    .ToList();
+                return View(lists);
+            }
         }
         public ActionResult Detail(long id)
         {
