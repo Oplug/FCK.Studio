@@ -3,7 +3,9 @@ body {
   color: #212529;
   font-family: 'Microsoft YaHei', 'Times New Roman', serif;
 }
-
+input,textarea{
+    font-family: 'Microsoft YaHei', 'Times New Roman', serif;
+}
 p {
   line-height: 1.5;
   margin: 30px 0;
@@ -336,13 +338,13 @@ header.masthead .post-heading .meta a {
   border-radius: 0;
   background: none;
   box-shadow: none !important;
-  font-family: 'Lora', 'Times New Roman', serif;
+  font-family: 'Microsoft YaHei', 'Times New Roman', serif;
 }
 
 .floating-label-form-group input::-webkit-input-placeholder,
 .floating-label-form-group textarea::-webkit-input-placeholder {
   color: #868e96;
-  font-family: 'Lora', 'Times New Roman', serif;
+  font-family: 'Microsoft YaHei', 'Times New Roman', serif;
 }
 
 .floating-label-form-group label {
@@ -490,6 +492,32 @@ footer .copyright {
 
 #portfolio * {
   z-index: 2;
+}
+
+.post-detail .post-meta {
+  font-size: 14px;
+  font-style: italic;
+  margin-top: 0;
+  color: #868e96;
+}
+
+a.winblock{
+    padding:70px 15px;
+    text-align:center;
+    background-color:#0093dd;
+    color:#fff;
+    font-weight:bold;
+    font-size:26px;
+    margin-bottom:30px;
+    display:block;
+    text-decoration:none
+}
+a.winblock:hover{
+    -webkit-transition: all ease 0.5s;
+  -moz-transition: all ease 0.5s;
+  transition: all ease 0.5s;
+  opacity: 80;
+  background: rgba(254, 209, 54, 0.9);
 }
 
 @media (min-width: 767px) {

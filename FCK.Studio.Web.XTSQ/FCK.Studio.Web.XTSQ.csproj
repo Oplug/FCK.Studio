@@ -131,6 +131,7 @@
     <Content Include="template\img\portfolio\06-thumbnail.jpg" />
     <Content Include="template\img\post-bg.jpg" />
     <Content Include="template\img\post-sample-image.jpg" />
+    <Content Include="template\img\qrcode.jpg" />
     <Content Include="template\img\xtsq-bg.jpg" />
     <Content Include="template\img\xtsq-bg2.jpg" />
     <Content Include="template\index.html" />

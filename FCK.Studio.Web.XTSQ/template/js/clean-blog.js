@@ -36,6 +36,7 @@
         }
         this.previousTop = currentTop;
       });
-  }
+  }    
+
 
 })(jQuery); // End of use strict

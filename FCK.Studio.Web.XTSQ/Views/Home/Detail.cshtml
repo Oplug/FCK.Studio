@@ -6,10 +6,10 @@
 <article>
     <div class="container">
         <div class="row">
-            <div class="col-lg-8 col-md-10 mx-auto">
+            <div class="col-lg-8 col-md-10 mx-auto post-detail">
                 <h2>@(Model.Title)</h2>
                 @(Html.Raw(Model.Contents))
-                <p>
+                <p class="post-meta">
                     Poster by
                     <a href="#">@(Model.Author)</a>. Wright in
                     <span>@(Model.CreationTime.ToString("yyyy-MM-dd hh:mm:ss"))</span>.
