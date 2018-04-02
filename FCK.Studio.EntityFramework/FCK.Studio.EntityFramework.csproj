@@ -120,6 +120,10 @@
     <Compile Include="Migrations\201804011440207_ModSignUpBespeak.Designer.cs">
       <DependentUpon>201804011440207_ModSignUpBespeak.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201804021200263_addMemoOnSignUpBespeak.cs" />
+    <Compile Include="Migrations\201804021200263_addMemoOnSignUpBespeak.Designer.cs">
+      <DependentUpon>201804021200263_addMemoOnSignUpBespeak.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -184,6 +188,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201804011440207_ModSignUpBespeak.resx">
       <DependentUpon>201804011440207_ModSignUpBespeak.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201804021200263_addMemoOnSignUpBespeak.resx">
+      <DependentUpon>201804021200263_addMemoOnSignUpBespeak.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

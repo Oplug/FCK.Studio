@@ -36,8 +36,11 @@
                 data: function () { return response },
                 methods: {
                     dosubmit: function () {
-                        if (response.UserName == "") {
+                        if (response.UserName == null) {
                             alert('姓名必填'); $('#UserName').focus();
+                        }
+                        else if (response.Telphone == null) {
+                            alert('电话必填'); $('#Telphone').focus();
                         }
                         else
                         {

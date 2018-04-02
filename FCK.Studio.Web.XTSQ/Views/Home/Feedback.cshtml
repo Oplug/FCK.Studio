@@ -8,42 +8,83 @@
         <div class="col-lg-8 col-md-10 mx-auto">
             <h2>访客心声</h2>
             <p> </p>
-            <form name="sentMessage" id="contactForm" novalidate>
+            <form id="formEdit" novalidate>
                 <div class="control-group">
                     <div class="form-group floating-label-form-group controls">
                         <label>您的称呼</label>
-                        <input type="text" class="form-control" placeholder="您的称呼" id="name" required data-validation-required-message="Please enter your name.">
+                        <input type="text" class="form-control" placeholder="您的称呼" id="name"  v-model="UserName">
                         <p class="help-block text-danger"></p>
                     </div>
                 </div>
                 <div class="control-group">
                     <div class="form-group floating-label-form-group controls">
                         <label>电子邮箱</label>
-                        <input type="email" class="form-control" placeholder="电子邮箱" id="email" required data-validation-required-message="Please enter your email address.">
+                        <input type="email" class="form-control" placeholder="电子邮箱" id="email" v-model="Email">
                         <p class="help-block text-danger"></p>
                     </div>
                 </div>
                 <div class="control-group">
                     <div class="form-group col-xs-12 floating-label-form-group controls">
                         <label>联系电话</label>
-                        <input type="tel" class="form-control" placeholder="联系电话" id="phone" required data-validation-required-message="Please enter your phone number.">
+                        <input type="tel" class="form-control" placeholder="联系电话" id="phone" v-model="Telphone">
                         <p class="help-block text-danger"></p>
                     </div>
                 </div>
                 <div class="control-group">
                     <div class="form-group floating-label-form-group controls">
                         <label>留言内容</label>
-                        <textarea rows="5" class="form-control" placeholder="留言内容" id="message" required data-validation-required-message="Please enter a message."></textarea>
+                        <textarea rows="5" class="form-control" placeholder="留言内容" id="message" v-model="Memo"></textarea>
                         <p class="help-block text-danger"></p>
                     </div>
                 </div>
                 <br>
                 <div id="success"></div>
                 <div class="form-group">
-                    <button type="submit" class="btn btn-primary" id="sendMessageButton">提交</button>
+                    <input type="hidden" v-model="ActvTitle">
+                    <button type="button" class="btn btn-primary" id="sendMessageButton" v-on:click="dosubmit">提交</button>
                 </div>
             </form>
         </div>
     </div>
 </div>
-
+@section scripts{
+    <script>
+    $(function () {
+        $.post('/Activity/GetModel/', { id: 0 }, function (response) {
+            response.ActvTitle = '建言献策';
+            var vue = new Vue({
+                el: "#formEdit",
+                data: function () { return response },
+                methods: {
+                    dosubmit: function () {
+                        if (response.UserName == "" || response.UserName == null)
+                        {
+                            alert('姓名必填'); $('#UserName').focus();
+                        }
+                        else
+                        {
+                            $.ajax({
+                                url: '/Activity/InsertOrUpdate',
+                                type: "POST",
+                                data: response,
+                                success: function (data) {
+                                    if (data.code == 100) {
+                                        alert('提交成功！感谢您的意见建议。');
+                                    }
+                                    else if (data.code == 101) {
+                                        alert('不能重复提交。');
+                                    }
+                                    else {
+                                        alert(data.message);
+                                    }
+                                }
+                            });
+                        }
+                        return false;
+                    }
+                }
+            })
+        });
+    });
+    </script>
+}

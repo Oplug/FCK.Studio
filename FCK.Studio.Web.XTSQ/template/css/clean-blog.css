@@ -11,7 +11,7 @@ p {
 }
 
 p a {
-  text-decoration: underline;
+  text-decoration: none;
 }
 
 h1,
@@ -501,7 +501,7 @@ footer .copyright {
 }
 
 a.winblock{
-    padding:70px 15px;
+    padding:40px 15px;
     text-align:center;
     background-color:#0093dd;
     color:#fff;

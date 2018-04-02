@@ -32,8 +32,9 @@ namespace FCK.Studio.Core
         [MaxLength(10)]
         public string PoliticalStatus { get; set; }
         [MaxLength(50)]
-        public string ActvTitle { get; set; }
+        public string ActvTitle { get; set; }        
         public long ActvID { get; set; }
+        public string Memo { get; set; }
         public DateTime CreationTime { get; set; }
         public SignUpBespeak()
         {

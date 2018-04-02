@@ -1,0 +1,86 @@
+﻿<!-- Content Header (Page header) -->
+<section class="content-header">
+    <h1>
+        信息采集
+        <small>Product Manage</small>
+    </h1>
+    <ol class="breadcrumb">
+        <li><a href="/Home/Dashboard"><i class="fa fa-dashboard"></i> Home</a></li>
+        <li class="active">信息采集</li>
+    </ol>
+</section>
+<!-- Main content -->
+<section class="content">
+    <!-- Default box -->
+    <div class="box" id="DivDetail">
+        <div class="box-header with-border">
+            <h3 class="box-title">{{ActvTitle}}</h3>
+            <div class="box-tools pull-right">
+                <button type="button" class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip"
+                        title="Collapse">
+                    <i class="fa fa-minus"></i>
+                </button>
+            </div>
+        </div>
+        <div class="box-body">
+            <div class="row invoice-info">
+                <div class="col-sm-6">
+                    来自：
+                    <address>
+                        <strong>{{UserName}}.</strong><br>
+                        地址：{{Address}}<br>
+                        电话：{{Telphone}}<br>
+                        QQ：{{QQ}}<br>
+                        Email：{{Email}}
+                    </address>
+                </div>
+                <!-- /.col -->
+                <div class="col-sm-6">
+                    <b>留言内容：</b><br>
+                    <br>
+                    <p class="text-muted well well-sm no-shadow">{{Memo}}</p>
+                    <br>提交时间：{{CreationTime}}                  
+                </div>
+                <!-- /.col -->
+            </div>
+        </div>
+        <!-- /.box-body -->
+        <div class="box-footer">
+            <button type="button" class="btn btn-success" v-on:click="doback">返回</button> 
+        </div>
+        <!-- /.box-footer-->
+    </div>
+    <!-- /.box -->
+</section>
+<!-- /.content -->
+<script>
+
+    var _Id = localStorage.PageId == null ? 0 : localStorage.PageId;
+    $.post('/SignUpBespeak/GetModel', { id: _Id }, function (response) {
+        new Vue({
+            el: "#DivDetail",
+            data: function () { return response },
+            methods: {
+                dosubmit: function () {
+                    $.ajax({
+                        url: '/SignUpBespeak/InsertOrUpdate',
+                        type: "POST",
+                        data: response,
+                        success: function (data) {
+                            toastr.options = {
+                                "positionClass": "toast-bottom-right",
+                            }
+                            toastr.success('保存成功！');
+                        }
+                    });
+                    return false;
+                },
+                doback: function () {
+                    getURL('/SignUpBespeak/', 'content-wrapper');
+                }
+            }
+        })
+    });
+
+
+</script>

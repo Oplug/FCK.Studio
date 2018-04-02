@@ -54,7 +54,7 @@ namespace FCK.Studio.Web.XTSQ.Controllers
             using (ArticlesService article = new ArticlesService())
             {
                 var lists = article.GetArticleWithCate(page, pageSize, tenant.Id).datas
-                    .Where(o => o.Category.CategoryName == catename)
+                    .Where(o => o.Category.CategoryName == catename || o.Category.CategoryIndex == catename)
                     .ToList();
                 if (isrec == 1)
                     lists = lists.Where(o => o.IsRecommend).ToList();

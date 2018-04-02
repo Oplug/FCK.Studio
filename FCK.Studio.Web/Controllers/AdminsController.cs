@@ -51,10 +51,6 @@ namespace FCK.Studio.Web.Controllers
                 {
                     input.CreationTime = DateTime.Now;
                 }
-                else
-                {
-                    //input.UpdateTime = DateTime.Now;
-                }
                 var result = Admin.Reposity.InsertOrUpdate(input);
                 return Json(result);
             }
