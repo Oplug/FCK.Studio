@@ -10,13 +10,19 @@
                 <h2>@(Model.Title)</h2>
                 <p class="post-meta">
                     Poster by
-                    <a href="#">@(Model.Author)</a>. Wright in
+                    <a href="#">@(Model.Author)</a>. @(Model.Category.CategoryName) Wright in
                     <span>@(Model.CreationTime.ToString("yyyy-MM-dd hh:mm:ss"))</span>.
                 </p>
                 @(Html.Raw(Model.Contents))
                 <p>
+                    @if (Model.Category.CategoryName == "办事流程")
+                    {
                     <a href="/Activity/Bespeak/@(Model.Id)" class="btn btn-success">我要预约</a>
+                    }
+                    else if (Model.Category.CategoryName == "志愿服务")
+                    {
                     <a href="/Activity/SignUp/@(Model.Id)" class="btn btn-primary">我要报名</a>
+                    }
                 </p>
                 
             </div>

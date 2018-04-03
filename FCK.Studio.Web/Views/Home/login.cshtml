@@ -58,7 +58,7 @@
                     </div>
                     <!-- /.col -->
                     <div class="col-xs-4">
-                        <button type="submit" class="btn btn-primary btn-block btn-flat">登录</button>
+                        <button type="submit" class="btn btn-primary btn-block btn-flat" id="btnlogin">登录</button>
                     </div>
                     <!-- /.col -->
                 </div>
@@ -93,8 +93,9 @@
                 AdminDto:{}  
             },  
             methods: {  
-                submit: function() {  
-                    //console.log(this.AdminDto);
+                submit: function () {
+                    $('#btnlogin').text('登录中');
+                    $('#btnlogin').prop('disabled', true);
                     $.ajax({
                         url: '/SysManage/Login',
                         type: "POST",
@@ -103,7 +104,10 @@
                             if (response.code == 100) {
                                 window.location.href = "/Home/";
                             } else {
-                                $.alert('用户或密码错误！Details: '+response.message);
+                                $.alert('用户或密码错误！Details: ' + response.message);
+                                $('#btnlogin').text('登录');
+                                $('#btnlogin').prop('disabled', false);
+
                             }
                         }
                     });

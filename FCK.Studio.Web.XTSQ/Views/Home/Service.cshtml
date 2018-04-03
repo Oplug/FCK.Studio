@@ -16,7 +16,7 @@
                 </h4>
             </div>
             <div id="collapse@(item.Id)" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="heading@(item.Id)">
-                <div class="panel-body">@item.Intro<p><a href="/Home/Detail/@item.Id" class="btn btn-success btn-sm">我要办理</a></p></div>
+                <div class="panel-body"><a href="/Home/Detail/@item.Id">@item.Intro</a> &nbsp;<span class="label label-primary mores"><a href="/Home/Detail/@item.Id">查看详情</a></span></div>
             </div>
         </div>
 }

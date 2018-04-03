@@ -519,6 +519,16 @@ a.winblock:hover{
   background: rgba(254, 209, 54, 0.9);
 }
 
+.mores a:link{
+    color:#fff;
+}
+.mores a:visited{
+    color:#fff;
+}
+.mores a:hover{
+    color:#fff;
+}
+
 @media (min-width: 767px) {
   #portfolio .portfolio-item {
     margin: 0 0 30px;
