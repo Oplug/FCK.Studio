@@ -15,18 +15,20 @@
         </div>
         <!-- /.box-header -->
         <div class="box-body no-padding">
-            <table class="table table-condensed" id="DataTable">
+            <table class="table table-condensed table-hover" id="DataTable">
                 <tr>
                     <th></th>
                     <th>分类名称</th>
                     <th>分类索引</th>
+                    <th>层级</th>
                     <th>所属模型</th>
                     <th style="width: 100px">操作</th>
                 </tr>
                 <tr v-for="item in mydata">
-                    <td><input type="checkbox"  v-bind:value="item.Id" /></td>
-                    <td>{{item.Level}}{{item.CategoryName}}</td>
+                    <td style="width:30px"><input type="checkbox"  v-bind:value="item.Id" /></td>
+                    <td>{{item.PrevStr}} {{item.CategoryName}}</td>
                     <td>{{item.CategoryIndex}}</td>
+                    <td>{{item.Level}}</td>
                     <td>{{item.Layout}}</td>
                     <td>
                         <a class="btn btn-danger btn-xs" href="#" v-on:click="udelete(item.Id)">删除</a>

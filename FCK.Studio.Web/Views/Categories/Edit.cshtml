@@ -22,7 +22,7 @@
                 <div class="form-group">
                     <label for="ParentId">上级分类</label>
                     <select class="form-control" v-model="Category.ParentId" >
-                        <option v-for="option in ParentLists" v-bind:value="option.Id">{{option.CategoryName}}</option>
+                        <option v-for="option in ParentLists" v-bind:value="option.Id">{{option.PrevStr}} {{option.CategoryName}}</option>
                     </select>
                 </div>
                 <div class="form-group">

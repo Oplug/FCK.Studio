@@ -55,9 +55,12 @@ namespace FCK.Studio.Web.Controllers
                 model = entity;
             }
             CategoriesService Category = new CategoriesService();
+
+            CategoriesController cateCtrl = new CategoriesController();
+
             var lists = Category.Reposity.GetPageList(1,0, (o => o.TenantId == TenantId));
             result.Article = model;
-            result.Category = lists.datas;
+            result.Category = cateCtrl.GetCategoryTree();
             return Json(result);
         }
 

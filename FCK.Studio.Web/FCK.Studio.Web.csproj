@@ -298,6 +298,7 @@
     <Compile Include="AutoMapper\Configuration.cs" />
     <Compile Include="AutoMapper\Profiles\AdminProfile.cs" />
     <Compile Include="AutoMapper\Profiles\ArticleProfile.cs" />
+    <Compile Include="AutoMapper\Profiles\CategoryProfile.cs" />
     <Compile Include="AutoMapper\Profiles\SignUpBespeakProfile.cs" />
     <Compile Include="AutoMapper\Profiles\TenantProfile.cs" />
     <Compile Include="Controllers\BaseController.cs" />
@@ -314,7 +315,7 @@
     <Compile Include="Controllers\SysManageController.cs" />
     <Compile Include="Dto\AdminDto.cs" />
     <Compile Include="Dto\ArticleWithCategory.cs" />
-    <Compile Include="Dto\CategoryWithParents.cs" />
+    <Compile Include="Dto\CategoryDto.cs" />
     <Compile Include="Dto\SignUpBespeakDto.cs" />
     <Compile Include="Dto\TenantDto.cs" />
     <Compile Include="Filters\FilterAdminLogin.cs" />

@@ -6,9 +6,13 @@ using System.Web;
 using System.Web.Mvc;
 using FCK.Studio.Core;
 using FCK.Studio.Web.Dto;
+using FCK.Studio.Web.Filters;
+using FCK.Studio.Dto;
+using AutoMapper;
 
 namespace FCK.Studio.Web.Controllers
 {
+    [FilterAdminLogin]
     public class CategoriesController : BaseController, IControllerBase<Categories, int>
     {
         // GET: Categories
@@ -25,20 +29,42 @@ namespace FCK.Studio.Web.Controllers
         {
             CategoriesService Category = new CategoriesService();
             var result = Category.Reposity.GetPageList(page, pageSize, (o => o.TenantId == TenantId));
+            Category.Dispose();
             return Json(result);
         }
 
         public JsonResult GetTreeList()
         {
+            ResultDto<List<CategoryTree>> result = new ResultDto<List<CategoryTree>>();
+            var lists = GetCategoryTree();
+            result.datas = lists;
+            result.code = 100;
+            result.total = lists.Count;
+            return Json(result);
+        }
+
+        public List<CategoryTree> GetCategoryTree()
+        {
             CategoriesService Category = new CategoriesService();
             var result = Category.Reposity.GetAllList(o => o.TenantId == TenantId);
             List<Categories> lists = new List<Categories>();
             CreateTree(lists, result);
-            Studio.Dto.ResultDto<List<Categories>> resp = new Studio.Dto.ResultDto<List<Categories>>();
-            resp.datas = lists;
-            resp.code = 100;
-            resp.total = lists.Count;
-            return Json(resp);
+            var elist = Mapper.Map<List<Dto.CategoryTree>>(lists);
+            foreach (var item in elist)
+            {
+                string prev = "";
+                if (item.Level > 0)
+                {
+                    prev = "└";
+                    for (int i = 0; i < item.Level; i++)
+                    {
+                        prev += "┴";
+                    }
+                }
+                item.PrevStr = prev;
+            }
+            Category.Dispose();
+            return elist;
         }
 
         public void CreateTree(List<Categories> lists, List<Categories> Categorys, int partntid = 0)
@@ -73,26 +99,28 @@ namespace FCK.Studio.Web.Controllers
             if (result != null)
                 entity = result;
             dto.Category = entity;
-            var lists = Category.Reposity.GetPageList(1, 0, (o => o.TenantId == TenantId));
-            dto.ParentLists = lists.datas;
+            dto.ParentLists = GetCategoryTree();
             return Json(dto);
         }
 
         public JsonResult InsertOrUpdate(Categories input)
         {
+            List<Categories> AllCate = new List<Categories>();
             using (CategoriesService Category = new CategoriesService())
             {
-                var allcate = Category.Reposity.GetAllList(o => o.TenantId == TenantId);
-                input.TenantId = TenantId;                
-                input.Level = CsmLevel(input.ParentId, allcate); 
+                AllCate = Category.Reposity.GetAllList(o => o.TenantId == TenantId);
+            }
+            using (CategoriesService Category = new CategoriesService())
+            {                
+                input.TenantId = TenantId;
+                input.Level = CsmLevel(input.ParentId, AllCate);
                 var result = Category.Reposity.InsertOrUpdate(input);
                 return Json(result);
             }
         }
 
-        public int CsmLevel(int parentid, List<Categories> Categorys)
+        public int CsmLevel(int parentid, List<Categories> Categorys, int result = 0)
         {
-            int result = 0;
             var parent = Categorys.Where(o => o.Id == parentid).FirstOrDefault();
             if (parent == null)
             {
@@ -100,7 +128,8 @@ namespace FCK.Studio.Web.Controllers
             }
             else
             {
-                return CsmLevel(parent.ParentId, Categorys);
+                result++;
+                return CsmLevel(parent.ParentId, Categorys, result);
             }
         }
 

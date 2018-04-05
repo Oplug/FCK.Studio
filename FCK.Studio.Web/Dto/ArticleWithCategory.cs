@@ -9,7 +9,7 @@ namespace FCK.Studio.Web.Dto
     public class ArticleWithCategory
     {
         public Articles Article { get; set; }
-        public List<Categories> Category { get; set; }
+        public List<CategoryTree> Category { get; set; }
     }
 
     public class ArticleDto
