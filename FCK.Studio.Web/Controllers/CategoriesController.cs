@@ -28,6 +28,32 @@ namespace FCK.Studio.Web.Controllers
             return Json(result);
         }
 
+        public JsonResult GetTreeList()
+        {
+            CategoriesService Category = new CategoriesService();
+            var result = Category.Reposity.GetAllList(o => o.TenantId == TenantId);
+            List<Categories> lists = new List<Categories>();
+            CreateTree(lists, result);
+            Studio.Dto.ResultDto<List<Categories>> resp = new Studio.Dto.ResultDto<List<Categories>>();
+            resp.datas = lists;
+            resp.code = 100;
+            resp.total = lists.Count;
+            return Json(resp);
+        }
+
+        public void CreateTree(List<Categories> lists, List<Categories> Categorys, int partntid = 0)
+        {
+            var items = Categorys.Where(o => o.ParentId == partntid).ToList();
+            foreach (var item in items)
+            {
+                lists.Add(item);
+                if (Categorys.Where(o => o.ParentId == item.Id).Count() > 0)
+                {
+                    CreateTree(lists, Categorys, item.Id);
+                }
+            }
+        }
+
         public JsonResult GetModel(int id)
         {
             Categories model = new Categories();
@@ -56,9 +82,25 @@ namespace FCK.Studio.Web.Controllers
         {
             using (CategoriesService Category = new CategoriesService())
             {
-                input.TenantId = TenantId;
+                var allcate = Category.Reposity.GetAllList(o => o.TenantId == TenantId);
+                input.TenantId = TenantId;                
+                input.Level = CsmLevel(input.ParentId, allcate); 
                 var result = Category.Reposity.InsertOrUpdate(input);
                 return Json(result);
+            }
+        }
+
+        public int CsmLevel(int parentid, List<Categories> Categorys)
+        {
+            int result = 0;
+            var parent = Categorys.Where(o => o.Id == parentid).FirstOrDefault();
+            if (parent == null)
+            {
+                return result;
+            }
+            else
+            {
+                return CsmLevel(parent.ParentId, Categorys);
             }
         }
 

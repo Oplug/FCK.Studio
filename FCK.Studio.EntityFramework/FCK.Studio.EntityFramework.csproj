@@ -128,6 +128,18 @@
     <Compile Include="Migrations\201804041421268_UpdateAdminAndTenant.Designer.cs">
       <DependentUpon>201804041421268_UpdateAdminAndTenant.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201804051008055_UpdateCateModel.cs" />
+    <Compile Include="Migrations\201804051008055_UpdateCateModel.Designer.cs">
+      <DependentUpon>201804051008055_UpdateCateModel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201804051029234_UpdateCateModel2.cs" />
+    <Compile Include="Migrations\201804051029234_UpdateCateModel2.Designer.cs">
+      <DependentUpon>201804051029234_UpdateCateModel2.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201804051032398_AddCateFieldLink.cs" />
+    <Compile Include="Migrations\201804051032398_AddCateFieldLink.Designer.cs">
+      <DependentUpon>201804051032398_AddCateFieldLink.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -198,6 +210,15 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201804041421268_UpdateAdminAndTenant.resx">
       <DependentUpon>201804041421268_UpdateAdminAndTenant.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201804051008055_UpdateCateModel.resx">
+      <DependentUpon>201804051008055_UpdateCateModel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201804051029234_UpdateCateModel2.resx">
+      <DependentUpon>201804051029234_UpdateCateModel2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201804051032398_AddCateFieldLink.resx">
+      <DependentUpon>201804051032398_AddCateFieldLink.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

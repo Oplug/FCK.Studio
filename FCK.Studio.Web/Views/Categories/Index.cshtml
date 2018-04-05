@@ -17,14 +17,16 @@
         <div class="box-body no-padding">
             <table class="table table-condensed" id="DataTable">
                 <tr>
-                    <th style="width: 20px">#</th>
+                    <th></th>
                     <th>分类名称</th>
+                    <th>分类索引</th>
                     <th>所属模型</th>
                     <th style="width: 100px">操作</th>
                 </tr>
                 <tr v-for="item in mydata">
-                    <td>{{item.Id}}</td>
-                    <td>{{item.CategoryName}}</td>
+                    <td><input type="checkbox"  v-bind:value="item.Id" /></td>
+                    <td>{{item.Level}}{{item.CategoryName}}</td>
+                    <td>{{item.CategoryIndex}}</td>
                     <td>{{item.Layout}}</td>
                     <td>
                         <a class="btn btn-danger btn-xs" href="#" v-on:click="udelete(item.Id)">删除</a>
@@ -46,7 +48,7 @@
     }
     $(function () {
 
-        $.post('/Categories/GetLists', { page: 1, pageSize: 5000 }, function (response) {
+        $.post('/Categories/GetTreeList', { page: 1, pageSize: 0 }, function (response) {
             var vm = new Vue({
                 el: '#DataTable',
                 data: {

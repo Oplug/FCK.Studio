@@ -23,7 +23,12 @@ namespace FCK.Studio.Core
         [Required]
         public bool IsHide { get; set; }
         public int TenantId { get; set; }
-
+        [MaxLength(50)]
+        public string Icons { get; set; }
+        [MaxLength(500)]
+        public string LinkUrl { get; set; }
+        [Column(TypeName = "text")]
+        public string Intro { get; set; }
         public bool IsDeleted { get; set; }
     }
 }
