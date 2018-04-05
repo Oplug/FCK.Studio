@@ -21,7 +21,9 @@ namespace FCK.Studio.Repositories
         TEntity Get(TPrimaryKey id);
         Task<TEntity> GetAsync(TPrimaryKey id);
         IQueryable<TEntity> GetAll();
+        IQueryable<TEntity> GetAll(Expression<Func<TEntity, bool>> predicate);
         List<TEntity> GetAllList();
+        List<TEntity> GetAllList(Expression<Func<TEntity, bool>> predicate);
         Task<List<TEntity>> GetAllListAsync();
         Task<List<TEntity>> GetAllListAsync(Expression<Func<TEntity, bool>> predicate);
         TEntity Insert(TEntity entity);

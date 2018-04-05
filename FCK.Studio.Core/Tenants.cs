@@ -25,7 +25,7 @@ namespace FCK.Studio.Core
         public string WXAppSecret { get; set; }
         [Column(TypeName = "ntext")]
         public string TenantConfig { get; set; }
-
+        public string TenantIntro { get; set; }
         public DateTime CreationTime { get; set; }
         public Tenants()
         {

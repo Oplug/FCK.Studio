@@ -1,4 +1,5 @@
-﻿using System;
+﻿using FCK.Studio.Core;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -11,6 +12,7 @@ namespace FCK.Studio.Web.Dto
         public string LoginName { get; set; }
         public string Powers { get; set; }
         public string CreationTime { get; set; }
+        public string ControlTenants { get; set; }
     }
     public class AdminLogin
     {
@@ -22,5 +24,12 @@ namespace FCK.Studio.Web.Dto
     {
         public AdminDto Admin { get; set; }
         public TenantDto Tenant { get; set; }
+    }
+
+    public class AdminWithSelect
+    {
+        public Admins Admin { get; set; }
+        public List<TenantSelect> Tenants { get; set; }
+        public List<CategorySelect> Powers { get; set; }
     }
 }

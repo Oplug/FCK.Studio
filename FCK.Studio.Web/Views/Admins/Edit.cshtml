@@ -21,21 +21,33 @@
             <div class="box-body">
                 <div class="form-group">
                     <label for="LoginName">登录名</label>
-                    <input type="text" class="form-control" v-model="LoginName" placeholder="Enter LoginName">
+                    <input type="text" class="form-control" v-model="Admin.LoginName" placeholder="Enter LoginName">
                 </div>
                 <div class="form-group">
                     <label for="Password">密码</label>
-                    <input type="password" class="form-control" v-model="Password" placeholder="Enter Password">
+                    <input type="password" class="form-control" v-model="Admin.Password" placeholder="Enter Password">
                 </div>
                 <div class="form-group">
                     <label for="Password2">确认密码</label>
                     <input type="password" class="form-control" placeholder="Confirm Password">
                 </div>
+                <div class="form-group">
+                    <label for="TenantSelect">选择控制站点</label>                    
+                    <select class="form-control TenantSelect" multiple="multiple" >
+                        <option v-for="option in Tenants" v-bind:value="option.Id">{{option.TenantName}}</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="CateSelect">选择菜单权限</label>
+                    <select class="form-control CateSelect" multiple="multiple">
+                        <option v-for="option in Powers" v-bind:value="option.Id">{{option.CategoryName}}</option>
+                    </select>
+                </div>
             </div>
             <!-- /.box-body -->
             <div class="box-footer">
-                <input type="hidden" v-model="Id">
-                <input type="hidden" v-model="Powers">
+                <input type="hidden" v-model="Admin.Id">
+                <input type="hidden" v-model="Admin.Powers">
                 <button type="button" class="btn btn-primary" v-on:click="dosubmit">确定</button>
                 <button type="button" class="btn btn-default" v-on:click="doback">返回</button>
             </div>
@@ -46,16 +58,35 @@
 <script>
 
     var _Id = localStorage.PageId == null ? 0 : localStorage.PageId;
-    $.post('/Admins/GetModel', { id: _Id }, function (response) {
-        new Vue({
+    $.post('/Admins/GetModelWithSelect', { id: _Id }, function (response) {
+        var vm = new Vue({
             el: "#formEdit",
             data: function () { return response },
             methods: {
+                init: function () {
+                    $('.TenantSelect').select2({
+                        placeholder: '请选择站点',
+                        allowClear: true
+                    });
+                    if (response.Admin.ControlTenants != null)
+                        $(".TenantSelect").val(response.Admin.ControlTenants.split(",")).trigger('change');
+
+                    $('.CateSelect').select2({
+                        placeholder: '请选择菜单权限',
+                        allowClear: true
+                    });
+                    if (response.Admin.Powers != null)
+                        $(".CateSelect").val(response.Admin.Powers.split(",")).trigger('change');
+                },
                 dosubmit: function () {
+                    var vals = $('.TenantSelect').select2("val").join(",");                    
+                    response.Admin.ControlTenants = vals;
+                    vals = $('.CateSelect').select2("val").join(",");
+                    response.Admin.Powers = vals;
                     $.ajax({
                         url: '/Admins/InsertOrUpdate',
                         type: "POST",
-                        data: response,
+                        data: response.Admin,
                         success: function (data) {
                             toastr.options = {
                                 "positionClass": "toast-bottom-right",
@@ -69,8 +100,10 @@
                     getURL('/Admins/', 'content-wrapper');
                 }
             }
-        })
+        }).init();
     });
-
+    $(function () {
+        
+    });
 
 </script>

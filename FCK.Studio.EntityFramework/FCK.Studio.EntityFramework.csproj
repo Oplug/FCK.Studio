@@ -124,6 +124,10 @@
     <Compile Include="Migrations\201804021200263_addMemoOnSignUpBespeak.Designer.cs">
       <DependentUpon>201804021200263_addMemoOnSignUpBespeak.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201804041421268_UpdateAdminAndTenant.cs" />
+    <Compile Include="Migrations\201804041421268_UpdateAdminAndTenant.Designer.cs">
+      <DependentUpon>201804041421268_UpdateAdminAndTenant.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -191,6 +195,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201804021200263_addMemoOnSignUpBespeak.resx">
       <DependentUpon>201804021200263_addMemoOnSignUpBespeak.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201804041421268_UpdateAdminAndTenant.resx">
+      <DependentUpon>201804041421268_UpdateAdminAndTenant.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

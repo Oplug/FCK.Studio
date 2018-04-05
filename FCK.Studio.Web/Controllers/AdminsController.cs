@@ -7,6 +7,7 @@ using System.Web.Mvc;
 using FCK.Studio.Core;
 using AutoMapper;
 using FCK.Studio.Dto;
+using FCK.Studio.Web.Dto;
 
 namespace FCK.Studio.Web.Controllers
 {
@@ -33,6 +34,64 @@ namespace FCK.Studio.Web.Controllers
                 model = result;
             }
             return Json(model);
+        }
+
+        public JsonResult GetModelWithSelect(int id)
+        {
+            AdminWithSelect result = new AdminWithSelect();
+            AdminsService AdminServ = new AdminsService();
+            var model = AdminServ.Reposity.FirstOrDefault(id);
+            if (model == null)
+                model = new Admins();
+            result.Admin = model;
+            List<int> tenantIds = new List<int>();
+            if (model.ControlTenants != null)
+            {
+                foreach (var item in model.ControlTenants.Split(','))
+                {
+                    tenantIds.Add(int.Parse(item));
+                }
+            }
+
+            List<int> powers = new List<int>();
+            if (model.Powers != null)
+            {
+                foreach (var item in model.Powers.Split(','))
+                {
+                    powers.Add(int.Parse(item));
+                }
+            }
+
+            TenantsService TenServ = new TenantsService();
+            var tenants = TenServ.Reposity.GetAllList();
+            List<TenantSelect> TenantList = new List<TenantSelect>();
+            foreach (var item in tenants)
+            {
+                TenantSelect obj = new TenantSelect();
+                obj.Id = item.Id;
+                obj.selected = tenantIds.Contains(item.Id);
+                obj.TenantName = item.TenantName;
+                TenantList.Add(obj);
+            }
+            result.Tenants = TenantList;
+
+            CategoriesService CateServ = new CategoriesService();
+            var Powers = CateServ.Reposity.GetAllList(o => o.Layout == "Powers");
+            List<CategorySelect> PowerList = new List<CategorySelect>();
+            foreach (var item in Powers)
+            {
+                CategorySelect obj = new CategorySelect();
+                obj.Id = item.Id;
+                obj.selected = powers.Contains(item.Id);
+                obj.CategoryName = item.CategoryName;
+                PowerList.Add(obj);
+            }
+            result.Powers = PowerList;
+
+            AdminServ.Dispose();
+            TenServ.Dispose();
+            CateServ.Dispose();
+            return Json(result);
         }
 
         public JsonResult GetLists(int page, int pageSize)

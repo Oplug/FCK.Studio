@@ -18,6 +18,8 @@ namespace FCK.Studio.Core
         public string Password { get; set; }
         public string Powers { get; set; }
         public DateTime CreationTime { get; set; }
+        [MaxLength(200)]
+        public string ControlTenants{ get; set; }
         public Admins()
         {
             CreationTime = DateTime.Now;

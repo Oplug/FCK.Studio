@@ -309,7 +309,7 @@
 <!-- ./wrapper -->
 <script>
     $(function () {
-        $.post('/Tenants/GetLists', { page: 1, pageSize: 0 }, function (response) {
+        $.post('/Tenants/GetListsByAdmin', { page: 1, pageSize: 0 }, function (response) {
             var vm = new Vue({
                 el: '#WebSiteList',
                 data: {

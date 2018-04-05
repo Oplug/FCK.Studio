@@ -11,4 +11,11 @@ namespace FCK.Studio.Web.Dto
         public Categories Category { get; set; }
         public List<Categories> ParentLists { get; set; }
     }
+
+    public class CategorySelect
+    {
+        public int Id { get; set; }
+        public string CategoryName { get; set; }
+        public bool selected { get; set; }
+    }
 }

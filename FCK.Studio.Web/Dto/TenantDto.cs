@@ -15,4 +15,11 @@ namespace FCK.Studio.Web.Dto
         public bool IsRoot { get; set; }
         public string CreationTime { get; set; }
     }
+
+    public class TenantSelect
+    {
+        public int Id { get; set; }
+        public string TenantName { get; set; }
+        public bool selected { get; set; }
+    }
 }

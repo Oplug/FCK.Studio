@@ -7,9 +7,11 @@ using System.Web.Mvc;
 using FCK.Studio.Core;
 using AutoMapper;
 using FCK.Studio.Dto;
+using FCK.Studio.Web.Filters;
 
 namespace FCK.Studio.Web.Controllers
 {
+    [FilterAdminLogin]
     public class TenantsController : Controller, IControllerBase<Tenants, int>
     {
         // GET: Tenants
@@ -40,6 +42,26 @@ namespace FCK.Studio.Web.Controllers
             TenantsService Tenant = new TenantsService();
             var result = Tenant.Reposity.GetPageList(page, pageSize);
             var lists = Mapper.Map<ResultDto<List<Dto.TenantDto>>>(result);
+            return Json(lists);
+        }
+
+        public JsonResult GetListsByAdmin()
+        {
+            ResultDto<List<Dto.TenantDto>> lists = new ResultDto<List<Dto.TenantDto>>();
+            string AdminId = AppBase.CookieVal("AdminId");
+            AdminsService adminServ = new AdminsService();
+            var admin = adminServ.Reposity.Get(int.Parse(AdminId));
+            if (admin != null && admin.ControlTenants != null)
+            {
+                List<int> tenantIds = new List<int>();
+                foreach (var item in admin.ControlTenants.Split(','))
+                {
+                    tenantIds.Add(int.Parse(item));
+                }
+                TenantsService Tenant = new TenantsService();
+                var result = Tenant.Reposity.GetPageList(1, 0, (o => tenantIds.Contains(o.Id)));
+                lists = Mapper.Map<ResultDto<List<Dto.TenantDto>>>(result);
+            }
             return Json(lists);
         }
 
