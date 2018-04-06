@@ -29,7 +29,9 @@ namespace FCK.Studio.Web.Controllers
                 {
                     var model = tenantS.Reposity.Get(TenantId);
                     if (model != null)
+                    {
                         models.Tenant = Mapper.Map<TenantDto>(model);
+                    }
                     else
                     {
                         models.Tenant = new TenantDto()

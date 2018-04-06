@@ -12,7 +12,7 @@ using FCK.Studio.Web.Filters;
 namespace FCK.Studio.Web.Controllers
 {
     [FilterAdminLogin]
-    public class TenantsController : Controller, IControllerBase<Tenants, int>
+    public class TenantsController : BaseController, IControllerBase<Tenants, int>
     {
         // GET: Tenants
         public ActionResult Index()
@@ -48,9 +48,8 @@ namespace FCK.Studio.Web.Controllers
         public JsonResult GetListsByAdmin()
         {
             ResultDto<List<Dto.TenantDto>> lists = new ResultDto<List<Dto.TenantDto>>();
-            string AdminId = AppBase.CookieVal("AdminId");
             AdminsService adminServ = new AdminsService();
-            var admin = adminServ.Reposity.Get(int.Parse(AdminId));
+            var admin = adminServ.Reposity.Get(AdminId);
             if (admin != null && admin.ControlTenants != null)
             {
                 List<int> tenantIds = new List<int>();
@@ -61,6 +60,10 @@ namespace FCK.Studio.Web.Controllers
                 TenantsService Tenant = new TenantsService();
                 var result = Tenant.Reposity.GetPageList(1, 0, (o => tenantIds.Contains(o.Id)));
                 lists = Mapper.Map<ResultDto<List<Dto.TenantDto>>>(result);
+                if (TenantId == 0 && tenantIds.Count > 0)
+                {
+                    AppBase.SetCookie("TenantId", tenantIds.First().ToString(), 1);
+                }
             }
             return Json(lists);
         }
