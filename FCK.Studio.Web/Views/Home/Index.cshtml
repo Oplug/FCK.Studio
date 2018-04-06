@@ -294,7 +294,8 @@
         </nav>
     </header>
     <!-- Left side column. contains the logo and sidebar -->
-    @Html.Partial("~/Views/Shared/_PartialLefSide.cshtml")
+    @*@Html.Partial("~/Views/Shared/_PartialLefSide.cshtml")*@
+    @Html.Action("_PartialLeftSide", "Home")
     <!-- Content Wrapper. Contains page content -->
     <div class="content-wrapper" id="content-wrapper"></div>
     <!-- /.content-wrapper -->

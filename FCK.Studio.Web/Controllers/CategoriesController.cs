@@ -28,25 +28,33 @@ namespace FCK.Studio.Web.Controllers
         public JsonResult GetLists(int page, int pageSize)
         {
             CategoriesService Category = new CategoriesService();
-            var result = Category.Reposity.GetPageList(page, pageSize, (o => o.TenantId == TenantId));
+            var result = Category.Reposity.GetPageList(page, pageSize, (o => o.TenantId == TenantId));            
             Category.Dispose();
             return Json(result);
         }
-
-        public JsonResult GetTreeList()
+        
+        public JsonResult GetTreeList(string layout = "")
         {
             ResultDto<List<CategoryTree>> result = new ResultDto<List<CategoryTree>>();
-            var lists = GetCategoryTree();
+            var lists = GetCategoryTree(TenantId);
+            if (!string.IsNullOrEmpty(layout))
+            {
+                lists = lists.Where(o => o.Layout == layout).ToList();
+            }
             result.datas = lists;
             result.code = 100;
             result.total = lists.Count;
             return Json(result);
         }
 
-        public List<CategoryTree> GetCategoryTree()
+        public List<CategoryTree> GetCategoryTree(int tenandId=0)
         {
             CategoriesService Category = new CategoriesService();
-            var result = Category.Reposity.GetAllList(o => o.TenantId == TenantId);
+            var result = Category.Reposity.GetAllList(o => o.IsHide == false && o.IsDeleted == false);
+            if (tenandId > 0)
+            {
+                result = result.Where(o => o.TenantId == tenandId).ToList();
+            }
             List<Categories> lists = new List<Categories>();
             CreateTree(lists, result);
             var elist = Mapper.Map<List<Dto.CategoryTree>>(lists);
@@ -99,7 +107,7 @@ namespace FCK.Studio.Web.Controllers
             if (result != null)
                 entity = result;
             dto.Category = entity;
-            dto.ParentLists = GetCategoryTree();
+            dto.ParentLists = GetCategoryTree(TenantId);
             return Json(dto);
         }
 

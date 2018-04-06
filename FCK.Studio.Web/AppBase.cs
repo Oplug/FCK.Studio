@@ -82,5 +82,15 @@ namespace FCK.Studio.Web
             else
                 return 0;
         }
+
+        public static int GetAdminId()
+        {
+            if (GetCookie("AdminId") != null)
+            {
+                return int.Parse(CookieVal("AdminId"));
+            }
+            else
+                return 0;
+        }
     }
 }

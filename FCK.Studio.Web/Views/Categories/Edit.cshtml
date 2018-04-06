@@ -49,6 +49,14 @@
                     <label for="Intro">概述</label>
                     <input type="text" class="form-control" v-model="Category.Intro" placeholder="Enter Intro">
                 </div>
+                <div class="checkbox">
+                    <label>
+                        <input type="checkbox" v-model="Category.IsHide"> 隐藏
+                    </label>
+                    <label>
+                        <input type="checkbox" v-model="Category.IsDeleted"> 移除
+                    </label>
+                </div>
             </div>
             <!-- /.box-body -->
             <div class="box-footer">

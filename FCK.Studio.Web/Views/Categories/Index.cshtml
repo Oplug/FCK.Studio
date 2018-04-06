@@ -26,7 +26,7 @@
                 </tr>
                 <tr v-for="item in mydata">
                     <td style="width:30px"><input type="checkbox"  v-bind:value="item.Id" /></td>
-                    <td>{{item.PrevStr}} {{item.CategoryName}}</td>
+                    <td><span v-bind:class="item.Icons"></span> {{item.PrevStr}} {{item.CategoryName}}</td>
                     <td>{{item.CategoryIndex}}</td>
                     <td>{{item.Level}}</td>
                     <td>{{item.Layout}}</td>
@@ -50,7 +50,7 @@
     }
     $(function () {
 
-        $.post('/Categories/GetTreeList', { page: 1, pageSize: 0 }, function (response) {
+        $.post('/Categories/GetTreeList', { layout: '@(Request.QueryString["lay"])' }, function (response) {
             var vm = new Vue({
                 el: '#DataTable',
                 data: {

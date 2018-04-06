@@ -60,7 +60,7 @@ namespace FCK.Studio.Web.Controllers
 
             var lists = Category.Reposity.GetPageList(1,0, (o => o.TenantId == TenantId));
             result.Article = model;
-            result.Category = cateCtrl.GetCategoryTree();
+            result.Category = cateCtrl.GetCategoryTree(TenantId);
             return Json(result);
         }
 

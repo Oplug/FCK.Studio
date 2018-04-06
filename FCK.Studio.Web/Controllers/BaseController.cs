@@ -12,5 +12,9 @@ namespace FCK.Studio.Web.Controllers
         /// 站点ID
         /// </summary>
         public int TenantId = AppBase.GetTenantId();
+        /// <summary>
+        /// 管理员ID
+        /// </summary>
+        public int AdminId = AppBase.GetAdminId();
     }
 }
