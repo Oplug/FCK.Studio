@@ -6,11 +6,16 @@
         localStorage.PageId = 0;
         return false;
     })
-
-    $("#Logout").click(function () {
-        $.post("/SysManage/Logout", {}, function (response) {
-            if (response == true)
-                window.location = '/Home/Login';
+    $('#Logout').click(function () {
+        confirmE('确定退出？', function () {
+            $.post('/Home/Logout', {}, function (response) {
+                if (response.code == 100) {
+                    window.location.href = '/Home/';
+                }
+                else {
+                    toastr.error(response.message)
+                }
+            })
         });
     });
 })

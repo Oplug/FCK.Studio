@@ -322,11 +322,11 @@
                         $.post('/Home/SwitchTenant', { tenantId: _id }, function (response) {
                             $("#SiteName").text(response.TenantName);
                             window.location = '/Home/';
-                        });                        
+                        });
                     }
                 }
             });
         });
-
+        
     })
 </script>

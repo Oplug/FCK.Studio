@@ -46,6 +46,22 @@ namespace FCK.Studio.Web.Controllers
         {
             return View();
         }
+        public JsonResult Logout()
+        {
+            ResultDto<string> result = new ResultDto<string>();
+            try
+            {
+                AppBase.DelCookie("AdminId", "");
+                AppBase.DelCookie("TenantId", "");
+                result.code = 100;
+            }
+            catch(Exception ex)
+            {
+                result.code = 500;
+                result.message = ex.Message;
+            }            
+            return Json(result);
+        }
         [FilterAdminLogin]
         public ActionResult Dashboard()
         {

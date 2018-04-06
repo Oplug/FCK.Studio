@@ -26,7 +26,7 @@
                 <tr v-for="item in mydata">
                     <td><input type="checkbox" value="item.Id" /></td>
                     <td>
-                        <a href="item.AppDomain" target="_blank"><i class="fa fa-external-link text-info"></i></a>
+                        <a v-bind:href="item.AppDomain" target="_blank"><i class="fa fa-external-link text-info"></i></a>
                         {{item.TenantName}} <span v-if="item.IsRoot" class="text-green"><i class="fa fa-globe" title="主站点"></i></span>                    
                     </td>
                     <td>{{item.WXAppId}}</td>

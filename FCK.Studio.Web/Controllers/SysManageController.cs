@@ -50,11 +50,6 @@ namespace FCK.Studio.Web.Controllers
             }
             return Json(result);
         }
-
-        public JsonResult Logout()
-        {
-            var result = AppBase.DelCookie("AdminId", "");
-            return Json(result);
-        }
+        
     }
 }

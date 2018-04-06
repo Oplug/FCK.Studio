@@ -50,7 +50,7 @@ namespace FCK.Studio.Web.Controllers
         public List<CategoryTree> GetCategoryTree(int tenandId=0)
         {
             CategoriesService Category = new CategoriesService();
-            var result = Category.Reposity.GetAllList(o => o.IsHide == false && o.IsDeleted == false);
+            var result = Category.Reposity.GetAllList();
             if (tenandId > 0)
             {
                 result = result.Where(o => o.TenantId == tenandId).ToList();
