@@ -44,6 +44,10 @@ namespace FCK.Studio.Web.Controllers
             }
             return View(models);
         }
+        public ActionResult Errors()
+        {
+            return View();
+        }
         public ActionResult login()
         {
             return View();
@@ -67,6 +71,14 @@ namespace FCK.Studio.Web.Controllers
         [FilterAdminLogin]
         public ActionResult Dashboard()
         {
+            ArticlesService ArtServ = new ArticlesService();
+            MembersService MembServ = new MembersService();
+            SignUpBespeakService SignServ = new SignUpBespeakService();
+            ProductsService ProdServ = new ProductsService();
+            ViewBag.ArticleNum = ArtServ.Reposity.GetAllList(o => o.TenantId == TenantId).Count;
+            ViewBag.MemberNum = MembServ.Reposity.GetAllList(o => o.TenantId == TenantId).Count;
+            ViewBag.SignNum = SignServ.Reposity.GetAllList(o => o.TenantId == TenantId).Count;
+            ViewBag.ProdNum = ProdServ.Reposity.GetAllList(o => o.TenantId == TenantId).Count;
             return View();
         }
 

@@ -8,7 +8,7 @@ using System.Web.Mvc;
 
 namespace FCK.Studio.Web.XTSQ.Controllers
 {
-    public class ActivityController : Controller
+    public class ActivityController : BaseController
     {
         // GET: Activity
         public ActionResult Index()
@@ -69,6 +69,7 @@ namespace FCK.Studio.Web.XTSQ.Controllers
                     {
                         if (input.Id == 0)
                         {
+                            input.TenantId = tenant.Id;
                             input.CreationTime = DateTime.Now;
                         }
                         var data = subkS.Reposity.InsertOrUpdate(input);

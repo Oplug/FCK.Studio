@@ -5,7 +5,7 @@
             <small>Control panel</small>
         </h1>
         <ol class="breadcrumb">
-            <li><a href="/Home/Dashboard"><i class="fa fa-dashboard"></i> Home</a></li>
+            <li><a href="/Home/"><i class="fa fa-dashboard"></i> Home</a></li>
             <li class="active">控制台</li>
         </ol>
     </section>
@@ -17,8 +17,8 @@
                 <!-- small box -->
                 <div class="small-box bg-aqua">
                     <div class="inner">
-                        <h3>150</h3>
-                        <p>New Orders</p>
+                        <h3>@(ViewBag.ProdNum)</h3>
+                        <p>产品</p>
                     </div>
                     <div class="icon">
                         <i class="ion ion-bag"></i>
@@ -31,13 +31,13 @@
                 <!-- small box -->
                 <div class="small-box bg-green">
                     <div class="inner">
-                        <h3>53<sup style="font-size: 20px">%</sup></h3>
-                        <p>Bounce Rate</p>
+                        <h3>@(ViewBag.ArticleNum)<sup style="font-size: 20px">%</sup></h3>
+                        <p>内容</p>
                     </div>
                     <div class="icon">
                         <i class="ion ion-stats-bars"></i>
                     </div>
-                    <a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+                    <a href="/Articles/" class="small-box-footer" name="ajaxlink">More info <i class="fa fa-arrow-circle-right"></i></a>
                 </div>
             </div>
             <!-- ./col -->
@@ -45,8 +45,8 @@
                 <!-- small box -->
                 <div class="small-box bg-yellow">
                     <div class="inner">
-                        <h3>44</h3>
-                        <p>User Registrations</p>
+                        <h3>@(ViewBag.MemberNum)</h3>
+                        <p>注册用户</p>
                     </div>
                     <div class="icon">
                         <i class="ion ion-person-add"></i>
@@ -59,13 +59,13 @@
                 <!-- small box -->
                 <div class="small-box bg-red">
                     <div class="inner">
-                        <h3>65</h3>
-                        <p>Unique Visitors</p>
+                        <h3>@(ViewBag.SignNum)</h3>
+                        <p>信息采集</p>
                     </div>
                     <div class="icon">
                         <i class="ion ion-pie-graph"></i>
                     </div>
-                    <a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+                    <a href="/SignUpBespeak/" class="small-box-footer" name="ajaxlink">More info <i class="fa fa-arrow-circle-right"></i></a>
                 </div>
             </div>
             <!-- ./col -->
@@ -76,5 +76,14 @@
     <!-- /.content -->
 
 @*<script src="/dist/js/pages/dashboard.js"></script>*@
+<script>
+    $(function () {
+        $("a[name='ajaxlink']").click(function () {
+            getURL($(this).attr('href'), 'content-wrapper');
+            localStorage.PageId = 0;
+            return false;
+        })
+    });
+</script>
 
 

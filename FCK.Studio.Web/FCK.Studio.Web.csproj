@@ -319,6 +319,7 @@
     <Compile Include="Dto\SignUpBespeakDto.cs" />
     <Compile Include="Dto\TenantDto.cs" />
     <Compile Include="Filters\FilterAdminLogin.cs" />
+    <Compile Include="Filters\LogExceptionFilterAttribute .cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -395,6 +396,7 @@
     <Content Include="Views\SignUpBespeak\Index.cshtml" />
     <Content Include="Views\SignUpBespeak\Edit.cshtml" />
     <Content Include="Views\Home\_PartialLeftSide.cshtml" />
+    <Content Include="Views\Home\Errors.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

@@ -17,7 +17,7 @@ namespace FCK.Studio.Web.XTSQ.Controllers
             tenant = new Tenants();
             try {
                 TenantsService tenantS = new TenantsService();
-                tenant = tenantS.Reposity.GetPageList(1, 1, (o => o.SecretKey == new Guid(AppSecretKey))).datas.FirstOrDefault();
+                tenant = tenantS.Reposity.GetAllList(o => o.SecretKey == new Guid(AppSecretKey)).FirstOrDefault();
             } catch { } 
         }
     }

@@ -140,6 +140,10 @@
     <Compile Include="Migrations\201804051032398_AddCateFieldLink.Designer.cs">
       <DependentUpon>201804051032398_AddCateFieldLink.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201804071321385_AddFieldTenantIdOnSignUpBespeak.cs" />
+    <Compile Include="Migrations\201804071321385_AddFieldTenantIdOnSignUpBespeak.Designer.cs">
+      <DependentUpon>201804071321385_AddFieldTenantIdOnSignUpBespeak.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -219,6 +223,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201804051032398_AddCateFieldLink.resx">
       <DependentUpon>201804051032398_AddCateFieldLink.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201804071321385_AddFieldTenantIdOnSignUpBespeak.resx">
+      <DependentUpon>201804071321385_AddFieldTenantIdOnSignUpBespeak.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

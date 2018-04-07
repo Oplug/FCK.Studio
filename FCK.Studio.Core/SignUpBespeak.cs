@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 namespace FCK.Studio.Core
 {
     [Table("SignUpBespeak")]
-    public class SignUpBespeak : Entity<long>, IHasCreationTime
+    public class SignUpBespeak : Entity<long>, IHasCreationTime, IMustHaveTenant
     {
         [Required, MaxLength(50)]
         public string UserName { get; set; }
@@ -36,6 +36,8 @@ namespace FCK.Studio.Core
         public long ActvID { get; set; }
         public string Memo { get; set; }
         public DateTime CreationTime { get; set; }
+        public int TenantId { get; set; }
+
         public SignUpBespeak()
         {
             CreationTime = DateTime.Now;

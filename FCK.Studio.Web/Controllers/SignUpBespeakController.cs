@@ -19,8 +19,8 @@ namespace FCK.Studio.Web.Controllers
 
         public JsonResult GetLists(int page, int pageSize)
         {
-            SignUpBespeakService Admin = new SignUpBespeakService();
-            var result = Admin.Reposity.GetPageList(page, pageSize);
+            SignUpBespeakService Serv = new SignUpBespeakService();
+            var result = Serv.Reposity.GetPageList(page, pageSize, (o => o.TenantId == TenantId));
             var lists = Mapper.Map<ResultDto<List<Dto.SignUpBespeakDto>>>(result);
             return Json(lists);
         }

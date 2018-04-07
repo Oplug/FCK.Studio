@@ -17,5 +17,10 @@ namespace FCK.Studio.Web
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             AutoMapper.Configuration.Configure();
         }
+        public static void RegisterGlobalFilters(GlobalFilterCollection filters)
+        {
+            filters.Add(new Filters.LogExceptionFilterAttribute());
+            filters.Add(new HandleErrorAttribute());
+        }
     }
 }
