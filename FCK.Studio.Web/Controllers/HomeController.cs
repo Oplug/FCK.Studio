@@ -52,6 +52,10 @@ namespace FCK.Studio.Web.Controllers
         {
             return View();
         }
+        public ActionResult Helper()
+        {
+            return View();
+        }
         public JsonResult Logout()
         {
             ResultDto<string> result = new ResultDto<string>();

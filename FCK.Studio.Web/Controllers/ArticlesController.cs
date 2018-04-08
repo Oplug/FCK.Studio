@@ -66,26 +66,27 @@ namespace FCK.Studio.Web.Controllers
 
         public JsonResult InsertOrUpdate(Articles input)
         {
-            using (ArticlesService Article = new ArticlesService())
+            ArticlesService ArticleRead = new ArticlesService();
+            ArticlesService Article = new ArticlesService();
+            CategoriesService Category = new CategoriesService();
+            if (input.Id == 0)
             {
-                using (CategoriesService Category = new CategoriesService())
-                {
-                    if (input.Id == 0)
-                    {
-                        input.CreationTime = DateTime.Now;                        
-                    }
-                    else
-                    {
-                        input.Category = Category.Reposity.Get(input.CategoryId);
-                        input.UpdateTime = DateTime.Now;
-                    }
-                    input.Contents = HttpUtility.UrlDecode(input.Contents);
-                    input.TenantId = TenantId;
-
-                    var result = Article.Reposity.InsertOrUpdate(input);
-                    return Json(result);
-                }
+                input.CreationTime = DateTime.Now;
             }
+            else
+            {
+                input.Category = Category.Reposity.Get(input.CategoryId);
+                input.UpdateTime = DateTime.Now;
+                input.CreationTime = ArticleRead.Reposity.Get(input.Id).CreationTime;
+            }
+            input.Contents = HttpUtility.UrlDecode(input.Contents);
+            input.TenantId = TenantId;
+
+            var result = Article.Reposity.InsertOrUpdate(input);
+            Category.Dispose();
+            Article.Dispose();
+            ArticleRead.Dispose();
+            return Json(result);
         }
 
         public JsonResult Del(long id)

@@ -397,6 +397,7 @@
     <Content Include="Views\SignUpBespeak\Edit.cshtml" />
     <Content Include="Views\Home\_PartialLeftSide.cshtml" />
     <Content Include="Views\Home\Errors.cshtml" />
+    <Content Include="Views\Home\Helper.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

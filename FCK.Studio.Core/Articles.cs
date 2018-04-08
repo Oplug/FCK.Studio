@@ -42,9 +42,5 @@ namespace FCK.Studio.Core
         [MaxLength(200)]
         public string FileUrl { get; set; }
         public int CheckedLevel { get; set; }
-        public Articles()
-        {
-            CreationTime = DateTime.Now;
-        }
     }
 }
