@@ -157,5 +157,15 @@ namespace FCK.Studio.Web.Controllers
             }
             return Json(result);
         }
+
+        public JsonResult GetListByCategory(string CateName)
+        {
+            CategoriesService Category = new CategoriesService();
+            var categories = Category.Reposity.GetAllList(o => o.TenantId == TenantId && o.CategoryIndex == CateName);
+            List<Categories> lists = new List<Categories>();
+            CreateTree(lists, categories);
+            Category.Dispose();
+            return Json(lists);
+        }
     }
 }

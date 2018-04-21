@@ -188,5 +188,18 @@ namespace FCK.Studio.Web.Controllers
             }
             return Json(result);
         }
+
+        public JsonResult GetListByCategory(int page, int pageSize, string catename, int isrec)
+        {
+            using (ArticlesService article = new ArticlesService())
+            {
+                var lists = article.GetArticleWithCate(page, pageSize, TenantId).datas
+                    .Where(o => o.Category.CategoryName == catename || o.Category.CategoryIndex == catename)
+                    .ToList();
+                if (isrec == 1)
+                    lists = lists.Where(o => o.IsRecommend).ToList();
+                return Json(lists);
+            }
+        }
     }
 }

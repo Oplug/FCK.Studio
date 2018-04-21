@@ -3,21 +3,12 @@
     ViewBag.Title = "本地生活";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-<div class="container" id="MapArea">
-</div>
+<iframe frameborder="0" id="mframe" src="http://m.amap.com/around/?locations=120.357048,31.63031&keywords=美食,租售,地铁站,公交站&defaultIndex=1&defaultView=&searchRadius=5000&key=4c62b20c852d5f663c0fef0704ecb834" scrolling="no" style="width:100%;height:500px;margin-top:100px"></iframe>
 @section scripts{
 <script>
-    var _url = "http://m.amap.com/around/?locations=120.357048,31.63031&keywords=美食,租售,地铁站,公交站&defaultIndex=1&defaultView=&searchRadius=5000&key=4c62b20c852d5f663c0fef0704ecb834"
     $(function () {
-        $.ajax({
-            url: _url,
-            type: "Post",
-            success: function (data) {
-                $("#MapArea").html(data);
-            },
-            error: function (XMLHttpRequest, textStatus, errorThrown) {
-            }
-        });
+        var h = $('body').height();
+        $('#mframe').height(h);
     });
 </script>
 }

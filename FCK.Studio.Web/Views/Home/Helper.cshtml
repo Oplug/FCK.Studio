@@ -29,19 +29,10 @@
                         </div>
                     </div>
                     <div class="box-body no-padding">
-                        <ul class="nav nav-pills nav-stacked">
-                            <li class="active">
-                                <a href="#">
-                                    <i class="fa fa-inbox"></i> Inbox
-                                    <span class="label label-primary pull-right">12</span>
-                                </a>
+                        <ul class="nav nav-pills nav-stacked" id="CateList">
+                            <li v-for="item in mydata">
+                                <a v-bind:href="item.Id"><i class="fa fa-filter"></i> {{item.CategoryName}} <span class="label label-warning pull-right">65</span></a>
                             </li>
-                            <li><a href="#"><i class="fa fa-envelope-o"></i> Sent</a></li>
-                            <li><a href="#"><i class="fa fa-file-text-o"></i> Drafts</a></li>
-                            <li>
-                                <a href="#"><i class="fa fa-filter"></i> Junk <span class="label label-warning pull-right">65</span></a>
-                            </li>
-                            <li><a href="#"><i class="fa fa-trash-o"></i> Trash</a></li>
                         </ul>
                     </div>
                     <!-- /.box-body -->
@@ -81,16 +72,14 @@
                             <!-- /.pull-right -->
                         </div>
                         <div class="table-responsive mailbox-messages">
-                            <table class="table table-hover table-striped">
+                            <table class="table table-hover table-striped" id="ArticleList">
                                 <tbody>
-                                    <tr>
+                                    <tr v-for="item in mydata">
                                         <td class="mailbox-star"><a href="#"><i class="fa fa-star text-yellow"></i></a></td>
-                                        <td class="mailbox-name"><a href="read-mail.html">Alexander Pierce</a></td>
-                                        <td class="mailbox-subject">
-                                            <b>AdminLTE 2.0 Issue</b> - Trying to find a solution to this problem...
-                                        </td>
-                                        <td class="mailbox-attachment"></td>
-                                        <td class="mailbox-date">5 mins ago</td>
+                                        <td class="mailbox-name"><a href="read-mail.html">{{item.Author}}</a></td>
+                                        <td class="mailbox-subject">{{item.Title}}</td>
+                                        <td class="mailbox-attachment">{{item.Category.CategoryName}}</td>
+                                        <td class="mailbox-date">{{item.UpdateTime}}</td>
                                     </tr>
                                     
                                 </tbody>
@@ -128,3 +117,35 @@
         <!-- /.row -->
     </section>
     <!-- /.content -->
+
+<script>
+    function AddModel(_id) {
+        localStorage.PageId = _id;
+        getURL('/Admins/Edit', 'content-wrapper');
+    }
+    $(function () {
+
+        $.post('/Categories/GetListByCategory', { CateName:'系统帮助' }, function (response) {
+            var vm = new Vue({
+                el: '#CateList',
+                data: {
+                    mydata: response
+                },
+                methods: {
+                }
+            })
+        })
+
+        $.post('/Articles/GetListByCategory', { page: 1, pageSize: 50, catename: '系统帮助',isrec:0 }, function (response) {
+            var vm = new Vue({
+                el: '#ArticleList',
+                data: {
+                    mydata: response
+                },
+                methods: {
+                }
+            })
+        })
+
+    })
+</script>
