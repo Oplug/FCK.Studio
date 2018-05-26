@@ -1,0 +1,27 @@
+﻿
+@{
+    ViewBag.Title = "平面图";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="card">
+    <div class="card-body" id="mapDiv">
+    </div>
+</div>
+@section scripts{
+    <script type="text/javascript" src='http://webapi.amap.com/maps?v=1.4.0&key=4c62b20c852d5f663c0fef0704ecb834'></script>
+    <script type="text/javascript">
+        var map = new AMap.Map('mapDiv', {
+            pitch:75,
+            viewMode:'3D',
+            zoom: 17,
+            expandZoomRange:true,
+            zooms:[3,20],
+            center: [120.36429, 31.617153],
+            mapStyle: 'amap://styles/691284dbc6a600b22a2d2cdcbbe45b77'//样式URL
+        });
+        $(function () {
+            $('#mapDiv').height($(window).height());
+        })
+    </script>
+}
+

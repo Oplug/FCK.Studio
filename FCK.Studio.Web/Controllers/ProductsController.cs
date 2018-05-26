@@ -5,19 +5,21 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using FCK.Studio.Core;
+using FCK.Studio.Dto;
+using AutoMapper;
 
 namespace FCK.Studio.Web.Controllers
 {
     public class ProductsController : BaseController, IControllerBase<Products, long>
     {
-        // GET: Products
         public ActionResult Index()
         {
             return View();
         }
 
-        public ActionResult Edit()
+        public ActionResult Edit(int id = 0)
         {
+            ViewBag.Id = id;
             return View();
         }
 
@@ -30,38 +32,51 @@ namespace FCK.Studio.Web.Controllers
             {
                 model = result;
             }
-            return Json(model);
+            var entity = Mapper.Map<Dto.ProductDto>(model);
+            Product.Dispose();
+            return Json(entity);
         }
 
         public JsonResult GetLists(int page, int pageSize)
         {
-            ProductsService Product = new ProductsService();
-            var result = Product.Reposity.GetPageList(page, pageSize, (o => o.TenantId == TenantId));
+            ProductsService ObjServ = new ProductsService();
+            var result = ObjServ.Reposity.GetPageList(page, pageSize, (o => o.TenantId == TenantId));
             return Json(result);
         }
 
         public JsonResult InsertOrUpdate(Products input)
         {
-            using (ProductsService Product = new ProductsService())
+            ResultDto<long> result = new ResultDto<long>();
+            try
             {
-                if (input.Id == 0)
+                using (ProductsService ObjServ = new ProductsService())
                 {
-                    input.CreationTime = DateTime.Now;
+                    if (input.Id == 0)
+                    {
+                        input.CreationTime = DateTime.Now;
+                    }
+                    input.TenantId = TenantId;
+                    ObjServ.Reposity.InsertOrUpdate(input);
+                    result.code = 100;
+                    result.datas = input.Id;
+                    result.message = "ok";
                 }
-                input.Contents = HttpUtility.UrlDecode(input.Contents);
-                input.TenantId = TenantId;
-                var result = Product.Reposity.InsertOrUpdate(input);
-                return Json(result);
             }
+            catch (Exception ex)
+            {
+                result.code = 500;
+                result.message = ex.Message;
+            }
+            return Json(result);
         }
 
         public JsonResult Del(long id)
         {
-            Studio.Dto.ResultDto<string> result = new Studio.Dto.ResultDto<string>();
+            ResultDto<string> result = new ResultDto<string>();
             try
             {
-                ProductsService Product = new ProductsService();
-                Product.Reposity.Delete(id);
+                ProductsService ObjServ = new ProductsService();
+                ObjServ.Reposity.Delete(id);
                 result.code = 100;
                 result.message = "success";
             }
@@ -71,5 +86,32 @@ namespace FCK.Studio.Web.Controllers
             }
             return Json(result);
         }
+
+        public JsonResult GetPageLists(int page, int pageSize, string keywords = "")
+        {
+            ResultDto<List<Dto.ProductDto>> result = new ResultDto<List<Dto.ProductDto>>();
+            try
+            {
+                ResultDto<List<Products>> items = new ResultDto<List<Products>>();
+                ProductsService ObjServ = new ProductsService();
+                if (!string.IsNullOrEmpty(keywords))
+                {
+                    items = ObjServ.Reposity.GetPageList(page, pageSize, o => (o.Title.Contains(keywords) && o.TenantId == TenantId));
+                }
+                else
+                {
+                    items = ObjServ.Reposity.GetPageList(page, pageSize, o => o.TenantId == TenantId);
+                }
+                result = Mapper.Map<ResultDto<List<Dto.ProductDto>>>(items);
+                ObjServ.Dispose();
+            }
+            catch (Exception ex)
+            {
+                result.code = 500;
+                result.message = ex.Message;
+            }
+            return Json(result);
+        }
+        
     }
 }

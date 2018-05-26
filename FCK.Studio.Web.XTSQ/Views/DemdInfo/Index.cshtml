@@ -1,0 +1,107 @@
+﻿
+@{
+    ViewBag.Title = "邻里互助";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+            </div>
+            <div class="col-sm-6 text-right">
+                <a href="/DemdInfo/SubInfo" class="btn btn-danger">发布需求</a>
+                <a href="/DemdInfo/SubService" class="btn btn-success">发布服务</a>
+            </div>
+        </div>
+    </div>
+</section>
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header p-2">
+                        <ul class="nav nav-pills">
+                            <li class="nav-item"><a class="nav-link active" href="#activity" data-toggle="tab">所有需求</a></li>
+                            <li class="nav-item"><a class="nav-link" href="#timeline" data-toggle="tab">所有服务</a></li>
+                        </ul>
+                    </div>
+                    <div class="card-body">
+                        <div class="tab-content" id="DataList">
+                            <div class="active tab-pane" id="activity">
+                                <div class="post" v-for="item in DemdList">
+                                    <div class="user-block">
+                                        <img class="img-circle img-bordered-sm" v-bind:src="item.Members.Photo" alt="user image">
+                                        <span class="username">
+                                            <a v-bind:href="'/DemdInfo/Detail/'+item.Id">{{item.Title}}</a>
+                                            <a href="#" class="float-right btn-tool"><i class="fa fa-times"></i></a>
+                                        </span>
+                                        <span class="description">{{item.Category.CategoryName}} -{{item.Members.NickName}} - {{item.CreationTime}}</span>
+                                    </div>
+                                    <p>{{item.Contents}}</p>
+                                    <p>
+                                        <a href="#" class="link-black text-sm mr-2"><i class="fa fa-share mr-1"></i> 分享</a>
+                                        <span class="float-right">
+                                            <a href="#" class="link-black text-sm">
+                                                <i class="fa fa-comments-o mr-1"></i> 评论 (5)
+                                            </a>
+                                        </span>
+                                    </p>
+                                    <input class="form-control form-control-sm" type="text" placeholder="Type a comment">
+                                </div>
+                                
+                            </div>
+                            <div class="tab-pane" id="timeline">
+                                <div class="post" v-for="item in ServList">
+                                    <div class="user-block">
+                                        <img class="img-circle img-bordered-sm" v-bind:src="item.Members.Photo" alt="user image">
+                                        <span class="username">
+                                            <a v-bind:href="'/Product/Detail/'+item.Id">{{item.Title}}</a>
+                                            <a href="#" class="float-right btn-tool"><i class="fa fa-times"></i></a>
+                                        </span>
+                                        <span class="description">{{item.Category.CategoryName}} - {{item.Members.NickName}} - {{item.CreationTime}}</span>
+                                    </div>
+                                    <p>{{item.Contents}}</p>
+                                    <p>
+                                        <a href="#" class="link-black text-sm mr-2"><i class="fa fa-share mr-1"></i> 分享</a>
+                                        <a href="#" class="link-black text-sm"><i class="fa fa-thumbs-o-up mr-1"></i> 喜欢</a>
+                                        <span class="float-right">
+                                            <a href="#" class="link-black text-sm">
+                                                <i class="fa fa-comments-o mr-1"></i> 评论 (5)
+                                            </a>
+                                        </span>
+                                    </p>
+                                    <input class="form-control form-control-sm" type="text" placeholder="Type a comment">
+                                </div>
+                                
+                            </div>                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+@section scripts{
+    <script>
+        var mydata = {
+            DemdList: [],
+            ServList: []
+        }
+        var vm = new Vue({
+            el: "#DataList",
+            data: mydata
+        })
+        $(function () {
+            $.post('/DemdInfo/GetLists', { page: 1, pageSize: 10 }, function (response) {
+                mydata.DemdList = response.datas;
+            });
+
+            $.post('/Product/GetLists', { page: 1, pageSize: 10 }, function (response) {
+                mydata.ServList = response.datas;
+            });
+        });
+    </script>
+}
+
+

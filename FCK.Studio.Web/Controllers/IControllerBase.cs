@@ -13,6 +13,7 @@ namespace FCK.Studio.Web.Controllers
         JsonResult GetModel(TPrimaryKey id);
         JsonResult InsertOrUpdate(T input);
         JsonResult GetLists(int page, int pageSize);
+        JsonResult GetPageLists(int page, int pageSize,string keywords = "");
         JsonResult Del(TPrimaryKey id);
 
     }

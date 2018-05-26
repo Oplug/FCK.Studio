@@ -1,4 +1,8 @@
-﻿<!-- Content Header (Page header) -->
+﻿@{
+    ViewBag.Title = "Dashboard";
+    Layout = "~/Views/Shared/_LayoutPageInner.cshtml";
+}
+<!-- Content Header (Page header) -->
 <section class="content-header">
     <h1>
         信息采集
@@ -46,16 +50,16 @@
         </div>
         <!-- /.box-body -->
         <div class="box-footer">
-            <button type="button" class="btn btn-success" v-on:click="doback">返回</button> 
+            <a href="/SignUpBespeak/" class="btn btn-success">返回</a> 
         </div>
         <!-- /.box-footer-->
     </div>
     <!-- /.box -->
 </section>
 <!-- /.content -->
+@section scripts{
 <script>
-
-    var _Id = localStorage.PageId == null ? 0 : localStorage.PageId;
+    var _Id = "@(ViewBag.Id)";
     $.post('/SignUpBespeak/GetModel', { id: _Id }, function (response) {
         new Vue({
             el: "#DivDetail",
@@ -74,9 +78,6 @@
                         }
                     });
                     return false;
-                },
-                doback: function () {
-                    getURL('/SignUpBespeak/', 'content-wrapper');
                 }
             }
         })
@@ -84,3 +85,4 @@
 
 
 </script>
+}

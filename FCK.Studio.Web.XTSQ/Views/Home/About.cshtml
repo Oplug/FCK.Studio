@@ -1,14 +1,22 @@
 ﻿@model FCK.Studio.Core.Articles
 @{
     ViewBag.Title = "社区概况";
-    Layout = "~/Views/Shared/_LayoutPage.cshtml";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
-<div class="container">
-    <div class="row">
-        <div class="col-lg-8 col-md-10 mx-auto">
-            @(Html.Raw(Model.Contents))
+<div class="card">
+    <div class="card-header">
+        <h3 class="card-title">@(Model.Title)</h3>
+        <div class="card-tools">
+            <button type="button" class="btn btn-tool" data-widget="collapse" data-toggle="tooltip" title="Collapse">
+                <i class="fa fa-minus"></i>
+            </button>
         </div>
+    </div>
+    <div class="card-body">
+        @(Html.Raw(Model.Contents))
+    </div>
+    <div class="card-footer">
+        <small>创建时间：@(Model.CreationTime) 责任编辑：@(Model.Author)</small>
     </div>
 </div>
 

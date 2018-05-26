@@ -20,8 +20,9 @@ namespace FCK.Studio.Web.Controllers
             return View();
         }
 
-        public ActionResult Edit()
+        public ActionResult Edit(int id = 0)
         {
+            ViewBag.Id = id;
             return View();
         }
 
@@ -70,16 +71,28 @@ namespace FCK.Studio.Web.Controllers
 
         public JsonResult InsertOrUpdate(Tenants input)
         {
-            using (TenantsService Tenant = new TenantsService())
+            ResultDto<long> result = new ResultDto<long>();
+            try
             {
-                if(input.Id==0)
+                using (TenantsService Tenant = new TenantsService())
                 {
-                    input.CreationTime = DateTime.Now;
-                    input.SecretKey = Guid.NewGuid();
+                    if (input.Id == 0)
+                    {
+                        input.CreationTime = DateTime.Now;
+                        input.SecretKey = Guid.NewGuid();
+                    }
+                    Tenant.Reposity.InsertOrUpdate(input);
+                    result.code = 100;
+                    result.message = "ok";
+                    result.datas = input.Id;
                 }
-                var result = Tenant.Reposity.InsertOrUpdate(input);
-                return Json(result);
             }
+            catch (Exception ex)
+            {
+                result.code = 500;
+                result.message = ex.Message;
+            }
+            return Json(result);
         }
 
         public JsonResult Del(int id)
@@ -97,6 +110,11 @@ namespace FCK.Studio.Web.Controllers
                 result.message = ex.Message;
             }
             return Json(result);
+        }
+
+        public JsonResult GetPageLists(int page, int pageSize, string keywords = "")
+        {
+            throw new NotImplementedException();
         }
     }
 }

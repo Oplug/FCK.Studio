@@ -1,18 +1,30 @@
-﻿body {
-    padding-top: 50px;
-    padding-bottom: 20px;
+﻿.w40{
+    width:40px;
 }
-
-/* Set padding to keep content from hitting the edges */
-.body-content {
-    padding-left: 15px;
-    padding-right: 15px;
+.w60{
+    width:60px;
 }
-
-/* Set width on the form input elements since they're 100% wide by default */
-input,
-select,
-textarea {
-    max-width: 280px;
+.w80{
+    width:80px;
+}
+.w100{
+    width:100px;
+}
+.w120{
+    width:120px;
+}
+.EditTable input{
+    border:0px !important;
+    padding:2px  !important;
+    line-height:20px !important;
+    height:auto;
+}
+.EditTable th {
+    font-size:12px  !important;
+    border:1px solid #ccc !important;
+}
+.EditTable td {
+    border:1px solid #ccc !important;
+    padding:3px  !important;
 }
 

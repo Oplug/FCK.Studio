@@ -1,32 +1,36 @@
 ﻿@model FCK.Studio.Core.Articles
 @{
     ViewBag.Title = Model.Title;
-    Layout = "~/Views/Shared/_LayoutPage.cshtml";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
-<article>
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-8 col-md-10 mx-auto post-detail">
-                <h2>@(Model.Title)</h2>
-                <p class="post-meta">
-                    Poster by
-                    <a href="#">@(Model.Author)</a>. @(Model.Category.CategoryName) Wright in
-                    <span>@(Model.CreationTime.ToString("yyyy-MM-dd hh:mm:ss"))</span>.
-                </p>
-                @(Html.Raw(Model.Contents))
-                <p>
-                    @if (Model.Category.CategoryName == "办事流程")
-                    {
-                    <a href="/Activity/Bespeak/@(Model.Id)" class="btn btn-success">我要预约</a>
-                    }
-                    else if (Model.Category.CategoryName == "志愿服务")
-                    {
-                    <a href="/Activity/SignUp/@(Model.Id)" class="btn btn-primary">我要报名</a>
-                    }
-                </p>
-                
-            </div>
+<div class="card">
+    <div class="card-header">
+        <h3 class="card-title">@(Model.Title)</h3>
+        <div class="card-tools">
+            <button type="button" class="btn btn-tool" data-widget="collapse" data-toggle="tooltip" title="Collapse">
+                <i class="fa fa-minus"></i>
+            </button>
         </div>
     </div>
-</article>
+    <div class="card-body">
+        <p>@(Html.Raw(Model.Contents))</p>
+        <p>
+            @if (Model.Category.CategoryName == "办事流程")
+            {
+                <a href="/Activity/Bespeak/@(Model.Id)" class="btn btn-success">我要预约</a>
+            }
+            else if (Model.Category.CategoryName == "志愿服务")
+            {
+                <a href="/Activity/SignUp/@(Model.Id)" class="btn btn-primary">我要报名</a>
+            }
+        </p>
+
+    </div>
+    <div class="card-footer">
+        <small>
+            责任编辑：@(Model.Author). @(Model.Category.CategoryName) 发布时间：@(Model.CreationTime.ToString("yyyy-MM-dd hh:mm:ss")) 
+        </small>
+    </div>
+</div>
+
 

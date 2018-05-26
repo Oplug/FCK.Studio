@@ -63,7 +63,11 @@
     <Compile Include="ArticlesService.cs" />
     <Compile Include="CategoriesService.cs" />
     <Compile Include="CommentsService.cs" />
+    <Compile Include="CreditRecordService.cs" />
+    <Compile Include="DemdInfoService.cs" />
+    <Compile Include="ElectionService.cs" />
     <Compile Include="FCKStudioAppBase.cs" />
+    <Compile Include="HouseService.cs" />
     <Compile Include="IArticlesService.cs" />
     <Compile Include="MembersService.cs" />
     <Compile Include="ProductsService.cs" />

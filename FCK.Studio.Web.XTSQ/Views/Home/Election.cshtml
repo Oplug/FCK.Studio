@@ -1,0 +1,67 @@
+﻿
+@{
+    ViewBag.Title = "选举投票";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<section class="content-header">
+    <div class="container-fluid">
+        <ol class="breadcrumb pull-right">
+            <li class="breadcrumb-item"><a href="/Home/"><span class="fa fa-home"></span> 首页</a></li>
+            <li class="breadcrumb-item active">选举投票</li>
+        </ol>
+        <div class="clearfix"></div>
+    </div>
+</section>
+<section class="content">
+    <div class="callout callout-info">
+        <h5><i class="fa fa-info"></i> 注意事项:</h5>
+        以下名单是本社区参选人员，依据《中华人民共和国选举法》，每一个公民都有投票权。
+    </div>
+    <div class="card">
+        <div class="card-body" id="DataList">            
+            <div class="row">
+                <div class="col-md-3 col-sm-6 col-12" v-for="item in ElectionList">
+                    <div class="info-box bg-success">
+                        <span class="info-box-icon dovote" v-on:click="dovote(item.Id)"><i class="fa fa-thumbs-o-up"></i></span>
+                        <div class="info-box-content">
+                            <span class="info-box-text">{{item.Candidate}}</span>
+                            <span class="info-box-number">{{item.NumOfVote}}</span>
+                            <div class="progress">
+                                <div class="progress-bar" style="width: 70%"></div>
+                            </div>
+                            <span class="progress-description">
+                                {{item.Intro}}
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+@section scripts{
+    <script>
+        var mydata = {
+            ElectionList: []
+        }
+        var vm = new Vue({
+            el: "#DataList",
+            data: mydata,
+            methods: {
+                dovote: function (_id) {
+                    $.post('/Election/DoVote', { id: _id }, function (data) {
+                        if (data.code == 100)
+                            toastr.success(data.message);
+                        else
+                            toastr.error(data.message);
+                    });
+                }
+            }
+        })
+        $(function () {
+            $.post('/Election/GetLists', { page: 1, pageSize: 4 }, function (response) {
+                mydata.ElectionList = response.datas;
+            });
+        });
+    </script>
+}

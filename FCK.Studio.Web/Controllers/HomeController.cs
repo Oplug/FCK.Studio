@@ -65,25 +65,36 @@ namespace FCK.Studio.Web.Controllers
                 AppBase.DelCookie("TenantId", "");
                 result.code = 100;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 result.code = 500;
                 result.message = ex.Message;
-            }            
+            }
             return Json(result);
         }
         [FilterAdminLogin]
         public ActionResult Dashboard()
         {
+            return View();
+        }
+
+        public JsonResult GetCount()
+        {
+            Dto.SiteDto result = new Dto.SiteDto();
             ArticlesService ArtServ = new ArticlesService();
             MembersService MembServ = new MembersService();
             SignUpBespeakService SignServ = new SignUpBespeakService();
             ProductsService ProdServ = new ProductsService();
-            ViewBag.ArticleNum = ArtServ.Reposity.GetAllList(o => o.TenantId == TenantId).Count;
-            ViewBag.MemberNum = MembServ.Reposity.GetAllList(o => o.TenantId == TenantId).Count;
-            ViewBag.SignNum = SignServ.Reposity.GetAllList(o => o.TenantId == TenantId).Count;
-            ViewBag.ProdNum = ProdServ.Reposity.GetAllList(o => o.TenantId == TenantId).Count;
-            return View();
+            result.ArticleCount = ArtServ.Reposity.GetAllList(o => o.TenantId == TenantId).Count;
+            result.MemberCount = MembServ.Reposity.GetAllList(o => o.TenantId == TenantId).Count;
+            result.SignCount = SignServ.Reposity.GetAllList(o => o.TenantId == TenantId).Count;
+            result.ProductCount = ProdServ.Reposity.GetAllList(o => o.TenantId == TenantId).Count;
+            ArtServ.Dispose();
+            MembServ.Dispose();
+            SignServ.Dispose();
+            ProdServ.Dispose();
+
+            return Json(result);
         }
 
         public ActionResult NotFound()
@@ -121,8 +132,8 @@ namespace FCK.Studio.Web.Controllers
                 }
             }
             CategoriesController CateCtrl = new CategoriesController();
-            var lists = CateCtrl.GetCategoryTree();          
-            
+            var lists = CateCtrl.GetCategoryTree();
+
             lists = lists.Where(o => powers.Contains(o.Id)).ToList();
             ViewBag.Admin = AdminName;
             return PartialView(lists);

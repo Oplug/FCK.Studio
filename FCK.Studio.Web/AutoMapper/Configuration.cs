@@ -17,6 +17,8 @@ namespace FCK.Studio.Web.AutoMapper
                 cfg.AddProfile<Profiles.AdminProfile>();
                 cfg.AddProfile<Profiles.SignUpBespeakProfile>();
                 cfg.AddProfile<Profiles.CategoryProfile>();
+                cfg.AddProfile<Profiles.MemberProfile>();
+                cfg.AddProfile<Profiles.EntityProfile>();
             });
         }
     }

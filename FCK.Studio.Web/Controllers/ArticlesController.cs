@@ -19,15 +19,16 @@ namespace FCK.Studio.Web.Controllers
         {
             return View();
         }
-        public ActionResult Edit()
+        public ActionResult Edit(int id = 0)
         {
+            ViewBag.Id = id;
             return View();
         }
 
         public JsonResult GetLists(int page, int pageSize)
         {
             ArticlesService Article = new ArticlesService();
-            var result = Article.GetArticleWithCate(page, pageSize, TenantId);            
+            var result = Article.GetArticleWithCate(page, pageSize, TenantId);
             var lists = Mapper.Map<ResultDto<List<Dto.ArticleDto>>>(result);
             return Json(lists);
         }
@@ -58,7 +59,7 @@ namespace FCK.Studio.Web.Controllers
 
             CategoriesController cateCtrl = new CategoriesController();
 
-            var lists = Category.Reposity.GetPageList(1,0, (o => o.TenantId == TenantId));
+            var lists = Category.Reposity.GetPageList(1, 0, (o => o.TenantId == TenantId));
             result.Article = model;
             result.Category = cateCtrl.GetCategoryTree(TenantId);
             return Json(result);
@@ -66,39 +67,52 @@ namespace FCK.Studio.Web.Controllers
 
         public JsonResult InsertOrUpdate(Articles input)
         {
-            ArticlesService ArticleRead = new ArticlesService();
-            ArticlesService Article = new ArticlesService();
-            CategoriesService Category = new CategoriesService();
-            if (input.Id == 0)
+            ResultDto<long> result = new ResultDto<long>();
+            try
             {
-                input.CreationTime = DateTime.Now;
-            }
-            else
-            {
-                input.Category = Category.Reposity.Get(input.CategoryId);
-                input.UpdateTime = DateTime.Now;
-                input.CreationTime = ArticleRead.Reposity.Get(input.Id).CreationTime;
-            }
-            input.Contents = HttpUtility.UrlDecode(input.Contents);
-            input.TenantId = TenantId;
+                ArticlesService ArticleRead = new ArticlesService();
+                ArticlesService Article = new ArticlesService();
+                CategoriesService Category = new CategoriesService();
+                if (input.Id == 0)
+                {
+                    input.CreationTime = DateTime.Now;
+                }
+                else
+                {
+                    input.Category = Category.Reposity.Get(input.CategoryId);
+                    input.UpdateTime = DateTime.Now;
+                    input.CreationTime = ArticleRead.Reposity.Get(input.Id).CreationTime;
+                }
+                input.Contents = HttpUtility.UrlDecode(input.Contents);
+                input.TenantId = TenantId;
 
-            var result = Article.Reposity.InsertOrUpdate(input);
-            Category.Dispose();
-            Article.Dispose();
-            ArticleRead.Dispose();
+                Article.Reposity.InsertOrUpdate(input);
+                result.code = 100;
+                result.datas = input.Id;
+                result.message = "ok";
+                Category.Dispose();
+                Article.Dispose();
+                ArticleRead.Dispose();
+            }
+            catch (Exception ex)
+            {
+                result.code = 500;
+                result.message = ex.Message;
+            }
             return Json(result);
         }
 
         public JsonResult Del(long id)
         {
             Studio.Dto.ResultDto<string> result = new Studio.Dto.ResultDto<string>();
-            try {
+            try
+            {
                 ArticlesService Article = new ArticlesService();
                 Article.Reposity.Delete(id);
                 result.code = 100;
                 result.message = "success";
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 result.message = ex.Message;
             }
@@ -108,7 +122,7 @@ namespace FCK.Studio.Web.Controllers
         /**
          * 传入动作，action=top 置顶
          **/
-        public JsonResult Top(long[] ids,string action)
+        public JsonResult Top(long[] ids, string action)
         {
             Studio.Dto.ResultDto<string> result = new Studio.Dto.ResultDto<string>();
             try
@@ -119,7 +133,7 @@ namespace FCK.Studio.Web.Controllers
                     {
                         long id = ids[i];
                         var input = Article.Reposity.FirstOrDefault(id);
-                        input.IsTop = action.Equals("top")?true:false;
+                        input.IsTop = action.Equals("top") ? true : false;
                         Article.Reposity.InsertOrUpdate(input);
                     }
                     result.code = 100;
@@ -200,6 +214,11 @@ namespace FCK.Studio.Web.Controllers
                     lists = lists.Where(o => o.IsRecommend).ToList();
                 return Json(lists);
             }
+        }
+
+        public JsonResult GetPageLists(int page, int pageSize, string keywords = "")
+        {
+            throw new NotImplementedException();
         }
     }
 }

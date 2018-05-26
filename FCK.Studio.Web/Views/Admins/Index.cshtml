@@ -1,4 +1,8 @@
-﻿<section class="content-header">
+﻿@{
+    ViewBag.Title = "Dashboard";
+    Layout = "~/Views/Shared/_LayoutPageInner.cshtml";
+} 
+<section class="content-header">
     <h1>
         管理员
         <small>Admins Manage</small>
@@ -15,7 +19,7 @@
         </div>
         <!-- /.box-header -->
         <div class="box-body no-padding">
-            <table class="table table-condensed" id="DataTable">
+            <table class="table table-condensed table-hover" id="DataTable">
                 <tr>
                     <th style="width: 20px"> </th>
                     <th>登录名</th>
@@ -23,7 +27,7 @@
                     <th style="width: 100px">操作</th>
                 </tr>
                 <tr v-for="item in mydata">
-                    <td><input type="checkbox" value="item.Id" /></td>
+                    <td></td>
                     <td>{{item.LoginName}}</td>
                     <td>{{item.CreationTime}}</td>
                     <td>
@@ -35,15 +39,12 @@
         </div>
         <!-- /.box-body -->
         <div class="box-footer clearfix no-border">
-            <button type="button" class="btn btn-default pull-right" onclick="AddModel(0)"><i class="fa fa-plus"></i> 添加管理员</button>
+            <a href="/Admins/Edit" class="btn btn-default pull-right"><i class="fa fa-plus"></i> 添加管理员</a>
         </div>
     </div>
 </section>
+@section scripts{
 <script>
-    function AddModel(_id) {
-        localStorage.PageId = _id;
-        getURL('/Admins/Edit', 'content-wrapper');
-    }
     $(function () {
 
         $.post('/Admins/GetLists', { page: 1, pageSize: 0 }, function (response) {
@@ -53,7 +54,7 @@
                     mydata: response.datas
                 },
                 methods: {
-                    udelete: function (_id) //删除
+                    udelete: function (_id)
                     {
                         confirmE('确定删除？', function () {
                             $.ajax({
@@ -62,15 +63,14 @@
                                 data: { id: _id },
                                 success: function (resp) {
                                     $.alert('删除成功!');
-                                    getURL('/Admins/', 'content-wrapper');
+                                    window.location.reload();
                                 }
                             });
                         });
                     },
-                    updateu: function (_id) //更新
+                    updateu: function (_id)
                     {
-                        localStorage.PageId = _id;
-                        getURL('/Admins/Edit', 'content-wrapper');
+                        window.location = '/Admins/Edit/' + _id;
                     }
                 }
             });
@@ -78,3 +78,4 @@
 
     })
 </script>
+}

@@ -13,6 +13,7 @@ namespace FCK.Studio.Web.XTSQ
         {
             AreaRegistration.RegisterAllAreas();
             RouteConfig.RegisterRoutes(RouteTable.Routes);
+            AutoMapper.Configuration.Configure();
         }
     }
 }

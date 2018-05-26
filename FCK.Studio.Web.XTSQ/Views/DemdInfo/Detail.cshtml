@@ -1,0 +1,130 @@
+﻿
+@{
+    ViewBag.Title = "Detail";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+            </div>
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="/DemdInfo/">互助大厅</a></li>
+                    <li class="breadcrumb-item active">发布需求</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</section>
+<section class="content">
+    <div class="container-fluid" id="DataList">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                        <a href="#">{{Model.Title}}</a>
+                    </div>
+                    <div class="card-body">
+                        <div class="post">
+                            <div class="user-block">
+                                <img class="img-circle img-bordered-sm" v-bind:src="Model.Members.Photo" alt="user image">
+                                <span class="username">
+                                    <a href="#">
+                                        {{Model.Title}}
+                                    </a>
+                                    <a href="#" class="float-right btn-tool"><i class="fa fa-times"></i></a>
+                                </span>
+                                <span class="description">{{Model.Category.CategoryName}} - {{Model.Members.NickName}} - {{Model.CreationTime}}</span>
+                            </div>
+                            <!-- /.user-block -->
+                            <p>{{Model.Contents}}</p>
+                            <p>
+                                <a href="#" class="link-black text-sm mr-2"><i class="fa fa-share mr-1"></i> 分享</a>
+                                <a href="#" class="link-black text-sm"><i class="fa fa-thumbs-o-up mr-1"></i> 赞</a>
+                                <span class="float-right">
+                                    <a href="#" class="link-black text-sm">
+                                        <i class="fa fa-comments-o mr-1"></i> 评论 ({{CommTotal}})
+                                    </a>
+                                </span>
+                            </p>
+                            <form class="form-horizontal">
+                                <div class="input-group input-group-sm mb-0">
+                                    <input class="form-control form-control-sm" placeholder="Response" v-model="Comments.contents">
+                                    <div class="input-group-append">
+                                        <button type="button" class="btn btn-danger" v-on:click="DoRemark">评论</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="post clearfix" v-for="item in CommList">
+                            <div class="user-block">
+                                <img class="img-circle img-bordered-sm" v-bind:src="item.Member.Photo" alt="User Image">
+                                <span class="description">{{item.Member.NickName}} 在 {{item.CreationTime}} 留言</span>
+                            </div>
+                            <!-- /.user-block -->
+                            <p>{{item.Contents}}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+@section scripts{
+    <script>
+        var _id = '@(ViewBag.Id)';
+        var mydata = {
+            Model: {
+                Category: {},
+                Members: {}
+            },
+            CommList: [],
+            CommTotal: 0,
+            Comments: {
+                contents: '',
+                objs: 'DemdInfo',
+                id: _id
+            }
+        }
+        var vm = new Vue({
+            el: "#DataList",
+            data: mydata,
+            methods: {
+                DoRemark: function () {
+                    if (mydata.Comments.contents == '') {
+                        toastr.error('您不想说点什么吗？'); return;
+                    }
+                    $.ajax({
+                        url: '/DemdInfo/Remark',
+                        type: "POST",
+                        data: mydata.Comments,
+                        success: function (data) {
+                            if (data.code == 100) {
+                                toastr.success('评论成功！');
+                                GetComments();
+                            }
+                            else {
+                                toastr.error(data.message);
+                            }
+                        }
+                    });
+                }
+            }
+        })
+        $(function () {
+            $.post('/DemdInfo/GetModel', { id: _id }, function (response) {
+                mydata.Model = response;
+            });
+
+            GetComments();
+        });
+
+        function GetComments() {
+            $.post('/DemdInfo/GetComments', { page: 1, pageSize: 10, id: _id, objs: 'DemdInfo' }, function (response) {
+                mydata.CommList = response.datas;
+                mydata.CommTotal = response.total;
+            });
+        }
+    </script>
+}

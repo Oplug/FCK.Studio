@@ -1,0 +1,145 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_LayoutPageInner.cshtml";
+}
+<!-- Content Header (Page header) -->
+<section class="content-header">
+    <h1>
+        需求管理
+        <small>Demand Information Manage</small>
+    </h1>
+    <ol class="breadcrumb">
+        <li><a href="/Home/Dashboard"><i class="fa fa-dashboard"></i> Home</a></li>
+        <li class="active">需求管理</li>
+    </ol>
+</section>
+<!-- Main content -->
+<section class="content">
+    <div class="box">
+        <div class="box-header with-border">
+            <h3 class="box-title">Demand Information Manage</h3>
+            <div class="box-tools pull-right">
+                <button type="button" class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip"
+                        title="Collapse">
+                    <i class="fa fa-minus"></i>
+                </button>
+            </div>
+        </div>
+        <div class="box-body">
+            <div class="box-header">
+                <div class="btn-group">
+                    <button type="button" class="btn btn-default" data-toggle="tooltip" data-placement="top" title="保存"><i class="fa fa-save"></i></button>
+                    <button type="button" class="btn btn-default" data-toggle="tooltip" data-placement="top" title="刷新" onclick="GetDataList()"><i class="fa fa-refresh"></i></button>
+                    <button type="button" class="btn btn-default" data-toggle="tooltip" data-placement="top" title="删除"><i class="fa fa-remove"></i></button>
+                </div>
+                <div class="box-tools">
+                    <div class="input-group input-group-sm" style="width: 150px;">
+                        <input type="text" name="table_search" class="form-control pull-right" placeholder="Search">
+                        <div class="input-group-btn">
+                            <input type="hidden" value="1" id="pageindex" />
+                            <button type="button" class="btn btn-default" onclick="GetDataList()"><i class="fa fa-search"></i></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="DataTable">
+                <div class="box-body table-responsive no-padding">
+                    <table class="table table-hover">
+                        <tr>
+                            <th>标题</th>
+                            <th>分类</th>
+                            <th>发布者</th>
+                            <th>审核</th>
+                            <th>发布时间</th>                            
+                            <th>操作</th>
+                        </tr>
+                        <tr v-for="item in mydata">
+                            <td>{{item.Title}}</td>
+                            <td>{{item.Category.CategoryName}}</td>
+                            <td>{{item.Members.NickName}}</td>
+                            <td><a v-bind:class="item.IsChecked? 'badge bg-green' : 'badge bg-red'" v-on:click="doopen(item.Id)">{{item.IsChecked}}</a></td>
+                            <td>{{item.CreationTime}}</td>                            
+                            <td>
+                                <a class="btn btn-danger btn-xs" href="#" v-on:click="udelete(item.Id)">删除</a>
+                                <a class="btn btn-success btn-xs" v-bind:href="'/DemdInfo/Edit/'+item.Id">查看</a>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="box-footer clearfix">
+                    页码：{{pageindex}}/{{totalpages}}
+                    <ul class="pagination pagination-sm no-margin pull-right">
+                        <li v-bind:class="pageindex<=1? 'hidden' : ''"><a href="#" onclick="turnpage(-1)">&laquo;</a></li>
+                        <li v-for="value in pages" v-bind:class="value==pageindex? 'active' : ''"><a href="#" v-on:click="chgpage(value)">{{value}}</a></li>
+                        <li v-bind:class="pageindex==totalpages? 'hidden' : ''"><a href="#" onclick="turnpage(1)">&raquo;</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="box-footer">
+            Footer
+        </div>
+    </div>
+</section>
+@section css{
+
+}
+@section scripts{
+    <script>
+        var vm = new Vue({
+            el: '#DataTable',
+            data: {
+                mydata: [],
+                pages: 0,
+                totalpages: 0,
+                pageindex: 1
+            },
+            methods: {
+                chgpage: function (p) {
+                    $('#pageindex').val(p);
+                    GetDataList();
+                    return false;
+                },
+                doopen: function (_id) {
+                    $.post('/DemdInfo/Checked', { id: _id }, function (response) {
+                        GetDataList();
+                    });
+                    return false;
+                },
+                udelete: function (_id) {
+                    confirmE('确定删除？', function () {
+                        $.ajax({
+                            url: '/DemdInfo/Del',
+                            type: "POST",
+                            data: { id: _id },
+                            success: function (resp) {
+                                $.alert('删除成功!');
+                                GetDataList();
+                            }
+                        });
+                    });
+                }
+            }
+        })
+        function GetDataList() {
+            var _page = parseInt($('#pageindex').val())
+            $.post('/DemdInfo/GetPageLists',
+                { page: _page, pageSize: 10, keywords: $('input[name=table_search]').val() },
+                function (response) {
+                    Vue.set(vm, 'mydata', response.datas)
+                    Vue.set(vm, 'totalpages', response.pages)
+                    Vue.set(vm, 'pages', response.pages > 10 ? 10 : response.pages)
+                    Vue.set(vm, 'pageindex', _page)
+                });
+        }
+        function turnpage(val) {
+            var _page = parseInt($('#pageindex').val());
+            _page = _page + val;
+            $('#pageindex').val(_page);
+            GetDataList();
+        }
+        GetDataList();
+    </script>
+}
+

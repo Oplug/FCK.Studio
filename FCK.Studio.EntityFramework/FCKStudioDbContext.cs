@@ -24,6 +24,10 @@ namespace FCK.Studio.EntityFramework
         public virtual IDbSet<Tenants> Tenants { get; set; }
         public virtual IDbSet<Comments> Comments { get; set; }
         public virtual IDbSet<SignUpBespeak> SignUpBespeak { get; set; }
+        public virtual IDbSet<DemdInfo> DemdInfo { get; set; }
+        public virtual IDbSet<Election> Election { get; set; }
+        public virtual IDbSet<CreditRecords> CreditRecords { get; set; }
+        public virtual IDbSet<Houses> Houses { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {

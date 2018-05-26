@@ -1,4 +1,8 @@
-﻿<!-- Content Header (Page header) -->
+﻿@{
+    ViewBag.Title = "Dashboard";
+    Layout = "~/Views/Shared/_LayoutPageInner.cshtml";
+}
+<!-- Content Header (Page header) -->
 <section class="content-header">
     <h1>
         信息采集内容
@@ -45,25 +49,20 @@
                             <a class="btn btn-primary btn-xs" href="#" v-on:click="viewd(item.Id)">查看</a>
                         </td>
                     </tr>
-                </tbody>
-                <tfoot>
-                    <tr>
-                        <th>姓名</th>
-                        <th>电话</th>
-                        <th>邮箱</th>
-                        <th>项目标题</th>
-                        <th>时间</th>
-                        <th>操作</th>
-                    </tr>
-                </tfoot>
+                </tbody>                
             </table>
         </div>
         <!-- /.box-body -->
     </div>
 </section>
 <!-- /.content -->
-<script src="/bower_components/datatables.net/js/jquery.dataTables.min.js"></script>
-<script src="/bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
+@section css{
+    <!-- DataTables -->
+    <link rel="stylesheet" href="/Content/bower_components/datatables.net-bs/css/dataTables.bootstrap.min.css">
+}
+@section scripts{
+<script src="/Content/bower_components/datatables.net/js/jquery.dataTables.min.js"></script>
+<script src="/Content/bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
 <script>
     $(function () {
         $.post('/SignUpBespeak/GetLists', { page: 1, pageSize: 0 }, function (response) {
@@ -79,10 +78,9 @@
                             'language': DataTableLanguage
                         });
                     },
-                    viewd: function (_id) //更新
+                    viewd: function (_id)
                     {
-                        localStorage.PageId = _id;
-                        getURL('/SignUpBespeak/Edit', 'content-wrapper');
+                        window.location = '/SignUpBespeak/Edit/'+_id;
                     }
                 }
             });
@@ -90,3 +88,4 @@
         });
     })
 </script>
+}

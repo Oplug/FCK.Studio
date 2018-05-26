@@ -1,10 +1,14 @@
-﻿<section class="content-header">
+﻿@{
+    ViewBag.Title = "Dashboard";
+    Layout = "~/Views/Shared/_LayoutPageInner.cshtml";
+}  
+<section class="content-header">
     <h1>
         分类管理
         <small>Category Manage</small>
     </h1>
     <ol class="breadcrumb">
-        <li><a href="/Home/"><i class="fa fa-dashboard"></i> Home</a></li>
+        <li><a href="/Home/Dashboard"><i class="fa fa-dashboard"></i> Home</a></li>
         <li class="active">分类管理</li>
     </ol>
 </section>
@@ -26,7 +30,7 @@
                 </tr>
                 <tr v-for="item in mydata">
                     <td style="width:30px"><input type="checkbox"  v-bind:value="item.Id" /></td>
-                    <td><span v-bind:class="item.Icons"></span> {{item.PrevStr}} {{item.CategoryName}}</td>
+                    <td>{{item.PrevStr}} <span v-bind:class="item.Icons"></span> {{item.CategoryName}}</td>
                     <td>{{item.CategoryIndex}}</td>
                     <td>{{item.Level}}</td>
                     <td>{{item.Layout}}</td>
@@ -39,45 +43,50 @@
         </div>
         <!-- /.box-body -->
         <div class="box-footer clearfix no-border">
-            <button type="button" class="btn btn-default pull-right" onclick="AddCate(0)"><i class="fa fa-plus"></i> 添加分类</button>
+            <a href="/Categories/Edit/0" class="btn btn-default pull-right"><i class="fa fa-plus"></i> 添加分类</a>
         </div>
     </div>
 </section>
+@section css{
+    <link rel="stylesheet" href="/Content/plugins/iCheck/all.css">
+    <link rel="stylesheet" href="/Content/bower_components/select2/dist/css/select2.min.css">
+}
+@section scripts{
+<script src="/Content/plugins/iCheck/icheck.min.js"></script>
 <script>
-    function AddCate(_id) {
-        localStorage.PageId = _id;
-        getURL('/Categories/Edit', 'content-wrapper');
+    var LocalDatas = {
+        mydata: [],
+        total:0
     }
-    $(function () {
-        
+    function GetDatas () {        
         $.post('/Categories/GetTreeList', { layout: '@(Request.QueryString["lay"])' }, function (response) {
-            var vm = new Vue({
-                el: '#DataTable',
-                data: {
-                    mydata: response.datas
-                },
-                methods: {
-                    udelete: function (_id) //删除
-                    {   
-                        confirmE('确定删除？', function () {
-                            $.ajax({
-                                url: '/Categories/Del',
-                                type: "POST",
-                                data: { id: _id },
-                                success: function (resp) {
-                                    $.alert('删除成功!');
-                                    getURL('/Categories/', 'content-wrapper');
-                                }
-                            });
-                        });
-                    },
-                    updateu: function (_id) //更新
-                    {
-                        localStorage.PageId = _id;
-                        getURL('/Categories/Edit', 'content-wrapper');
-                    }
-                }
-            })
+            LocalDatas.mydata = response.datas;
+            LocalDatas.total = response.total;
         })
+    }
+    GetDatas();
+    var vm = new Vue({
+        el: '#DataTable',
+        data: LocalDatas,
+        methods: {
+            udelete: function (_id) //删除
+            {
+                confirmE('确定删除？', function () {
+                    $.ajax({
+                        url: '/Categories/Del',
+                        type: "POST",
+                        data: { id: _id },
+                        success: function (resp) {
+                            $.alert('删除成功!');
+                            GetDatas();
+                        }
+                    });
+                });
+            },
+            updateu: function (_id) {
+                window.location = '/Categories/Edit/' + _id;
+            }
+        }
     })
 </script>
+}

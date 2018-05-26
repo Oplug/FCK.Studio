@@ -12,16 +12,16 @@
     <!-- Tell the browser to be responsive to screen width -->
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
     <!-- Bootstrap 3.3.7 -->
-    <link rel="stylesheet" href="/bower_components/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/Content/bower_components/bootstrap/dist/css/bootstrap.min.css">
     <!-- Font Awesome -->
-    <link rel="stylesheet" href="/bower_components/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/Content/bower_components/font-awesome/css/font-awesome.min.css">
     <!-- Ionicons -->
-    <link rel="stylesheet" href="/bower_components/Ionicons/css/ionicons.min.css">
+    <link rel="stylesheet" href="/Content/bower_components/Ionicons/css/ionicons.min.css">
     <!-- Theme style -->
-    <link rel="stylesheet" href="/dist/css/AdminLTE.min.css">
+    <link rel="stylesheet" href="/Content/dist/css/AdminLTE.min.css">
     <!-- iCheck -->
-    <link rel="stylesheet" href="/plugins/iCheck/square/blue.css">
-    <link rel="stylesheet" href="/bower_components/jqueryconfirm/jquery-confirm.css" />
+    <link rel="stylesheet" href="/Content/plugins/iCheck/all.css">
+    <link rel="stylesheet" href="/Content/bower_components/jqueryconfirm/jquery-confirm.css" />
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -52,7 +52,7 @@
                     <div class="col-xs-8">
                         <div class="checkbox icheck">
                             <label>
-                                <input type="checkbox"> 记住我
+                                <input type="checkbox" checked> 记住我
                             </label>
                         </div>
                     </div>
@@ -63,28 +63,24 @@
                     <!-- /.col -->
                 </div>
             </form>
-
-            <!-- /.social-auth-links -->
-            <a href="#">忘记密码</a> <a href="register.html" class="text-center">注册</a>
         </div>
         <!-- /.login-box-body -->
     </div>
 
     <!-- jQuery 3 -->
-    <script src="/bower_components/jquery/dist/jquery.min.js"></script>
+    <script src="/Content/bower_components/jquery/dist/jquery.min.js"></script>
     <!-- Bootstrap 3.3.7 -->
-    <script src="/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="/Content/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
     <!-- vue.js -->
-    <script src="/dist/js/vue.js"></script>
+    <script src="/Content/dist/js/vue.js"></script>
     <!-- iCheck -->
-    <script src="/plugins/iCheck/icheck.min.js"></script>
-    <script src="/bower_components/jqueryconfirm/jquery-confirm.js"></script>
+    <script src="/Content/plugins/iCheck/icheck.min.js"></script>
+    <script src="/Content/bower_components/jqueryconfirm/jquery-confirm.js"></script>
     <script>
         $(function () {
             $('input').iCheck({
-                checkboxClass: 'icheckbox_square-blue',
-                radioClass: 'iradio_square-blue',
-                increaseArea: '20%'
+                checkboxClass: 'icheckbox_flat-green',
+                radioClass: 'iradio_flat-green'
             });
         });
         var vm = new Vue({  

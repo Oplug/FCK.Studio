@@ -1,4 +1,8 @@
-﻿<section class="content-header">
+﻿@{
+    ViewBag.Title = "Dashboard";
+    Layout = "~/Views/Shared/_LayoutPageInner.cshtml";
+}  
+<section class="content-header">
     <h1>
         产品编辑
         <small>Product Manage</small>
@@ -8,3 +12,116 @@
         <li class="active">产品编辑</li>
     </ol>
 </section>
+<section class="content">
+    <div class="box box-primary" id="formEdit">
+        <div class="box-body">
+            <form class="form-horizontal">
+                <div class="form-group">
+                    <label for="CategoryId" class="col-sm-2 control-label">选择分类</label>
+                    <div class="col-sm-10">
+                        <select class="form-control Community" v-model="Model.CategoryId">
+                            <option v-for="option in CateList" v-bind:value="option.Id">{{option.CategoryName}}</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="Title" class="col-sm-2 control-label">所在商圈</label>
+                    <div class="col-sm-5">
+                        <select class="form-control Community" v-model="Model.Community">
+                            <option v-for="option in CommunityList" v-bind:value="option.CategoryIndex">{{option.PrevStr}}{{option.CategoryName}}</option>
+                        </select>
+                    </div>
+                    <div class="col-sm-5">
+                        <select class="form-control Apartment" v-model="Model.Apartment">
+                            <option v-for="option in ApartmentList" v-bind:value="option.CategoryIndex">{{option.PrevStr}}{{option.CategoryName}}</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    
+                </div>
+                <div class="form-group">
+                    <label for="Title" class="col-sm-2 control-label">主题</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" v-model="Model.Title" placeholder="输入一句话主题">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="Contents" class="col-sm-2 control-label">服务内容</label>
+                    <div class="col-sm-10">
+                        <textarea class="form-control" v-model="Model.Contents" placeholder="详细描述服务内容，输入16~500个字符"></textarea>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="Phone" class="col-sm-2 control-label">联系电话</label>
+                    <div class="col-sm-10">
+                        <input type="email" class="form-control" v-model="Model.Phone" placeholder="手机/电话">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="Contactor" class="col-sm-2 control-label">联系人</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" v-model="Model.Contactor">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-sm-offset-2 col-sm-10">
+                        <button type="button" class="btn btn-danger" v-on:click="dosubmit">确定发布</button>
+                        <a href="/Products/" class="btn btn-default">返回</a>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>
+@section scripts{
+    <script>
+        var _Id = "@(ViewBag.Id)";
+        var mydata = {
+            Model: {},
+            CateList: [],
+            CommunityList: [],
+            ApartmentList:[]
+        }
+        var vm = new Vue({
+            el: "#formEdit",
+            data: mydata,
+            methods: {
+                dosubmit: function () {
+                    $.ajax({
+                        url: '/Products/InsertOrUpdate',
+                        type: "POST",
+                        data: mydata.Model,
+                        success: function (data) {
+                            if (data.code == 100)
+                                toastr.success(data.message);
+                            else
+                                toastr.error(data.message);
+                        }
+                    });
+                    return false;
+                }
+            }
+        })
+        $(function () {
+            $.post('/Products/GetModel', { id: _Id }, function (response) {
+                mydata.Model = response;
+            });
+
+            $.post('/Categories/GetTreeListByParent', { layout: 'ABC', parentcate: 'DemdServ' }, function (response) {
+                mydata.CateList = response.datas;
+            });
+
+            $.post('/Categories/GetTreeListByParent', { layout: 'Zone', parentcate: '东北塘街道' }, function (response) {
+                mydata.CommunityList = response.datas;
+            });
+
+            $('.Community').on('change', function () {
+                $.post('/Categories/GetTreeListByParent', { layout: 'Zone', parentcate: $(this).val() }, function (response) {
+                    mydata.ApartmentList = response.datas;
+                });
+            });
+        });
+    </script>
+}

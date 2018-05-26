@@ -65,6 +65,19 @@ namespace FCK.Studio.Application
                 .ToList();
             return result;
         }
+
+        public ResultDto<List<Articles>> GetArticleWithCate(int PageIndex, int PageSize, Expression<Func<Articles, bool>> predicate)
+        {
+            ResultDto<List<Articles>> result = new ResultDto<List<Articles>>();
+            var query = Reposity.GetPageList(PageIndex, PageSize, predicate);
+            result.pages = query.pages;
+            result.total = query.total;
+            result.datas = query.datas.AsQueryable()
+                .OrderByDescending(entity => entity.CreationTime)
+                .Include(entity => entity.CategoryId)
+                .ToList();
+            return result;
+        }
     }
 
 }

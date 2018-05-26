@@ -1,4 +1,8 @@
-﻿<section class="content-header">
+﻿@{
+    ViewBag.Title = "Dashboard";
+    Layout = "~/Views/Shared/_LayoutPageInner.cshtml";
+}
+<section class="content-header">
     <h1>
         管理员
         <small>Admins Manage</small>
@@ -14,9 +18,6 @@
         <div class="box-header with-border">
             <h3 class="box-title">管理员</h3>
         </div>
-        <!-- /.box-header -->
-        <!-- form start -->
-
         <form role="form" id="formEdit">
             <div class="box-body">
                 <div class="form-group">
@@ -32,8 +33,8 @@
                     <input type="password" class="form-control" placeholder="Confirm Password">
                 </div>
                 <div class="form-group">
-                    <label for="TenantSelect">选择控制站点</label>                    
-                    <select class="form-control TenantSelect" multiple="multiple" >
+                    <label for="TenantSelect">选择控制站点</label>
+                    <select class="form-control TenantSelect" multiple="multiple">
                         <option v-for="option in Tenants" v-bind:value="option.Id">{{option.TenantName}}</option>
                     </select>
                 </div>
@@ -49,61 +50,63 @@
                 <input type="hidden" v-model="Admin.Id">
                 <input type="hidden" v-model="Admin.Powers">
                 <button type="button" class="btn btn-primary" v-on:click="dosubmit">确定</button>
-                <button type="button" class="btn btn-default" v-on:click="doback">返回</button>
+                <a href="/Admins/" class="btn btn-default">返回</a>
             </div>
         </form>
     </div>
 </section>
 <!-- /.content -->
-<script>
+@section css{
+    <link rel="stylesheet" href="/Content/bower_components/select2/dist/css/select2.min.css">
+}
+@section scripts{
+    <script src="/Content/bower_components/select2/dist/js/select2.full.min.js"></script>
+    <script>
+        var _Id = "@(ViewBag.Id)";
+        $.post('/Admins/GetModelWithSelect', { id: _Id }, function (response) {
+            var vm = new Vue({
+                el: "#formEdit",
+                data: function () { return response },
+                methods: {
+                    init: function () {
+                        $('.TenantSelect').select2({
+                            placeholder: '请选择站点',
+                            allowClear: true
+                        });
+                        if (response.Admin.ControlTenants != null)
+                            $(".TenantSelect").val(response.Admin.ControlTenants.split(",")).trigger('change');
 
-    var _Id = localStorage.PageId == null ? 0 : localStorage.PageId;
-    $.post('/Admins/GetModelWithSelect', { id: _Id }, function (response) {
-        var vm = new Vue({
-            el: "#formEdit",
-            data: function () { return response },
-            methods: {
-                init: function () {
-                    $('.TenantSelect').select2({
-                        placeholder: '请选择站点',
-                        allowClear: true
-                    });
-                    if (response.Admin.ControlTenants != null)
-                        $(".TenantSelect").val(response.Admin.ControlTenants.split(",")).trigger('change');
-
-                    $('.CateSelect').select2({
-                        placeholder: '请选择菜单权限',
-                        allowClear: true
-                    });
-                    if (response.Admin.Powers != null)
-                        $(".CateSelect").val(response.Admin.Powers.split(",")).trigger('change');
-                },
-                dosubmit: function () {
-                    var vals = $('.TenantSelect').select2("val").join(",");                    
-                    response.Admin.ControlTenants = vals;
-                    vals = $('.CateSelect').select2("val").join(",");
-                    response.Admin.Powers = vals;
-                    $.ajax({
-                        url: '/Admins/InsertOrUpdate',
-                        type: "POST",
-                        data: response.Admin,
-                        success: function (data) {
-                            toastr.options = {
-                                "positionClass": "toast-bottom-right",
+                        $('.CateSelect').select2({
+                            placeholder: '请选择菜单权限',
+                            allowClear: true
+                        });
+                        if (response.Admin.Powers != null)
+                            $(".CateSelect").val(response.Admin.Powers.split(",")).trigger('change');
+                    },
+                    dosubmit: function () {
+                        var vals = $('.TenantSelect').select2("val").join(",");
+                        response.Admin.ControlTenants = vals;
+                        vals = $('.CateSelect').select2("val").join(",");
+                        response.Admin.Powers = vals;
+                        $.ajax({
+                            url: '/Admins/InsertOrUpdate',
+                            type: "POST",
+                            data: response.Admin,
+                            success: function (data) {
+                                if (data.code == 100)
+                                    toastr.success('保存成功！');
+                                else
+                                    toastr.error(data.message);
                             }
-                            toastr.success('保存成功！');
-                        }
-                    });
-                    return false;
-                },
-                doback: function () {
-                    getURL('/Admins/', 'content-wrapper');
+                        });
+                        return false;
+                    }
                 }
-            }
-        }).init();
-    });
-    $(function () {
-        
-    });
+            }).init();
+        });
+        $(function () {
 
-</script>
+        });
+
+    </script>
+}

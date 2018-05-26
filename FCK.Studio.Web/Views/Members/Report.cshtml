@@ -1,0 +1,63 @@
+﻿
+@{
+    ViewBag.Title = "Report";
+    Layout = "~/Views/Shared/_LayoutPageInner.cshtml";
+}
+<section class="content-header">
+    <h1>
+        会员报表
+        <small>Members Report</small>
+    </h1>
+    <ol class="breadcrumb">
+        <li><a href="/Home/Dashboard"><i class="fa fa-dashboard"></i> Home</a></li>
+        <li><a href="/Members/">会员管理</a></li>
+        <li class="active">报表</li>
+    </ol>
+</section>
+<section class="content">
+    <div class="box">
+        <div class="box-header with-border">
+            <h3 class="box-title"></h3>
+            <div class="box-tools pull-right">
+                <button type="button" class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip"
+                        title="Collapse">
+                    <i class="fa fa-minus"></i>
+                </button>
+            </div>
+        </div>
+        <div class="box-body">
+            <div class="box-header">
+                <div class="btn-group">
+                    <button type="button" class="btn btn-default" data-toggle="tooltip" data-placement="top" title="刷新" id="refresh"><i class="fa fa-refresh"></i></button>
+                    <button type="button" class="btn btn-default" data-toggle="tooltip" data-placement="top" title="下载" id="download"><i class="fa fa-download"></i></button>
+                </div>
+            </div>
+            <div class="box-body table-responsive no-padding">
+                <div id="myexcel"></div>
+            </div>
+        </div>
+    </div>
+</section>
+@section css{
+<link href="/Content/bower_components/jexcel-master/dist/css/jquery.jexcel.css" rel="stylesheet" />
+}
+@section scripts{
+<script src="/Content/bower_components/jexcel-master/dist/js/jquery.jcalendar.js"></script>
+<script src="/Content/bower_components/jexcel-master/dist/js/jquery.csv.min.js"></script>
+<script src="/Content/bower_components/jexcel-master/dist/js/jquery.jexcel.js"></script>
+    <script>
+        $(function () {
+            $('#refresh').click(function () {
+                $('#myexcel').jexcel({
+                    csv: '/Members/GetCSV?pageSize=10&page=1',
+                    colHeaders: ['关系', '姓名', '性别', '民族', '年龄', '证号', '户籍地址', '服务处所', '职务', '联系方式', '政治面貌', '居民组长', '专长/备注'],
+                    colWidths: [50, 60, 40, 50, 40, 160, 200, 200, 60, 120,80, 80,150],
+                });
+            });
+            
+            $('#download').on('click', function () {
+                $('#myexcel').jexcel('download');
+            })
+        })
+    </script>
+}

@@ -42,12 +42,18 @@ namespace FCK.Studio.Web.Controllers
             return View();
         }
 
-        public ActionResult Edit()
+        public ActionResult Edit(int id=0)
         {
+            ViewBag.Id = id;
             return View();
         }
 
         public JsonResult InsertOrUpdate(SignUpBespeak input)
+        {
+            throw new NotImplementedException();
+        }
+
+        public JsonResult GetPageLists(int page, int pageSize, string keywords = "")
         {
             throw new NotImplementedException();
         }

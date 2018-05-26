@@ -1,4 +1,8 @@
-﻿<!-- Content Header (Page header) -->
+﻿@{
+    ViewBag.Title = "Dashboard";
+    Layout = "~/Views/Shared/_LayoutPageInner.cshtml";
+}  
+<!-- Content Header (Page header) -->
 <section class="content-header">
     <h1>
         内容管理
@@ -47,28 +51,20 @@
                                 </td>
                             </tr>
                         </tbody>
-                        <tfoot>
-                            <tr>
-                                <th>标题</th>
-                                <th>分类</th>
-                                <th>作者</th>
-                                <th>更新时间</th>
-                                <th>创建时间</th>
-                                <th>操作</th>
-                            </tr>
-                        </tfoot>
+                        
                     </table>
                 </div>
                 <!-- /.box-body -->
             </div>
 </section>
 <!-- /.content -->
-
-@section scripts{
-
+@section css{
+<!-- DataTables -->
+<link rel="stylesheet" href="/Content/bower_components/datatables.net-bs/css/dataTables.bootstrap.min.css">
 }
-<script src="/bower_components/datatables.net/js/jquery.dataTables.min.js"></script>
-<script src="/bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
+@section scripts{
+<script src="/Content/bower_components/datatables.net/js/jquery.dataTables.min.js"></script>
+<script src="/Content/bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
 <script>
     $(function () {
         $.post('/Articles/GetLists', { page: 1, pageSize: 0 }, function (response) {            
@@ -93,15 +89,14 @@
                                 data: { id: _id },
                                 success: function (resp) {
                                     $.alert('删除成功!');
-                                    getURL('/Articles/', 'content-wrapper');
+                                    window.location.reload();
                                 }
                             });
                         });
                     },
                     updateu: function (_id) //更新
                     {
-                        localStorage.PageId = _id;
-                        getURL('/Articles/Edit', 'content-wrapper');
+                        window.location = '/Articles/Edit/'+_id;
                     }
                 }
             });
@@ -110,3 +105,4 @@
         
     })
 </script>
+}

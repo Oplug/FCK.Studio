@@ -1,0 +1,64 @@
+﻿
+@{
+    ViewBag.Title = "户籍中心";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+            </div>
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="/Home/">首页</a></li>
+                    <li class="breadcrumb-item active">户籍中心</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</section>
+<section class="content" id="DataList">
+    <div class="card card-primary card-outline">
+        <div class="card-body box-profile">
+            <div class="text-center">
+                <img class="profile-user-img img-fluid img-circle" v-bind:src="Model.Photo" alt="User profile picture">
+            </div>
+
+            <h3 class="profile-username text-center">{{Model.NickName}}</h3>
+
+            <p class="text-muted text-center">{{Model.UserName}} - {{Model.PoliticalRole}}</p>
+
+            <ul class="list-group list-group-unbordered mb-3">
+                <li class="list-group-item">
+                    <b>信用分</b> <a class="float-right">{{Model.CreditRate}}</a>
+                </li>
+                <li class="list-group-item">
+                    <b>积分</b> <a class="float-right">{{Model.Points}}</a>
+                </li>
+                <li class="list-group-item">
+                    <b>户籍地址</b> <a class="float-right">{{Model.District}}-{{Model.Community}}-{{Model.Apartment}}</a>
+                </li>
+            </ul>
+
+            <a v-bind:href="'/Member/MyProfile/'+Model.Id" class="btn btn-primary btn-block"><b>户籍录改</b></a>
+        </div>
+        <!-- /.card-body -->
+    </div>
+</section>
+@section scripts{
+    <script>
+        var _id = '@(ViewBag.Id)';
+        var mydata = {
+            Model: {}
+        }
+        var vm = new Vue({
+            el: "#DataList",
+            data: mydata
+        })
+        $(function () {
+            $.post('/Member/GetModel', { id: _id }, function (response) {
+                mydata.Model = response;
+            });
+        });
+    </script>
+}

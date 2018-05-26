@@ -20,19 +20,20 @@ namespace FCK.Studio.Web.Controllers
         {
             return View();
         }
-        public ActionResult Edit()
+        public ActionResult Edit(int id)
         {
+            ViewBag.Id = id;
             return View();
         }
 
         public JsonResult GetLists(int page, int pageSize)
         {
             CategoriesService Category = new CategoriesService();
-            var result = Category.Reposity.GetPageList(page, pageSize, (o => o.TenantId == TenantId));            
+            var result = Category.Reposity.GetPageList(page, pageSize, (o => o.TenantId == TenantId));
             Category.Dispose();
             return Json(result);
         }
-        
+
         public JsonResult GetTreeList(string layout = "")
         {
             ResultDto<List<CategoryTree>> result = new ResultDto<List<CategoryTree>>();
@@ -46,8 +47,29 @@ namespace FCK.Studio.Web.Controllers
             result.total = lists.Count;
             return Json(result);
         }
+        public JsonResult GetTreeListByParent(string layout = "", string parentcate = "")
+        {
+            ResultDto<List<CategoryTree>> result = new ResultDto<List<CategoryTree>>();
+            var lists = GetCategoryTree(TenantId);
+            if (!string.IsNullOrEmpty(layout))
+            {
+                lists = lists.Where(o => o.Layout == layout).ToList();
+            }
+            if (!string.IsNullOrEmpty(parentcate))
+            {
+                var parent = lists.Where(o => o.CategoryName == parentcate || o.CategoryIndex == parentcate).FirstOrDefault();
+                if (parent != null)
+                {
+                    lists = lists.Where(o => o.ParentId == parent.Id).ToList();
+                }
+            }
+            result.datas = lists;
+            result.code = 100;
+            result.total = lists.Count;
+            return Json(result);
+        }
 
-        public List<CategoryTree> GetCategoryTree(int tenandId=0)
+        public List<CategoryTree> GetCategoryTree(int tenandId = 0)
         {
             CategoriesService Category = new CategoriesService();
             var result = Category.Reposity.GetAllList();
@@ -66,7 +88,7 @@ namespace FCK.Studio.Web.Controllers
                     prev = "└";
                     for (int i = 0; i < item.Level; i++)
                     {
-                        prev += "┴";
+                        prev += "─";
                     }
                 }
                 item.PrevStr = prev;
@@ -113,18 +135,29 @@ namespace FCK.Studio.Web.Controllers
 
         public JsonResult InsertOrUpdate(Categories input)
         {
-            List<Categories> AllCate = new List<Categories>();
-            using (CategoriesService Category = new CategoriesService())
+            ResultDto<int> result = new ResultDto<int>();
+            try
             {
-                AllCate = Category.Reposity.GetAllList(o => o.TenantId == TenantId);
+                List<Categories> AllCate = new List<Categories>();
+                using (CategoriesService Category = new CategoriesService())
+                {
+                    AllCate = Category.Reposity.GetAllList(o => o.TenantId == TenantId);
+                }
+                using (CategoriesService Category = new CategoriesService())
+                {
+                    input.TenantId = TenantId;
+                    input.Level = CsmLevel(input.ParentId, AllCate);
+                    Category.Reposity.InsertOrUpdate(input);
+                    result.code = 100;
+                    result.datas = input.Id;
+                }
             }
-            using (CategoriesService Category = new CategoriesService())
-            {                
-                input.TenantId = TenantId;
-                input.Level = CsmLevel(input.ParentId, AllCate);
-                var result = Category.Reposity.InsertOrUpdate(input);
-                return Json(result);
+            catch (Exception ex)
+            {
+                result.code = 500;
+                result.message = ex.Message;
             }
+            return Json(result);
         }
 
         public int CsmLevel(int parentid, List<Categories> Categorys, int result = 0)
@@ -166,6 +199,11 @@ namespace FCK.Studio.Web.Controllers
             CreateTree(lists, categories);
             Category.Dispose();
             return Json(lists);
+        }
+
+        public JsonResult GetPageLists(int page, int pageSize, string keywords = "")
+        {
+            throw new NotImplementedException();
         }
     }
 }

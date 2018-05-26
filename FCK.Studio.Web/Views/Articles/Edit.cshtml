@@ -1,4 +1,8 @@
-﻿<!-- Content Header (Page header) -->
+﻿@{
+    ViewBag.Title = "Dashboard";
+    Layout = "~/Views/Shared/_LayoutPageInner.cshtml";
+}
+<!-- Content Header (Page header) -->
 <section class="content-header">
     <h1>
         内容编辑
@@ -18,75 +22,105 @@
         </div>
         <!-- /.box-header -->
         <!-- form start -->
-        <form role="form">
+        <form role="form" class="form-horizontal">
             <div class="box-body">
                 <div class="form-group">
-                    <label for="ParentId">所属分类</label>
-                    <select class="form-control" v-model="Article.CategoryId">
-                        <option v-for="option in Category" v-bind:value="option.Id">{{option.PrevStr}} {{option.CategoryName}}</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="Title">标题</label>
-                    <input type="text" class="form-control" v-model="Article.Title" placeholder="Enter title">
-                </div>
-                <div class="form-group">
-                    <label for="Keywords">关键词</label>
-                    <input type="text" class="form-control" v-model="Article.Keywords" placeholder="Enter Keywords">
-                </div>
-                <div class="form-group">
-                    <label for="Tags">标签</label>
-                    <input type="text" class="form-control" v-model="Article.Tags" placeholder="Enter Tags">
-                </div>
-                <div class="form-group">
-                    <label for="Author">作者</label>
-                    <input type="text" class="form-control" v-model="Article.Author" placeholder="Enter Author">
-                </div>
-                <div class="form-group">
-                    <label for="Intro">简介</label>
-                    <textarea class="form-control" v-model="Article.Intro" placeholder="add multiple lines"></textarea>
-                </div>
-                <div class="form-group">
+                    <label for="ParentId" class="col-sm-2 control-label">所属分类</label>
                     <div class="col-sm-3">
-                        <img :src="Article.Images" class="img-rounded" height="50" />
+                        <select class="form-control CategoryId" v-model="Article.CategoryId">
+                            <option v-for="option in Category" v-bind:value="option.Id">{{option.PrevStr}} {{option.CategoryName}}</option>
+                        </select>
                     </div>
-                    <div class="col-sm-9">
+                    <label for="IsRecommend" class="col-sm-2 control-label">属性</label>
+                    <div class="col-sm-4">
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox" v-model="Article.IsRecommend"> 推荐
+                            </label>
+                            <label>
+                                <input type="checkbox" v-model="Article.IsHot"> 热
+                            </label>
+                            <label>
+                                <input type="checkbox" v-model="Article.IsTop"> 置顶
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="Title" class="col-sm-2 control-label">标题</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" v-model="Article.Title" placeholder="Enter title">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="Keywords" class="col-sm-2 control-label">关键词</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" v-model="Article.Keywords" placeholder="Enter Keywords">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="Tags" class="col-sm-2 control-label">标签</label>
+                    <div class="col-sm-3">
+                        <input type="text" class="form-control" v-model="Article.Tags" placeholder="Enter Tags">
+                    </div>
+                    <label for="Author" class="col-sm-2 control-label">作者</label>
+                    <div class="col-sm-4">
+                        <input type="text" class="form-control" v-model="Article.Author" placeholder="Enter Author">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="Intro" class="col-sm-2 control-label">简介</label>
+                    <div class="col-sm-10">
+                        <textarea class="form-control" v-model="Article.Intro" placeholder="add multiple lines"></textarea>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="LinkUrl" class="col-sm-2 control-label">外部链接</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" v-model="Article.LinkUrl" placeholder="Enter LinkUrl">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="Images" class="col-sm-2 control-label">图片上传</label>
+                    <div class="col-sm-2">
                         <input type="hidden" v-model="Article.Images">
                         <input type="file" id="fileUpload" name="fileUpload" />
                     </div>
-                    <div class="clearfix"></div>
+                    <div class="col-sm-6">
+                        <img v-bind:src="Article.Images" class="img-rounded" height="30" />
+                    </div>
                 </div>
-                <div class="checkbox">
-                    <label>
-                        <input type="checkbox" v-model="Article.IsRecommend"> 推荐
-                    </label>
-                    <label>
-                        <input type="checkbox" v-model="Article.IsHot"> 热
-                    </label>
-                    <label>
-                        <input type="checkbox" v-model="Article.IsTop"> 置顶
-                    </label>
-                </div>
-                <vue-html5-editor :content="Article.Contents" :height="300" ref="editor" v-model="Article.Contents" v-on:change="updateData"></vue-html5-editor>
                 <div class="form-group">
-                    <label for="LinkUrl">外部链接</label>
-                    <input type="text" class="form-control" v-model="Article.LinkUrl" placeholder="Enter LinkUrl">
+                    
                 </div>
+                <div class="form-group">
+                    <div class="col-sm-12">
+                        <vue-html5-editor v-bind:content="Article.Contents" height="300" ref="editor" v-model="Article.Contents" v-on:change="updateData"></vue-html5-editor>
+                    </div>                    
+                </div>
+                
             </div>
             <!-- /.box-body -->
             <div class="box-footer">
                 <input type="hidden" v-model="Article.Id">
                 <input type="hidden" v-model="Article.CreationTime">
-                <button type="button" class="btn btn-primary" v-on:click="dosubmit">发布</button>
-                <button type="button" class="btn btn-default" v-on:click="doback">返回</button>
+                <button type="button" class="btn btn-primary pull-right" v-on:click="dosubmit">发布</button>
+                <a href="/Articles/" class="btn btn-default">返回</a>
             </div>
         </form>
     </div>
 </section>
 <!-- /.content -->
+@section css{
+<link rel="stylesheet" href="/Content/bower_components/pekeUpload/css/custom.css" />
+<link rel="stylesheet" href="/Content/bower_components/select2/dist/css/select2.min.css">
+ }
+@section scripts{
+<script src="/Content/bower_components/pekeUpload/js/pekeUpload.js"></script>
+<script src="/Content/dist/js/vue-html5-editor.js"></script>
+<script src="/Content/bower_components/select2/dist/js/select2.full.min.js"></script>
 <script>
-
-    var _Id = localStorage.PageId == null ? 0 : localStorage.PageId;
+    var _Id = '@(ViewBag.Id)';
     $.post('/Articles/GetModelWithCategory', { id: _Id }, function (response) {
         Vue.use(VueHtml5Editor, {
             showModuleName: false
@@ -116,6 +150,7 @@
                             response.Article.Images = data.url;
                         }
                     });
+                    $('.select2').select2();
                 },
                 dosubmit: function () {
                     response.Article.Contents = escape(response.Article.Contents);
@@ -124,18 +159,17 @@
                         type: "POST",
                         data: response.Article,
                         success: function (data) {
-                            toastr.success('保存成功！');
+                            if (data.code == 100)
+                                toastr.success('保存成功！');
+                            else
+                                toastr.error(data.message);
                         }
                     });
                     return false;
-                },
-                doback: function () {
-                    getURL('/Articles/', 'content-wrapper');
                 }
             }
         })
         vm.initUpload();
     });
-   
-    
 </script>
+ }

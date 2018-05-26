@@ -1,10 +1,14 @@
-﻿<section class="content-header">
+﻿@{
+    ViewBag.Title = "Dashboard";
+    Layout = "~/Views/Shared/_LayoutPageInner.cshtml";
+} 
+<section class="content-header">
     <h1>
         站点管理
         <small>Tenants Manage</small>
     </h1>
     <ol class="breadcrumb">
-        <li><a href="/Home/"><i class="fa fa-dashboard"></i> Home</a></li>
+        <li><a href="/Home/Dashboard"><i class="fa fa-dashboard"></i> Home</a></li>
         <li class="active">站点管理</li>
     </ol>
 </section>
@@ -46,15 +50,15 @@
                 <input type="hidden" v-model="Id">
                 <input type="hidden" v-model="CreationTime">
                 <button type="button" class="btn btn-primary" v-on:click="dosubmit">确定</button>
-                <button type="button" class="btn btn-default" v-on:click="doback">返回</button>
+                <a href="/Tenants/" class="btn btn-default">返回</a>
             </div>
         </form>
     </div>
 </section>
 <!-- /.content -->
+@section scripts{
 <script>
-
-    var _Id = localStorage.PageId == null ? 0 : localStorage.PageId;
+    var _Id = "@(ViewBag.Id)";
     $.post('/Tenants/GetModel', { id: _Id }, function (response) {
         new Vue({
             el: "#formEdit",
@@ -66,20 +70,16 @@
                         type: "POST",
                         data: response,
                         success: function (data) {
-                            toastr.options = {
-                                "positionClass": "toast-bottom-right",
-                            }
-                            toastr.success('保存成功！');
+                            if (data.code == 100)
+                                toastr.success('保存成功！');
+                            else
+                                toastr.error(data.message);
                         }
                     });
                     return false;
-                },
-                doback: function () {
-                    getURL('/Tenants/', 'content-wrapper');
                 }
             }
         })
     });
-
-
 </script>
+}

@@ -144,6 +144,54 @@
     <Compile Include="Migrations\201804071321385_AddFieldTenantIdOnSignUpBespeak.Designer.cs">
       <DependentUpon>201804071321385_AddFieldTenantIdOnSignUpBespeak.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201805010422179_AddEntity.cs" />
+    <Compile Include="Migrations\201805010422179_AddEntity.Designer.cs">
+      <DependentUpon>201805010422179_AddEntity.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201805010424093_AddDemandInfo.cs" />
+    <Compile Include="Migrations\201805010424093_AddDemandInfo.Designer.cs">
+      <DependentUpon>201805010424093_AddDemandInfo.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201805011116029_UpdateMember.cs" />
+    <Compile Include="Migrations\201805011116029_UpdateMember.Designer.cs">
+      <DependentUpon>201805011116029_UpdateMember.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201805011450106_UpdateProduct.cs" />
+    <Compile Include="Migrations\201805011450106_UpdateProduct.Designer.cs">
+      <DependentUpon>201805011450106_UpdateProduct.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201805011523472_UpdateProdAndDemdInfo.cs" />
+    <Compile Include="Migrations\201805011523472_UpdateProdAndDemdInfo.Designer.cs">
+      <DependentUpon>201805011523472_UpdateProdAndDemdInfo.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201805032139427_AddEntitys.cs" />
+    <Compile Include="Migrations\201805032139427_AddEntitys.Designer.cs">
+      <DependentUpon>201805032139427_AddEntitys.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201805042240102_UpdateCommentModel.cs" />
+    <Compile Include="Migrations\201805042240102_UpdateCommentModel.Designer.cs">
+      <DependentUpon>201805042240102_UpdateCommentModel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201805091222373_AddEntityHouses.cs" />
+    <Compile Include="Migrations\201805091222373_AddEntityHouses.Designer.cs">
+      <DependentUpon>201805091222373_AddEntityHouses.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201805101318237_UptMember.cs" />
+    <Compile Include="Migrations\201805101318237_UptMember.Designer.cs">
+      <DependentUpon>201805101318237_UptMember.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201805101338461_UptMember2.cs" />
+    <Compile Include="Migrations\201805101338461_UptMember2.Designer.cs">
+      <DependentUpon>201805101338461_UptMember2.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201805212224041_AddEntityHouses1.cs" />
+    <Compile Include="Migrations\201805212224041_AddEntityHouses1.Designer.cs">
+      <DependentUpon>201805212224041_AddEntityHouses1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201805241405001_UptHouses.cs" />
+    <Compile Include="Migrations\201805241405001_UptHouses.Designer.cs">
+      <DependentUpon>201805241405001_UptHouses.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -226,6 +274,42 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201804071321385_AddFieldTenantIdOnSignUpBespeak.resx">
       <DependentUpon>201804071321385_AddFieldTenantIdOnSignUpBespeak.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201805010422179_AddEntity.resx">
+      <DependentUpon>201805010422179_AddEntity.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201805010424093_AddDemandInfo.resx">
+      <DependentUpon>201805010424093_AddDemandInfo.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201805011116029_UpdateMember.resx">
+      <DependentUpon>201805011116029_UpdateMember.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201805011450106_UpdateProduct.resx">
+      <DependentUpon>201805011450106_UpdateProduct.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201805011523472_UpdateProdAndDemdInfo.resx">
+      <DependentUpon>201805011523472_UpdateProdAndDemdInfo.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201805032139427_AddEntitys.resx">
+      <DependentUpon>201805032139427_AddEntitys.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201805042240102_UpdateCommentModel.resx">
+      <DependentUpon>201805042240102_UpdateCommentModel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201805091222373_AddEntityHouses.resx">
+      <DependentUpon>201805091222373_AddEntityHouses.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201805101318237_UptMember.resx">
+      <DependentUpon>201805101318237_UptMember.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201805101338461_UptMember2.resx">
+      <DependentUpon>201805101338461_UptMember2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201805212224041_AddEntityHouses1.resx">
+      <DependentUpon>201805212224041_AddEntityHouses1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201805241405001_UptHouses.resx">
+      <DependentUpon>201805241405001_UptHouses.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

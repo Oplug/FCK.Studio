@@ -64,5 +64,9 @@ namespace FCK.Studio.Web.Controllers
             return Json(result);
         }
 
+        public JsonResult GetPageLists(int page, int pageSize, string keywords = "")
+        {
+            throw new NotImplementedException();
+        }
     }
 }

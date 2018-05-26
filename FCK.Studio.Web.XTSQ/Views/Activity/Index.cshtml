@@ -1,22 +1,93 @@
 ﻿
 @{
     ViewBag.Title = "新闻活动";
-    Layout = "~/Views/Shared/_LayoutPage.cshtml";
+    Layout = "~/Views/Shared/_Layout.cshtml";
     string param = Request.QueryString["cate"];
-    if(string.IsNullOrEmpty(param))
+    if (string.IsNullOrEmpty(param))
     {
         param = "新闻活动";
     }
 }
-<div class="container">
-    <div class="row">
-        <div class="col-lg-8 col-md-10 mx-auto">
-            @Html.Action("_PartialArticles", "Home", new { page = 1, pageSize = 0, catename = param, orderindex = "timedesc", isrec = 1 })
-            <!-- Pager -->
-            <div class="clearfix">
-                <a class="btn btn-primary float-right" href="#">更多 &rarr;</a>
-            </div>
+<div class="card" id="DataList">
+    <div class="card-header">
+        <h3 class="card-title">@(param)</h3>
+        <div class="card-tools">
+            <button type="button" class="btn btn-tool" data-widget="collapse">
+                <i class="fa fa-minus"></i>
+            </button>
         </div>
     </div>
+    <div class="card-body p-0">
+        <ul class="products-list product-list-in-card pl-2 pr-2">
+            <li class="item" v-for="item in mydata">
+                <div class="product-img" v-if="item.Images">
+                    <img v-bind:src="'http://mage.oplug.cn'+item.Images" alt="Image" class="img-size-50">
+                </div>
+                <div class="product-info">
+                    <a v-bind:href="'/Home/Detail/'+item.Id" class="product-title">
+                        {{item.Title}}
+                        <span class="badge badge-info float-right">{{item.Hits}}</span>
+                    </a>
+                    <span class="product-description">
+                        <small>{{item.CreationTime}}</small>. <small>{{item.Category.CategoryName}}</small>{{item.Intro}}
+                    </span>
+                </div>
+            </li>
+        </ul>
+    </div>
+    <div class="card-footer">
+        <small>页码：{{pageindex}}/{{totalpages}}</small>
+        <ul class="pagination pagination-sm m-0 float-right">
+            <li v-bind:class="pageindex<=1? 'hidden' : 'page-item' "><a class="page-link" href="#" onclick="turnpage(-1)">上一页</a></li>
+            <li v-for="value in pages" v-bind:class="value==pageindex? 'page-item active' : 'page-item' "><a class="page-link" href="#" v-on:click="chgpage(value)">{{value}}</a></li>
+            <li v-bind:class="pageindex==totalpages? 'hidden' : 'page-item' "><a class="page-link" href="#" onclick="turnpage(1)">下一页</a></li>
+        </ul>
+    </div>
 </div>
+<input type="hidden" value="1" id="pageindex" />
+@section css{
+    <style>
+        .hidden {
+            display: none;
+        }
+    </style>}
+@section scripts{
+    <script>
+        var _cate = '@(param)'
+        var vm = new Vue({
+            el: '#DataList',
+            data: {
+                mydata: [],
+                pages: 0,
+                totalpages: 0,
+                pageindex: 1
+            },
+            methods: {
+                chgpage: function (p) {
+                    $('#pageindex').val(p);
+                    GetDataList();
+                    return false;
+                }
+            }
+        })
+        function GetDataList() {
+            var _page = parseInt($('#pageindex').val())
+            $.post('/Home/GetArticleList',
+                { page: _page, pageSize: 8, keywords: $('input[name=table_search]').val(), cateindex: _cate },
+                function (response) {
+                    Vue.set(vm, 'mydata', response.datas)
+                    Vue.set(vm, 'totalpages', response.pages)
+                    Vue.set(vm, 'pages', response.pages > 5 ? 5 : response.pages)
+                    Vue.set(vm, 'pageindex', _page)
+                });
+        }
+        function turnpage(val) {
+            var _page = parseInt($('#pageindex').val());
+            _page = _page + val;
+            $('#pageindex').val(_page);
+            GetDataList();
+        }
+        GetDataList();
+    </script>
+}
 

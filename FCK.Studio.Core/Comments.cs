@@ -10,6 +10,7 @@ namespace FCK.Studio.Core
     {
         [MaxLength(20)]
         public string ModelName { get; set; }
+        public long ModelId { get; set; }
         [Column(TypeName = "ntext")]
         public string Contents { get; set; }
         public DateTime CreationTime { get; set; }

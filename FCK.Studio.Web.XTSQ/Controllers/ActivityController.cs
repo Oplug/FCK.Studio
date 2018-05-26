@@ -21,22 +21,32 @@ namespace FCK.Studio.Web.XTSQ.Controllers
             return View();
         }
 
-        public ActionResult SignUp(long id)
+        public ActionResult SignUp(long id = 0)
         {
+            Articles model = new Articles();
             using (ArticlesService articleS = new ArticlesService())
             {
-                var model = articleS.Reposity.Get(id);
-                return View(model);
+                var result = articleS.Reposity.Get(id);
+                if (result != null)
+                {
+                    model = result;
+                }
             }
+            return View(model);
         }
 
-        public ActionResult Bespeak(long id)
+        public ActionResult Bespeak(long id=0)
         {
+            Articles model = new Articles();
             using (ArticlesService articleS = new ArticlesService())
             {
-                var model = articleS.Reposity.Get(id);
-                return View(model);
+                var result = articleS.Reposity.Get(id);
+                if (result != null)
+                {
+                    model = result;
+                }
             }
+            return View(model);
         }
 
         public JsonResult GetModel(long id)
@@ -54,7 +64,7 @@ namespace FCK.Studio.Web.XTSQ.Controllers
         }
         public JsonResult InsertOrUpdate(SignUpBespeak input)
         {
-            Dto.ResultDto<SignUpBespeak> result = new Dto.ResultDto<SignUpBespeak>();
+            Studio.Dto.ResultDto<SignUpBespeak> result = new Studio.Dto.ResultDto<SignUpBespeak>();
             using (SignUpBespeakService subkS = new SignUpBespeakService())
             {
                 try

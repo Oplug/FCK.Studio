@@ -1,90 +1,99 @@
 ﻿
 @{
     ViewBag.Title = "访客心声";
-    Layout = "~/Views/Shared/_LayoutPage.cshtml";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
-<div class="container">
-    <div class="row">
-        <div class="col-lg-8 col-md-10 mx-auto">
-            <h2>访客心声</h2>
-            <p> </p>
-            <form id="formEdit" novalidate>
-                <div class="control-group">
-                    <div class="form-group floating-label-form-group controls">
-                        <label>您的称呼</label>
-                        <input type="text" class="form-control" placeholder="您的称呼" id="name"  v-model="UserName">
-                        <p class="help-block text-danger"></p>
-                    </div>
-                </div>
-                <div class="control-group">
-                    <div class="form-group floating-label-form-group controls">
-                        <label>电子邮箱</label>
-                        <input type="email" class="form-control" placeholder="电子邮箱" id="email" v-model="Email">
-                        <p class="help-block text-danger"></p>
-                    </div>
-                </div>
-                <div class="control-group">
-                    <div class="form-group col-xs-12 floating-label-form-group controls">
-                        <label>联系电话</label>
-                        <input type="tel" class="form-control" placeholder="联系电话" id="phone" v-model="Telphone">
-                        <p class="help-block text-danger"></p>
-                    </div>
-                </div>
-                <div class="control-group">
-                    <div class="form-group floating-label-form-group controls">
-                        <label>留言内容</label>
-                        <textarea rows="5" class="form-control" placeholder="留言内容" id="message" v-model="Memo"></textarea>
-                        <p class="help-block text-danger"></p>
-                    </div>
-                </div>
-                <br>
-                <div id="success"></div>
-                <div class="form-group">
-                    <input type="hidden" v-model="ActvTitle">
-                    <button type="button" class="btn btn-primary" id="sendMessageButton" v-on:click="dosubmit">提交</button>
-                </div>
-            </form>
+<div class="card">
+    <div class="card-header">
+        <h3 class="card-title">访客心声</h3>
+        <div class="card-tools">
+            <button type="button" class="btn btn-tool" data-widget="collapse" data-toggle="tooltip" title="Collapse">
+                <i class="fa fa-minus"></i>
+            </button>
         </div>
+    </div>
+    <div class="card-body">
+        <form id="formEdit" novalidate>
+            <div class="control-group">
+                <div class="form-group floating-label-form-group controls">
+                    <label>您的称呼</label>
+                    <input type="text" class="form-control" placeholder="您的称呼" id="name" v-model="UserName">
+                    <p class="help-block text-danger"></p>
+                </div>
+            </div>
+            <div class="control-group">
+                <div class="form-group floating-label-form-group controls">
+                    <label>电子邮箱</label>
+                    <input type="email" class="form-control" placeholder="电子邮箱" id="email" v-model="Email">
+                    <p class="help-block text-danger"></p>
+                </div>
+            </div>
+            <div class="control-group">
+                <div class="form-group col-xs-12 floating-label-form-group controls">
+                    <label>联系电话</label>
+                    <input type="tel" class="form-control" placeholder="联系电话" id="Telphone" v-model="Telphone">
+                    <p class="help-block text-danger"></p>
+                </div>
+            </div>
+            <div class="control-group">
+                <div class="form-group floating-label-form-group controls">
+                    <label>留言内容</label>
+                    <textarea rows="5" class="form-control" placeholder="留言内容" id="Memo" v-model="Memo"></textarea>
+                    <p class="help-block text-danger"></p>
+                </div>
+            </div>
+            <br>
+            <div id="success"></div>
+            <div class="form-group">
+                <input type="hidden" v-model="ActvTitle">
+                <button type="button" class="btn btn-primary" id="sendMessageButton" v-on:click="dosubmit">提交</button>
+            </div>
+        </form>
     </div>
 </div>
 @section scripts{
+<script src="/Content/bower_components/jqueryconfirm/jquery-confirm.js"></script>
     <script>
-    $(function () {
-        $.post('/Activity/GetModel/', { id: 0 }, function (response) {
-            response.ActvTitle = '建言献策';
-            var vue = new Vue({
-                el: "#formEdit",
-                data: function () { return response },
-                methods: {
-                    dosubmit: function () {
-                        if (response.UserName == "" || response.UserName == null)
-                        {
-                            alert('姓名必填'); $('#UserName').focus();
+        $(function () {
+            $.post('/Activity/GetModel/', { id: 0 }, function (response) {
+                response.ActvTitle = '建言献策';
+                var vue = new Vue({
+                    el: "#formEdit",
+                    data: function () { return response },
+                    methods: {
+                        dosubmit: function () {
+                            if (response.UserName == "" || response.UserName == null) {
+                                $.alert('姓名必填哦！'); $('#UserName').focus();
+                            }
+                            else if (response.Telphone == "" || response.Telphone == null) {
+                                $.alert('留个联系电话呗！'); $('#Telphone').focus();
+                            }
+                            else if (response.Memo == "" || response.Memo == null) {
+                                $.alert('您是一字千金吗！'); $('#Memo').focus();
+                            }
+                            else {
+                                $.ajax({
+                                    url: '/Activity/InsertOrUpdate',
+                                    type: "POST",
+                                    data: response,
+                                    success: function (data) {
+                                        if (data.code == 100) {
+                                            $.alert('提交成功！感谢您的意见建议！');
+                                        }
+                                        else if (data.code == 101) {
+                                            $.alert('不能重复提交！');
+                                        }
+                                        else {
+                                            alert(data.message);
+                                        }
+                                    }
+                                });
+                            }
+                            return false;
                         }
-                        else
-                        {
-                            $.ajax({
-                                url: '/Activity/InsertOrUpdate',
-                                type: "POST",
-                                data: response,
-                                success: function (data) {
-                                    if (data.code == 100) {
-                                        alert('提交成功！感谢您的意见建议。');
-                                    }
-                                    else if (data.code == 101) {
-                                        alert('不能重复提交。');
-                                    }
-                                    else {
-                                        alert(data.message);
-                                    }
-                                }
-                            });
-                        }
-                        return false;
                     }
-                }
-            })
+                })
+            });
         });
-    });
     </script>
 }

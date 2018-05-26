@@ -1,4 +1,6 @@
-﻿using FCK.Studio.Application;
+﻿using AutoMapper;
+using FCK.Studio.Application;
+using FCK.Studio.Dto;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,14 +13,31 @@ namespace FCK.Studio.Web.XTSQ.Controllers
     {
         // GET: Home
         public ActionResult Index()
-        {            
+        {
             return View();
         }
         public ActionResult About()
         {
             ArticlesService article = new ArticlesService();
-            var model = article.Reposity.GetPageList(1, 1, (o => o.TenantId == tenant.Id && o.Title == "关于我们")).datas.FirstOrDefault();
+            string _title = Request.QueryString["tit"];
+            if (_title == null)
+            {
+                _title = "关于我们";
+            }
+            Core.Articles model = new Core.Articles();
+            model = article.Reposity.GetPageList(1, 1, (o => o.TenantId == tenant.Id && o.Title == _title)).datas.FirstOrDefault();
+            if (model == null)
+            {
+                model = new Core.Articles();
+                model.Title = _title;
+                model.Contents = "找不到关于“" + _title + "”的内容！请联系管理员。";
+                model.CreationTime = DateTime.Now;
+            }
             return View(model);
+        }
+        public ActionResult Map()
+        {
+            return View();
         }
         public ActionResult Contact()
         {
@@ -44,23 +63,136 @@ namespace FCK.Studio.Web.XTSQ.Controllers
             var model = article.Reposity.Get(id);
             return View(model);
         }
-        //portfolio
         public ActionResult Portfolio()
         {
             return View();
         }
-        public ActionResult _PartialArticles(int page, int pageSize, string catename, string orderindex, int isrec)
+        [Filters.FilterCheckLogin]
+        public ActionResult Election()
         {
-            using (ArticlesService article = new ArticlesService())
+            return View();
+        }
+        public ActionResult Login()
+        {
+            return View();
+        }
+        public ActionResult Regist()
+        {
+            return View();
+        }
+        public JsonResult GetArticleList(int page, int pageSize, string keywords = "", string cateindex = "")
+        {
+            ResultDto<List<Dto.ArticleDto>> result = new ResultDto<List<Dto.ArticleDto>>();
+            ArticlesService article = new ArticlesService();
+            var item = article.Reposity.GetPageList(page, pageSize, o => o.TenantId == tenant.Id && o.Category.CategoryIndex == cateindex);
+            result = Mapper.Map<ResultDto<List<Dto.ArticleDto>>>(item);
+            article.Dispose();
+            return Json(result);
+        }
+        public JsonResult GetMemberList()
+        {
+            MembersService ObjServ = new MembersService();
+            var result = ObjServ.Reposity.GetPageList(1, 8, o => o.TenantId == tenant.Id);
+            result.datas = result.datas.OrderByDescending(o => o.CreationTime).ToList();
+            ObjServ.Dispose();
+            return Json(result);
+        }
+        public JsonResult GetMember(int id = 0)
+        {
+            Core.Members model = new Core.Members();
+            MembersService ObjServ = new MembersService();
+            var result = ObjServ.Reposity.Get(id);
+            if (result != null)
             {
-                var lists = article.GetArticleWithCate(page, pageSize, tenant.Id).datas
-                    .Where(o => o.Category.CategoryName == catename || o.Category.CategoryIndex == catename)
-                    .ToList();
-                if (isrec == 1)
-                    lists = lists.Where(o => o.IsRecommend).ToList();
-                return PartialView(lists);
+                model = result;
             }
-            
+            else
+            {
+                model.TenantId = tenant.Id;
+            }
+            ObjServ.Dispose();
+            return Json(model);
+        }
+        public JsonResult DoRegist(Core.Members input)
+        {
+            ResultDto<int> result = new ResultDto<int>();
+            try
+            {
+                MembersService ObjServ = new MembersService();
+                var item1 = ObjServ.Reposity.GetAllList(o => o.UserName == input.UserName).Count();
+                var item2 = ObjServ.Reposity.GetAllList(o => o.Mobile == input.Mobile && o.Mobile!=null).Count();
+                var item3 = ObjServ.Reposity.GetAllList(o => o.UserID == input.UserID).Count();
+                if (item1 > 0)
+                {
+                    result.code = 500;
+                    result.message = "用户名已经存在";
+                }
+                else if (item2 > 0)
+                {
+                    result.code = 500;
+                    result.message = "手机号已经存在";
+                }
+                else if (item3 > 0)
+                {
+                    result.code = 500;
+                    result.message = "身份证号已经存在";
+                }
+                else
+                {
+                    Random rand = new Random();
+                    int rank = rand.Next(1, 8);
+                    input.Photo = "/Content/dist/img/user" + rank.ToString() + ".jpg";
+                    input.Password = MD5(input.Password);
+                    input.CreationTime = DateTime.Now;
+                    input.TenantId = tenant.Id;
+                    ObjServ.Reposity.Insert(input);
+                    result.code = 100;
+                    result.message = "ok";
+                }
+                ObjServ.Dispose();
+            }
+            catch (Exception ex)
+            {
+                result.code = 500;
+                result.message = ex.Message;
+            }
+            return Json(result);
+        }
+
+        public JsonResult DoLogin(string UserName, string Password)
+        {
+            ResultDto<int> result = new ResultDto<int>();
+            try
+            {
+                MembersService ObjServ = new MembersService();
+                var model = ObjServ.Reposity.GetAllList(o => o.UserName == UserName || o.UserID == UserName || o.Mobile == UserName || o.Email == UserName).FirstOrDefault();
+                if(model != null)
+                {
+                    if (model.Password != MD5(Password))
+                    {
+                        result.code = 500;
+                        result.message = "密码错误";
+                    }
+                    else
+                    {
+                        result.code = 100;
+                        result.message = "ok";
+                        SetCookie("MemberId", model.Id.ToString(), 5);
+                    }
+                }
+                else
+                {
+                    result.code = 500;
+                    result.message = "用户不存在";
+                }
+                ObjServ.Dispose();
+            }
+            catch (Exception ex)
+            {
+                result.code = 500;
+                result.message = ex.Message;
+            }
+            return Json(result);
         }
     }
 }

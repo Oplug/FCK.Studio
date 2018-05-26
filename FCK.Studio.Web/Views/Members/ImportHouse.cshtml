@@ -1,0 +1,81 @@
+﻿
+@{
+    ViewBag.Title = "ImportHouse";
+    Layout = "~/Views/Shared/_LayoutPageInner.cshtml";
+}
+<section class="content">
+    <div class="box uploadform">
+        <form role="form" v-on:submit.prevent="submit">
+            <div class="box-body">
+                <div class="form-group">
+                    <label for="InputFile">请选择Excel文件</label>
+                    <input class="btn btn-default" type="file" id="InputFile" v-on:change="getFile">
+                    <label for="InputFile">请选择社区</label>
+                    <select class="form-control" v-model="Model.cateid">
+                        <option v-for="option in CommunityList" v-bind:value="option.Id">{{option.CategoryName}}</option>
+                    </select>
+                </div>
+            </div>
+            <div class="box-footer">
+                <input type="hidden" id="shipid" v-model="shipid">
+                <button type="submit" class="btn btn-primary btnupload">上传</button>
+            </div>
+        </form>
+    </div>
+</section>
+@section scripts{
+    <script>
+        var Model = {
+            file: [],
+            cateid: 0,
+            CommunityList:[]
+        }
+        var vm = new Vue({
+            el: '.uploadform',
+            data: Model,
+            methods: {
+                getFile(o) {
+                    Model.file = o.target.files[0];
+                },
+                submit: function () {
+                    var uploadbtn = $('.btnupload');
+                    uploadbtn.text('上传中');
+                    uploadbtn.prop('disabled', true);
+
+                    let formData = new FormData()
+                    formData.append('file', Model.file);
+                    formData.append('cateid', Model.cateid);
+
+                    $.ajax({
+                        url: '/Houses/ImportExcel',
+                        type: "POST",
+                        data: formData,
+                        processData: false,
+                        contentType : false,
+                        success: function (response) {
+                            if (response.code == 100) {
+                                $.alert(response.message);
+                                window.parent.GetDataList();
+                            } else {
+                                $.alert(response.message);
+                            }
+                            uploadbtn.text('上传');
+                            uploadbtn.prop('disabled', false);
+                        },
+                        error: function (response) {
+                            uploadbtn.text('上传');
+                            uploadbtn.prop('disabled', false);
+                        }
+                    });
+                    return false;
+                }
+            }
+        })
+        $(function () {
+            $.post('/Categories/GetTreeListByParent', { layout: 'Zone', parentcate: '东北塘街道' }, function (response) {
+                Model.CommunityList = response.datas;
+            });
+        })
+    </script>
+}
+
