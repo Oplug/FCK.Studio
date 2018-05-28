@@ -1,12 +1,14 @@
 ﻿
 @{
-    ViewBag.Title = "新闻活动";
-    Layout = "~/Views/Shared/_Layout.cshtml";
     string param = Request.QueryString["cate"];
     if (string.IsNullOrEmpty(param))
     {
         param = "新闻活动";
     }
+    ViewBag.Title = param;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+
 }
 <div class="card" id="DataList">
     <div class="card-header">
@@ -26,7 +28,6 @@
                 <div class="product-info">
                     <a v-bind:href="'/Home/Detail/'+item.Id" class="product-title">
                         {{item.Title}}
-                        <span class="badge badge-info float-right">{{item.Hits}}</span>
                     </a>
                     <span class="product-description">
                         <small>{{item.CreationTime}}</small>. <small>{{item.Category.CategoryName}}</small>{{item.Intro}}

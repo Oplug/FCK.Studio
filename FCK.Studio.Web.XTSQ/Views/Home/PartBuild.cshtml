@@ -1,0 +1,53 @@
+﻿
+@{
+    ViewBag.Title = "社区党建";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="card card-default">
+    <div class="card-header">
+        <h3 class="card-title">
+            <i class="fa fa-bullhorn"></i>
+            社区党建
+        </h3>
+    </div>
+    <div class="card-body" id="DataList">
+        <div v-for="item in mydata">
+            <a v-bind:href="'/Home/Detail/'+item.Id" class="btn btn-default btn-block text-left mb-2"><i class="fa  fa-bars"></i> {{item.Title}}</a>
+        </div>
+    </div>
+    <div class="card-footer text-right"><a href="/Activity/SignUp/61" class="btn btn-success  text-left">党员登记</a></div>
+</div>
+@section scripts{
+    <script>
+        var _cate = '社区党建'
+        var vm = new Vue({
+            el: '#DataList',
+            data: {
+                mydata: [],
+                pages: 0,
+                totalpages: 0,
+                pageindex: 1
+            },
+            methods: {
+                chgpage: function (p) {
+                    $('#pageindex').val(p);
+                    GetDataList();
+                    return false;
+                }
+            }
+        })
+        function GetDataList() {
+            $.post('/Home/GetArticleList',
+                { page: 1, pageSize: 0,cateindex: _cate },
+                function (response) {
+                    Vue.set(vm, 'mydata', response.datas)
+                });
+        }
+        GetDataList();
+    </script>
+}
+
+
+
+

@@ -11,160 +11,187 @@
 <!-- Main content -->
 <section class="content">
     <div class="container-fluid" id="DataList">
-        <div class="row">
-            <div class="col-lg-3 col-6">
-                <!-- small card -->
-                <div class="small-box bg-info">
-                    <div class="inner">
-                        <h5>兴塘社区</h5>
-                        <p>About Us</p>
-                    </div>
-                    <div class="icon">
-                        <i class="fa fa-shopping-cart"></i>
-                    </div>
-
-                    <a href="/Home/About" class="small-box-footer">
-                        <small>点击进入 </small><i class="fa fa-arrow-circle-right"></i>
-                    </a>
-
+        <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+            <ol class="carousel-indicators">
+                <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
+                <li data-target="#carouselExampleIndicators" data-slide-to="1" class=""></li>
+                <li data-target="#carouselExampleIndicators" data-slide-to="2" class=""></li>
+            </ol>
+            <div class="carousel-inner">
+                <div v-for="(item, key, index) in NewsList" v-bind:class="key==0? 'carousel-item active' : 'carousel-item'">
+                    <a v-bind:href="'/Home/Detail/'+item.Id"><img class="d-block w-100" v-bind:src="'http://mage.oplug.cn'+item.Images" v-bind:alt="item.Title" style="height:205px"></a>
                 </div>
             </div>
-            <!-- ./col -->
+            <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="sr-only">Previous</span>
+            </a>
+            <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="sr-only">Next</span>
+            </a>
+        </div>
+        
+        <h5 class="mt-4 mb-2"><i class="fa fa-institution"></i> 兴塘社区</h5>
+        <div class="row">
             <div class="col-lg-3 col-6">
-                <!-- small card -->
-                <div class="small-box bg-danger">
+                <div class="small-box bg-info" data-href="/Home/About">
                     <div class="inner">
-                        <h5>党建公益</h5>
-                        <p>Public welfare</p>
+                        <h5>社区简介</h5>
+                    </div>
+                    <div class="icon">
+                        <i class="ion ion-bag"></i>
+                    </div>
+                    <a href="/Home/About" class="small-box-footer"><small>点击进入</small> <i class="fa fa-arrow-circle-right"></i></a>
+                </div>
+            </div>
+            <div class="col-lg-3 col-6">
+                <div class="small-box bg-success" data-href="/Home/About?tit=人员公示">
+                    <div class="inner">
+                        <h5>人员公示</h5>
                     </div>
                     <div class="icon">
                         <i class="ion ion-stats-bars"></i>
                     </div>
-                    <a href="#" class="small-box-footer">
-                        <small>点击进入 </small> <i class="fa fa-arrow-circle-right"></i>
-                    </a>
+                    <a href="/Home/About?tit=人员公示" class="small-box-footer"><small>点击进入</small> <i class="fa fa-arrow-circle-right"></i></a>
                 </div>
             </div>
-            <!-- ./col -->
             <div class="col-lg-3 col-6">
-                <!-- small card -->
-                <div class="small-box bg-warning">
+                <div class="small-box bg-info" data-href="/Home/Map">
                     <div class="inner">
-                        <h5>户籍登录</h5>
-                        <p>Member Login</p>
+                        <h5>平面图</h5>
                     </div>
                     <div class="icon">
                         <i class="ion ion-person-add"></i>
                     </div>
-                    <a href="/Home/Login" class="small-box-footer">
-                        <small>点击进入 </small> <i class="fa fa-arrow-circle-right"></i>
-                    </a>
+                    <a href="/Home/Map" class="small-box-footer"><small>点击进入</small> <i class="fa fa-arrow-circle-right"></i></a>
                 </div>
             </div>
-            <!-- ./col -->
             <div class="col-lg-3 col-6">
-                <!-- small card -->
-                <div class="small-box bg-success">
+                <div class="small-box bg-info" data-href="/Home/About?tit=网格管理">
                     <div class="inner">
-                        <h5>办事流程</h5>
-                        <p>Interaction</p>
+                        <h5>网格管理</h5>
                     </div>
                     <div class="icon">
                         <i class="ion ion-pie-graph"></i>
                     </div>
-                    <a href="/Home/Service" class="small-box-footer">
-                        <small>点击进入 </small> <i class="fa fa-arrow-circle-right"></i>
-                    </a>
+                    <a href="/Home/About?tit=网格管理" class="small-box-footer"><small>点击进入</small> <i class="fa fa-arrow-circle-right"></i></a>
+                </div>
+            </div>
+            <div class="col-lg-3 col-6">
+                <div class="small-box bg-danger" data-href="/Activity/?cate=通知公告">
+                    <div class="inner">
+                        <h5>通知公告</h5>
+                    </div>
+                    <div class="icon">
+                        <i class="ion ion-pie-graph"></i>
+                    </div>
+                    <a href="/Activity/?cate=通知公告" class="small-box-footer"><small>点击进入</small> <i class="fa fa-arrow-circle-right"></i></a>
+                </div>
+            </div>
+            <div class="col-lg-3 col-6">
+                <div class="small-box bg-success" data-href="/Home/Service">
+                    <div class="inner">
+                        <h5>办事流程</h5>
+                    </div>
+                    <div class="icon">
+                        <i class="ion ion-pie-graph"></i>
+                    </div>
+                    <a href="/Home/Service" class="small-box-footer"><small>点击进入</small> <i class="fa fa-arrow-circle-right"></i></a>
+                </div>
+            </div>
+            <div class="col-lg-3 col-6">
+                <div class="small-box bg-info-gradient" data-href="/Home/Login">
+                    <div class="inner">
+                        <h5>用户登录</h5>
+                    </div>
+                    <div class="icon">
+                        <i class="ion ion-pie-graph"></i>
+                    </div>
+                    <a href="/Home/Login" class="small-box-footer"><small>点击进入</small> <i class="fa fa-arrow-circle-right"></i></a>
                 </div>
             </div>
         </div>
-        <h5 class="mt-4 mb-2">选举投票</h5>
+        <h5 class="mt-4 mb-2"><i class="fa fa-flag"></i> 党建公益</h5>
         <div class="row">
-            <div class="col-md-3 col-sm-6 col-12" v-for="item in ElectionList">
-                <div class="info-box bg-success">
-                    <span class="info-box-icon" v-on:click="dovote(item.Id)"><i class="fa fa-thumbs-o-up"></i></span>
-                    <div class="info-box-content">
-                        <span class="info-box-text">{{item.Candidate}}</span>
-                        <span class="info-box-number">{{item.NumOfVote}}</span>
-                        <div class="progress">
-                            <div class="progress-bar" style="width: 70%"></div>
-                        </div>
-                        <span class="progress-description">
-                            {{item.Intro}}
-                        </span>
+            <div class="col-lg-3 col-6">
+                <div class="small-box bg-info" data-href="/Home/PartBuild">
+                    <div class="inner">
+                        <h5>社区党建</h5>
                     </div>
+                    <div class="icon">
+                        <i class="ion ion-bag"></i>
+                    </div>
+                    <a href="/Home/PartBuild" class="small-box-footer"><small>点击进入</small> <i class="fa fa-arrow-circle-right"></i></a>
+                </div>
+            </div>
+            <div class="col-lg-3 col-6">
+                <div class="small-box bg-success" data-href="/Activity/?cate=活动报名">
+                    <div class="inner">
+                        <h5>活动报名</h5>
+                    </div>
+                    <div class="icon">
+                        <i class="ion ion-stats-bars"></i>
+                    </div>
+                    <a href="/Activity/?cate=活动报名" class="small-box-footer"><small>点击进入</small> <i class="fa fa-arrow-circle-right"></i></a>
+                </div>
+            </div>
+            <div class="col-lg-3 col-6">
+                <div class="small-box bg-danger" data-href="/Activity/?cate=党员风采">
+                    <div class="inner">
+                        <h5>党员风采</h5>
+                    </div>
+                    <div class="icon">
+                        <i class="ion ion-person-add"></i>
+                    </div>
+                    <a href="/Activity/?cate=党员风采" class="small-box-footer"><small>点击进入</small> <i class="fa fa-arrow-circle-right"></i></a>
+                </div>
+            </div>
+            <div class="col-lg-3 col-6">
+                <div class="small-box bg-info" data-href="/Home/Association">
+                    <div class="inner">
+                        <h5>社团组织</h5>
+                    </div>
+                    <div class="icon">
+                        <i class="ion ion-pie-graph"></i>
+                    </div>
+                    <a href="/Home/Association" class="small-box-footer"><small>点击进入</small> <i class="fa fa-arrow-circle-right"></i></a>
+                </div>
+            </div>
+            <div class="col-lg-3 col-6">
+                <div class="small-box bg-success" data-href="/Home/PublicWelfare">
+                    <div class="inner">
+                        <h5>公益组织</h5>
+                    </div>
+                    <div class="icon">
+                        <i class="ion ion-pie-graph"></i>
+                    </div>
+                    <a href="/Home/PublicWelfare" class="small-box-footer"><small>点击进入</small> <i class="fa fa-arrow-circle-right"></i></a>
                 </div>
             </div>
         </div>
+        <h5 class="mt-4 mb-2"><i class="fa fa-bullhorn"></i> 便民服务</h5>
         <div class="row">
-            <div class="col-md-8">
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="card">
-                            <div class="card-header">
-                                <h3 class="card-title">活动合辑</h3>
-                            </div>
-                            <!-- /.card-header -->
-                            <div class="card-body">
-                                <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
-                                    <ol class="carousel-indicators">
-                                        <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
-                                        <li data-target="#carouselExampleIndicators" data-slide-to="1" class=""></li>
-                                        <li data-target="#carouselExampleIndicators" data-slide-to="2" class=""></li>
-                                    </ol>
-                                    <div class="carousel-inner">
-                                        <div v-for="(item, key, index) in NewsList" v-bind:class="key==0? 'carousel-item active' : 'carousel-item'">
-                                           <a v-bind:href="'/Home/Detail/'+item.Id"><img class="d-block w-100" v-bind:src="'http://mage.oplug.cn'+item.Images" v-bind:alt="item.Title" style="height:205px"></a>
-                                        </div>
-                                    </div>
-                                    <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
-                                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                                        <span class="sr-only">Previous</span>
-                                    </a>
-                                    <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
-                                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                                        <span class="sr-only">Next</span>
-                                    </a>
-                                </div>
-                            </div>
-                            <!-- /.card-body -->
-                        </div>
+            <div class="col-lg-3 col-6">
+                <div class="small-box bg-success" data-href="/Home/Feedback">
+                    <div class="inner">
+                        <h5>访客心声</h5>
                     </div>
-                    
+                    <div class="icon">
+                        <i class="ion ion-stats-bars"></i>
+                    </div>
+                    <a href="/Home/Feedback" class="small-box-footer"><small>点击进入</small> <i class="fa fa-arrow-circle-right"></i></a>
                 </div>
             </div>
-            <div class="col-md-4">
-                <div class="card">
-                    <div class="card-header">
-                        <h3 class="card-title">小区介绍</h3>
-                        <div class="card-tools">
-                            <button type="button" class="btn btn-tool" data-widget="collapse">
-                                <i class="fa fa-minus"></i>
-                            </button>
-                        </div>
+            <div class="col-lg-3 col-6">
+                <div class="small-box bg-warning" data-href="/DemdInfo/">
+                    <div class="inner">
+                        <h5>邻里互助</h5>
                     </div>
-                    <!-- /.card-header -->
-                    <div class="card-body p-0">
-                        <ul class="products-list product-list-in-card pl-2 pr-2">
-                            <li class="item" v-for="item in ApartList">
-                                <div class="product-img">
-                                    <img v-bind:src="'http://mage.oplug.cn/'+item.Images" alt="image" class="img-size-50">
-                                </div>
-                                <div class="product-info">
-                                    <a v-bind:href="'/Home/Detail/'+item.Id" class="product-title">
-                                        {{item.Title}}
-                                        <span class="badge badge-success float-right">入住：2235</span>
-                                    </a>
-                                    <small class="product-description">
-                                        {{item.Intro}}
-                                    </small>
-                                </div>
-                            </li>
-                        </ul>
+                    <div class="icon">
+                        <i class="ion ion-person-add"></i>
                     </div>
-                    <div class="card-footer text-center">
-                        <a href="/Activity/?cate=小区楼盘" class="uppercase">浏览更多</a>
-                    </div>
+                    <a href="/DemdInfo/" class="small-box-footer"><small>点击进入</small> <i class="fa fa-arrow-circle-right"></i></a>
                 </div>
             </div>
         </div>
@@ -194,22 +221,13 @@
             }
         })
         $(function () {
-            $.post('/Home/GetArticleList', { page: 1, pageSize: 3, keywords: '', cateindex: '新闻活动' }, function (response) {
+            $.post('/Home/GetArticleList', { page: 1, pageSize: 3, keywords: '', cateindex: '社区动态' }, function (response) {
                 mydata.NewsList = response.datas;
             });
-
-            $.post('/Home/GetMemberList', { page: 1, pageSize: 10 }, function (response) {
-                mydata.UserList = response.datas;
-                mydata.UserCount = response.total;
-            });
-
-            $.post('/Home/GetArticleList', { page: 1, pageSize: 10, keywords: '', cateindex: 'Apartment' }, function (response) {
-                mydata.ApartList = response.datas;
-            });
-
-            $.post('/Election/GetLists', { page: 1, pageSize: 4 }, function (response) {
-                mydata.ElectionList = response.datas;
-            });
+            $('.small-box').click(function () {
+                var _href = $(this).data('href');
+                window.location = _href;
+            })
         });
     </script>
 }

@@ -371,6 +371,9 @@
     <Content Include="Views\Home\Regist.cshtml" />
     <Content Include="Views\Product\Detail.cshtml" />
     <Content Include="Views\Home\Map.cshtml" />
+    <Content Include="Views\Home\PartBuild.cshtml" />
+    <Content Include="Views\Home\Association.cshtml" />
+    <Content Include="Views\Home\PublicWelfare.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

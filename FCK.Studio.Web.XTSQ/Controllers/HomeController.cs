@@ -30,7 +30,7 @@ namespace FCK.Studio.Web.XTSQ.Controllers
             {
                 model = new Core.Articles();
                 model.Title = _title;
-                model.Contents = "找不到关于“" + _title + "”的内容！请联系管理员。";
+                model.Contents = "正在建设中......";
                 model.CreationTime = DateTime.Now;
             }
             return View(model);
@@ -44,6 +44,18 @@ namespace FCK.Studio.Web.XTSQ.Controllers
             return View();
         }
         public ActionResult Feedback()
+        {
+            return View();
+        }
+        public ActionResult PartBuild()
+        {
+            return View();
+        }
+        public ActionResult Association()
+        {
+            return View();
+        }
+        public ActionResult PublicWelfare()
         {
             return View();
         }

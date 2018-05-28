@@ -6,7 +6,7 @@
 <section class="content">
     <div class="login-box">
         <div class="login-logo">
-            <a href="/Home/">户籍登录</a>
+            <a href="/Home/">用户登录</a>
         </div>
         <div class="card">
             <div class="card-body login-card-body" id="formEdit">
@@ -27,25 +27,22 @@
                             </div>
                         </div>
                         <div class="col-4">
-                            <button type="button" class="btn btn-primary btn-block btn-flat" v-on:click="dosubmit">登录</button>
+                            <button type="button" class="btn btn-primary btn-block" v-on:click="dosubmit">登录</button>
                         </div>
                     </div>
                 </form>
                 <div class="social-auth-links text-center mb-3">
-                    <p>- OR -</p>
-                    <a href="#" class="btn btn-block btn-primary">
+                    <a href="/Home/Regist" class="btn btn-block btn-danger">
+                        <i class="fa fa-user-plus mr-2"></i>户籍登录
+                    </a>
+                    <hr />
+                    <a href="#" class="btn btn-block btn-success">
                         <i class="fa fa-weixin mr-2"></i> 微信登录
                     </a>
-                    <a href="#" class="btn btn-block btn-danger">
-                        <i class="fa fa-qq mr-2"></i>QQ登录
+                    <a href="/Home/Regist" class="btn btn-block btn-info">
+                        <i class="fa fa-user-plus mr-2"></i>用户注册
                     </a>
                 </div>
-                <p class="mb-1">
-                    <a href="#">忘记账号或密码</a>
-                </p>
-                <p class="mb-0">
-                    <a href="/Home/Regist" class="text-center">户籍注册</a>
-                </p>
             </div>
         </div>
     </div>
@@ -66,8 +63,10 @@
                         type: "POST",
                         data: mydata,
                         success: function (data) {
-                            if (data.code == 100)
+                            if (data.code == 100) {
                                 toastr.success("登录成功");
+                                window.location = "/Member/";
+                            }
                             else
                                 toastr.error(data.message);
                         }

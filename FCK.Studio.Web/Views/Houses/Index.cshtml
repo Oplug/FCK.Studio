@@ -70,7 +70,7 @@
                         </tr>
                         <tr v-for="item in mydata" v-on:click="listenedit(item)" class="">
                             <td><div class="w40 text-center"><input type="checkbox" name="obj" class="orm-check-input" v-bind:value="item.Id"></div></td>
-                            <td><div class="w60">{{item.Category.CategoryName}}</div></td>
+                            <td><small class="w60 m-block">{{item.Category.CategoryName}}</small></td>
                             <td><input type="text" class="form-control input-sm w60" v-model="item.HouseName" /></td>
                             <td><input type="text" class="form-control input-sm w60" v-model="item.UnitNum" /></td>
                             <td><input type="text" class="form-control input-sm w60" v-model="item.DoorCard" /></td>

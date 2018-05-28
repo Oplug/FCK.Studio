@@ -19,7 +19,7 @@
             {
                 <a href="/Activity/Bespeak/@(Model.Id)" class="btn btn-success">我要预约</a>
             }
-            else if (Model.Category.CategoryName == "志愿服务")
+            else if (Model.Category.CategoryName == "志愿服务" || Model.Category.CategoryName == "活动报名")
             {
                 <a href="/Activity/SignUp/@(Model.Id)" class="btn btn-primary">我要报名</a>
             }
