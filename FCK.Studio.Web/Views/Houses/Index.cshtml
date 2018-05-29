@@ -35,14 +35,52 @@
                     <button type="button" class="btn btn-default" data-toggle="tooltip" data-placement="top" title="删除" onclick="PatchDel()"><i class="fa fa-remove"></i></button>
                 </div>
                 <div class="box-tools">
-                    <div class="input-group input-group-sm" style="width: 150px;">
-                        <input type="text" name="table_search" class="form-control pull-right" placeholder="Search">
-                        <div class="input-group-btn">
-                            <input type="hidden" value="1" id="pageindex" />
-                            <button type="button" class="btn btn-default" onclick="GetDataList()"><i class="fa fa-search"></i></button>
-                        </div>
-                    </div>
+                    
                 </div>
+                <hr />
+                <form class="form-inline">
+                    <div class="form-group">
+                        <label for="Apartment">社区</label>
+                        <input type="text" class="form-control w80" name="Community">
+                    </div>
+                    <div class="form-group">
+                        <label for="Apartment">楼盘</label>
+                        <input type="text" class="form-control w80" name="Apartment">
+                    </div>
+                    <div class="form-group">
+                        <label for="UnitNum w80">单元</label>
+                        <input type="text" class="form-control w80" name="UnitNum">
+                    </div>
+                    <div class="form-group">
+                        <label for="DoorCard">门牌号</label>
+                        <input type="text" class="form-control w80" name="DoorCard">
+                    </div>
+                    <div class="form-group">
+                        <label for="HouseType">属性</label>
+                        <select class="form-control w80" name="HouseType">
+                            <option value="住宅">住宅</option>
+                            <option value="商铺">商铺</option>
+                            <option value="商业">商业</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="Owner">产权人</label>
+                        <input type="text" class="form-control w80" name="Owner">
+                    </div>
+                    <div class="form-group">
+                        <label for="ShortChar1">网格名称</label>
+                        <input type="text" class="form-control w80" name="ShortChar1">
+                    </div>
+                    <div class="form-group">
+                        <label for="ShortChar2">网格员</label>
+                        <input type="text" class="form-control w80" name="ShortChar2">
+                    </div>
+                    <div class="form-group">
+                        <input type="text" class="form-control w100" name="keywords" placeholder="keywords">
+                    </div>
+                    <input type="hidden" value="1" id="pageindex" />
+                    <button type="button" class="btn btn-default" onclick="GetDataList()"><i class="fa fa-search"></i></button>
+                </form>
             </div>
             <div id="DataTable">
                 <div class="box-body table-responsive no-padding EditTable">
@@ -194,7 +232,7 @@
         function GetDataList() {
             var _page = parseInt($('#pageindex').val())
             $.post('/Houses/GetPageLists',
-                { page: _page, pageSize: 20, keywords: $('input[name=table_search]').val() },
+                { page: _page, pageSize: 20, keywords: $('input[name=keywords]').val() },
                 function (response) {
                     Vue.set(vm, 'mydata', response.datas)
                     Vue.set(vm, 'totalpages', response.pages)

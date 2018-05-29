@@ -23,82 +23,90 @@
         <!-- /.box-header -->
         <!-- form start -->
         <form role="form" class="form-horizontal">
-            <div class="box-body">
-                <div class="form-group">
-                    <label for="ParentId" class="col-sm-2 control-label">所属分类</label>
-                    <div class="col-sm-3">
-                        <select class="form-control CategoryId" v-model="Article.CategoryId">
-                            <option v-for="option in Category" v-bind:value="option.Id">{{option.PrevStr}} {{option.CategoryName}}</option>
-                        </select>
-                    </div>
-                    <label for="IsRecommend" class="col-sm-2 control-label">属性</label>
-                    <div class="col-sm-4">
-                        <div class="checkbox">
-                            <label>
-                                <input type="checkbox" v-model="Article.IsRecommend"> 推荐
-                            </label>
-                            <label>
-                                <input type="checkbox" v-model="Article.IsHot"> 热
-                            </label>
-                            <label>
-                                <input type="checkbox" v-model="Article.IsTop"> 置顶
-                            </label>
+            <div class="box-body">                               
+                <div class="nav-tabs-custom">
+                    <ul class="nav nav-tabs">
+                        <li class="active"><a href="#tab_1" data-toggle="tab" aria-expanded="true">属性</a></li>
+                        <li class=""><a href="#tab_2" data-toggle="tab" aria-expanded="false">内容</a></li>                        
+                    </ul>
+                    <div class="tab-content">
+                        <div class="tab-pane active" id="tab_1">
+                            <div class="form-group">
+                                <label for="ParentId" class="col-sm-2 control-label">所属分类</label>
+                                <div class="col-sm-3">
+                                    <select class="form-control CategoryId" v-model="Article.CategoryId">
+                                        <option v-for="option in Category" v-bind:value="option.Id">{{option.PrevStr}} {{option.CategoryName}}</option>
+                                    </select>
+                                </div>
+                                <label for="IsRecommend" class="col-sm-2 control-label">属性</label>
+                                <div class="col-sm-4">
+                                    <div class="checkbox">
+                                        <label>
+                                            <input type="checkbox" v-model="Article.IsRecommend"> 推荐
+                                        </label>
+                                        <label>
+                                            <input type="checkbox" v-model="Article.IsHot"> 热
+                                        </label>
+                                        <label>
+                                            <input type="checkbox" v-model="Article.IsTop"> 置顶
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="Title" class="col-sm-2 control-label">标题</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" v-model="Article.Title" placeholder="Enter title">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="Keywords" class="col-sm-2 control-label">关键词</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" v-model="Article.Keywords" placeholder="Enter Keywords">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="Tags" class="col-sm-2 control-label">标签</label>
+                                <div class="col-sm-3">
+                                    <input type="text" class="form-control" v-model="Article.Tags" placeholder="Enter Tags">
+                                </div>
+                                <label for="Author" class="col-sm-2 control-label">作者</label>
+                                <div class="col-sm-4">
+                                    <input type="text" class="form-control" v-model="Article.Author" placeholder="Enter Author">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="Intro" class="col-sm-2 control-label">简介</label>
+                                <div class="col-sm-10">
+                                    <textarea class="form-control" v-model="Article.Intro" placeholder="add multiple lines"></textarea>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="LinkUrl" class="col-sm-2 control-label">外部链接</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" v-model="Article.LinkUrl" placeholder="Enter LinkUrl">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="Images" class="col-sm-2 control-label">图片上传</label>
+                                <div class="col-sm-5">
+                                    <input type="hidden" v-model="Article.Images">
+                                    <input type="file" id="fileUpload" name="fileUpload" />
+                                </div>
+                                <div class="col-sm-5">
+                                    <img v-bind:src="Article.Images" class="img-rounded" height="30" />
+                                </div>
+                            </div> 
+                        </div>
+                        <div class="tab-pane" id="tab_2">
+                            <div class="form-group">
+                                <div class="col-sm-12">
+                                    <vue-html5-editor v-bind:content="Article.Contents" height="300" ref="editor" v-model="Article.Contents" v-on:change="updateData"></vue-html5-editor>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
-                <div class="form-group">
-                    <label for="Title" class="col-sm-2 control-label">标题</label>
-                    <div class="col-sm-10">
-                        <input type="text" class="form-control" v-model="Article.Title" placeholder="Enter title">
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label for="Keywords" class="col-sm-2 control-label">关键词</label>
-                    <div class="col-sm-10">
-                        <input type="text" class="form-control" v-model="Article.Keywords" placeholder="Enter Keywords">
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label for="Tags" class="col-sm-2 control-label">标签</label>
-                    <div class="col-sm-3">
-                        <input type="text" class="form-control" v-model="Article.Tags" placeholder="Enter Tags">
-                    </div>
-                    <label for="Author" class="col-sm-2 control-label">作者</label>
-                    <div class="col-sm-4">
-                        <input type="text" class="form-control" v-model="Article.Author" placeholder="Enter Author">
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label for="Intro" class="col-sm-2 control-label">简介</label>
-                    <div class="col-sm-10">
-                        <textarea class="form-control" v-model="Article.Intro" placeholder="add multiple lines"></textarea>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label for="LinkUrl" class="col-sm-2 control-label">外部链接</label>
-                    <div class="col-sm-10">
-                        <input type="text" class="form-control" v-model="Article.LinkUrl" placeholder="Enter LinkUrl">
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label for="Images" class="col-sm-2 control-label">图片上传</label>
-                    <div class="col-sm-2">
-                        <input type="hidden" v-model="Article.Images">
-                        <input type="file" id="fileUpload" name="fileUpload" />
-                    </div>
-                    <div class="col-sm-6">
-                        <img v-bind:src="Article.Images" class="img-rounded" height="30" />
-                    </div>
-                </div>
-                <div class="form-group">
-                    
-                </div>
-                <div class="form-group">
-                    <div class="col-sm-12">
-                        <vue-html5-editor v-bind:content="Article.Contents" height="300" ref="editor" v-model="Article.Contents" v-on:change="updateData"></vue-html5-editor>
-                    </div>                    
-                </div>
-                
             </div>
             <!-- /.box-body -->
             <div class="box-footer">
@@ -122,6 +130,8 @@
 <script>
     var _Id = '@(ViewBag.Id)';
     $.post('/Articles/GetModelWithCategory', { id: _Id }, function (response) {
+        if (response.Article.Author == null)
+            response.Article.Author = "admin"
         Vue.use(VueHtml5Editor, {
             showModuleName: false
         })
@@ -159,8 +169,9 @@
                         type: "POST",
                         data: response.Article,
                         success: function (data) {
-                            if (data.code == 100)
+                            if (data.code == 100) {
                                 toastr.success('保存成功！');
+                            }
                             else
                                 toastr.error(data.message);
                         }

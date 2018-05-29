@@ -1,17 +1,17 @@
 ﻿.w40{
-    width:40px;
+    width:40px !important;
 }
 .w60{
-    width:60px;
+    width:60px !important;
 }
 .w80{
-    width:80px;
+    width:80px !important;
 }
 .w100{
-    width:100px;
+    width:100px !important;
 }
 .w120{
-    width:120px;
+    width:120px !important;
 }
 .EditTable input{
     border:0px !important;
