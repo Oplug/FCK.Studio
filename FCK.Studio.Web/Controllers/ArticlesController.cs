@@ -65,6 +65,7 @@ namespace FCK.Studio.Web.Controllers
             return Json(result);
         }
 
+        [ValidateInput(false)]
         public JsonResult InsertOrUpdate(Articles input)
         {
             ResultDto<long> result = new ResultDto<long>();
@@ -83,7 +84,7 @@ namespace FCK.Studio.Web.Controllers
                     input.UpdateTime = DateTime.Now;
                     input.CreationTime = ArticleRead.Reposity.Get(input.Id).CreationTime;
                 }
-                input.Contents = HttpUtility.UrlDecode(input.Contents);
+                input.Contents = HttpUtility.HtmlDecode(input.Contents); 
                 input.TenantId = TenantId;
 
                 Article.Reposity.InsertOrUpdate(input);

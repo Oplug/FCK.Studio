@@ -42,5 +42,17 @@ namespace FCK.Studio.Core
         [MaxLength(200)]
         public string FileUrl { get; set; }
         public int CheckedLevel { get; set; }
+        /// <summary>
+        /// 报名限额
+        /// </summary>
+        public int LimitSignUp { get; set; }
+        /// <summary>
+        /// 已报名人数
+        /// </summary>
+        public int SignUpNums { get; set; }
+        /// <summary>
+        /// 报名截止日期
+        /// </summary>
+        public DateTime? SignUpEndTime { get; set; }
     }
 }

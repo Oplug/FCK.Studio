@@ -192,6 +192,10 @@
     <Compile Include="Migrations\201805241405001_UptHouses.Designer.cs">
       <DependentUpon>201805241405001_UptHouses.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201805302241232_UptAArticle.cs" />
+    <Compile Include="Migrations\201805302241232_UptAArticle.Designer.cs">
+      <DependentUpon>201805302241232_UptAArticle.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -310,6 +314,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201805241405001_UptHouses.resx">
       <DependentUpon>201805241405001_UptHouses.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201805302241232_UptAArticle.resx">
+      <DependentUpon>201805302241232_UptAArticle.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

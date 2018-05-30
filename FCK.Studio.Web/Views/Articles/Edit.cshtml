@@ -101,7 +101,8 @@
                         <div class="tab-pane" id="tab_2">
                             <div class="form-group">
                                 <div class="col-sm-12">
-                                    <vue-html5-editor v-bind:content="Article.Contents" height="300" ref="editor" v-model="Article.Contents" v-on:change="updateData"></vue-html5-editor>
+                                    <textarea class="hidden">{{Article.Contents}}</textarea>
+                                    <vue-html5-editor v-bind:content="Article.Contents" height="300" ref="editor" v-on:change="updateData" v-model="Article.Contents"></vue-html5-editor>
                                 </div>
                             </div>
                         </div>
@@ -163,7 +164,7 @@
                     $('.select2').select2();
                 },
                 dosubmit: function () {
-                    response.Article.Contents = escape(response.Article.Contents);
+                    //response.Article.Contents = escape(response.Article.Contents);
                     $.ajax({
                         url: '/Articles/InsertOrUpdate',
                         type: "POST",
