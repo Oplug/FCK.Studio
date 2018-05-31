@@ -134,7 +134,24 @@
         if (response.Article.Author == null)
             response.Article.Author = "admin"
         Vue.use(VueHtml5Editor, {
-            showModuleName: false
+            showModuleName: false,
+            image: {
+                sizeLimit: 1920 * 1080,
+                upload: {
+                    url: "/ashx/upload.ashx",
+                    headers: {},
+                    params: {},
+                    fieldName: 'file'
+                },
+                uploadHandler(responseText) {
+                    var json = JSON.parse(responseText)
+                    if (json.error==1) {
+                        alert(json.message)
+                    } else {
+                        return 'http://mage.oplug.cn'+json.url
+                    }
+                }
+            }
         })
         var vm = new Vue({
             el: "#formArticleEdit",

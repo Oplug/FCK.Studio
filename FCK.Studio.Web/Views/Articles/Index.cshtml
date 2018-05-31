@@ -30,6 +30,7 @@
                     <table id="DataTable" class="table table-bordered table-hover">
                         <thead>
                             <tr>
+                                <th>ID</th>
                                 <th>标题</th>
                                 <th>分类</th>
                                 <th>作者</th>
@@ -40,6 +41,7 @@
                         </thead>
                         <tbody>
                             <tr v-for="item in mydata">
+                                <td>{{item.Id}}</td>
                                 <td>{{item.Title}}</td>
                                 <td>{{item.Category.CategoryName}}</td>
                                 <td>{{item.Author}}</td>

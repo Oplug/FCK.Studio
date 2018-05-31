@@ -19,4 +19,11 @@
         <small>创建时间：@(Model.CreationTime) 责任编辑：@(Model.Author)</small>
     </div>
 </div>
+@section scripts{
+    <script>
+        $(function () {
+            $('.card-body img').addClass("img-responsive");
+        });
+    </script>
+}
 

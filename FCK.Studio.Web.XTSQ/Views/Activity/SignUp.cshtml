@@ -1,11 +1,11 @@
 ﻿@model FCK.Studio.Core.Articles
 @{
-    ViewBag.Title = "活动报名";
+    ViewBag.Title = Model.Title;
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 <div class="card">
     <div class="card-header">
-        <h3 class="card-title">活动报名</h3>
+        <h3 class="card-title">@(Model.Title)</h3>
         <div class="card-tools">
             <button type="button" class="btn btn-tool" data-widget="collapse" data-toggle="tooltip" title="Collapse">
                 <i class="fa fa-minus"></i>
@@ -14,10 +14,6 @@
     </div>
     <div class="card-body">
         <form id="formEdit">
-            <div class="form-group">
-                <label for="BespeakEvent">报名事项</label>
-                <input type="text" class="form-control" id="BespeakEvent" v-model="ActvTitle" readonly="readonly">
-            </div>
             <div class="form-group">
                 <label class="radio-inline">
                     <input type="radio" name="inlineRadioOptions" id="inlineRadio1" value="党员" v-model="PoliticalStatus"> 党员
@@ -46,6 +42,7 @@
                 <label for="Email">电子邮件</label>
                 <input type="email" class="form-control" id="Email" v-model="Email" placeholder="Your email">
             </div>
+            <input type="hidden" v-model="ActvTitle">
             <input type="hidden" v-model="ActvID">
             <button type="button" class="btn btn-primary" v-on:click="dosubmit">提交</button>
         </form>

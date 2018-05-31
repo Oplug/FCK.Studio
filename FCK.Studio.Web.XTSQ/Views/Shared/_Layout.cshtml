@@ -17,6 +17,13 @@
     <link rel="stylesheet" href="/Content/dist/css/adminlte.min.css">
     <!-- Google Font: Source Sans Pro -->
     <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+    <style>
+        .img-responsive {
+            display: block;
+            height: auto;
+            max-width: 100%;
+        }
+    </style>
     @RenderSection("css", required: false)
 </head>
 <body class="hold-transition sidebar-mini">
@@ -119,7 +126,7 @@
                                     </a>
                                 </li>
                             </ul>
-                        </li>                        
+                        </li>
                         <li class="nav-item has-treeview">
                             <a href="#" class="nav-link">
                                 <i class="nav-icon fa fa-table"></i>
@@ -182,7 +189,7 @@
                                         <p>邻里互助</p>
                                     </a>
                                 </li>
-                            </ul>                          
+                            </ul>
                         </li>
                         <li class="nav-item has-treeview">
                             <a href="/Member/Login" class="nav-link">
