@@ -28,7 +28,7 @@ namespace FCK.Studio.Web.Controllers
         public JsonResult GetLists(int page, int pageSize)
         {
             ArticlesService Article = new ArticlesService();
-            var result = Article.GetArticleWithCate(page, pageSize, TenantId);
+            var result = Article.Reposity.GetPageList(page, pageSize, (o => o.TenantId == TenantId));
             var lists = Mapper.Map<ResultDto<List<Dto.ArticleDto>>>(result);
             return Json(lists);
         }
@@ -84,7 +84,7 @@ namespace FCK.Studio.Web.Controllers
                     input.UpdateTime = DateTime.Now;
                     input.CreationTime = ArticleRead.Reposity.Get(input.Id).CreationTime;
                 }
-                input.Contents = HttpUtility.HtmlDecode(input.Contents); 
+                input.Contents = HttpUtility.HtmlDecode(input.Contents);
                 input.TenantId = TenantId;
 
                 Article.Reposity.InsertOrUpdate(input);
@@ -179,7 +179,7 @@ namespace FCK.Studio.Web.Controllers
         /**
          * 传入动作，action=recommend 推荐
          **/
-        public JsonResult Recommend(long[] ids, string action)
+        public JsonResult Recommend(long[] ids)
         {
             Studio.Dto.ResultDto<string> result = new Studio.Dto.ResultDto<string>();
             try
@@ -189,8 +189,8 @@ namespace FCK.Studio.Web.Controllers
                     for (int i = 0; i < ids.Length; i++)
                     {
                         long id = ids[i];
-                        var input = Article.Reposity.FirstOrDefault(id);
-                        input.IsRecommend = action.Equals("recommend") ? true : false;
+                        var input = Article.Reposity.Get(id);
+                        input.IsRecommend = input.IsRecommend ? false : true;
                         Article.Reposity.InsertOrUpdate(input);
                     }
                     result.code = 100;

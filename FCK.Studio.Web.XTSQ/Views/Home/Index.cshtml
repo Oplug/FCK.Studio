@@ -221,7 +221,7 @@
             }
         })
         $(function () {
-            $.post('/Home/GetArticleList', { page: 1, pageSize: 3, keywords: '', cateindex: '社区动态' }, function (response) {
+            $.post('/Home/GetArticleList', { page: 1, pageSize: 3, keywords: '', cateindex: '社区动态', isrec: 1 }, function (response) {
                 mydata.NewsList = response.datas;
             });
             $('.small-box').click(function () {

@@ -92,11 +92,16 @@ namespace FCK.Studio.Web.XTSQ.Controllers
         {
             return View();
         }
-        public JsonResult GetArticleList(int page, int pageSize, string keywords = "", string cateindex = "")
+        public JsonResult GetArticleList(int page, int pageSize, string keywords = "", string cateindex = "", int isrec = -1)
         {
             ResultDto<List<Dto.ArticleDto>> result = new ResultDto<List<Dto.ArticleDto>>();
             ArticlesService article = new ArticlesService();
             var item = article.Reposity.GetPageList(page, pageSize, o => o.TenantId == tenant.Id && o.Category.CategoryIndex == cateindex);
+            if (isrec >= 0)
+            {
+                bool rec = isrec > 0;
+                item.datas = item.datas.Where(o => o.IsRecommend == rec).ToList();
+            }
             result = Mapper.Map<ResultDto<List<Dto.ArticleDto>>>(item);
             article.Dispose();
             return Json(result);
@@ -132,8 +137,8 @@ namespace FCK.Studio.Web.XTSQ.Controllers
             {
                 MembersService ObjServ = new MembersService();
                 var item1 = ObjServ.Reposity.GetAllList(o => o.UserName == input.UserName).Count();
-                var item2 = ObjServ.Reposity.GetAllList(o => o.Mobile == input.Mobile && o.Mobile!=null).Count();
-                var item3 = ObjServ.Reposity.GetAllList(o => o.UserID == input.UserID).Count();
+                var item2 = ObjServ.Reposity.GetAllList(o => o.Mobile == input.Mobile && o.Mobile != null).Count();
+                var item3 = ObjServ.Reposity.GetAllList(o => o.UserID == input.UserID && o.UserID != "00").Count();
                 if (item1 > 0)
                 {
                     result.code = 500;
@@ -178,7 +183,7 @@ namespace FCK.Studio.Web.XTSQ.Controllers
             {
                 MembersService ObjServ = new MembersService();
                 var model = ObjServ.Reposity.GetAllList(o => o.UserName == UserName || o.UserID == UserName || o.Mobile == UserName || o.Email == UserName).FirstOrDefault();
-                if(model != null)
+                if (model != null)
                 {
                     if (model.Password != MD5(Password))
                     {

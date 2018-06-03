@@ -18,6 +18,7 @@ namespace FCK.Studio.Web.Dto
         public string Title { get; set; }
         public string Author { get; set; }
         public Categories Category { get; set; }
+        public bool IsRecommend { get; set; }
         public string CreationTime { get; set; }
         public string UpdateTime { get; set; }
     }

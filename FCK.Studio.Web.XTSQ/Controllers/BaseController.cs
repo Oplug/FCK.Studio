@@ -24,10 +24,10 @@ namespace FCK.Studio.Web.XTSQ.Controllers
                 TenantsService tenantS = new TenantsService();
                 tenant = tenantS.Reposity.GetAllList(o => o.SecretKey == new Guid(AppSecretKey)).FirstOrDefault();                
                 tenantS.Dispose();
-                GetMember();
+                GetMemberCookie();
             } catch { } 
         }
-        public void GetMember()
+        public void GetMemberCookie()
         {
             if (GetCookie("MemberId") != null && MemberId == 0)
             {
