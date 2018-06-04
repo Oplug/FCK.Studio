@@ -88,6 +88,12 @@
                                         else if (data.code == 101) {
                                             $.alert('不能重复报名。');
                                         }
+                                        else if (data.code == 102) {
+                                            $.alert('已超出报名限额。');
+                                        }
+                                        else if (data.code == 103) {
+                                            $.alert('已过报名截止日期了哦！');
+                                        }
                                         else {
                                             $.alert('发生系统错误！Detail:' + data.message);
                                         }

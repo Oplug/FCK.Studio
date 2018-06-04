@@ -16,7 +16,7 @@
         @(Html.Raw(Model.Contents))
     </div>
     <div class="card-footer">
-        <small>创建时间：@(Model.CreationTime) 责任编辑：@(Model.Author)</small>
+        <small><i class="fa fa-clock-o"></i> @(Model.UpdateTime) <i class="fa fa-pencil"></i> @(Model.Author)</small>
     </div>
 </div>
 @section scripts{

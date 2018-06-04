@@ -55,18 +55,22 @@ namespace FCK.Studio.Web.Controllers
             {
                 model = entity;
             }
+            else
+            {
+                model.UpdateTime = DateTime.Now;
+            }
             CategoriesService Category = new CategoriesService();
 
             CategoriesController cateCtrl = new CategoriesController();
 
             var lists = Category.Reposity.GetPageList(1, 0, (o => o.TenantId == TenantId));
-            result.Article = model;
+            result.Article = Mapper.Map<Dto.ArticleInput>(model);
             result.Category = cateCtrl.GetCategoryTree(TenantId);
             return Json(result);
         }
 
         [ValidateInput(false)]
-        public JsonResult InsertOrUpdate(Articles input)
+        public JsonResult CreateOrUpdate(ArticleInput model)
         {
             ResultDto<long> result = new ResultDto<long>();
             try
@@ -74,6 +78,7 @@ namespace FCK.Studio.Web.Controllers
                 ArticlesService ArticleRead = new ArticlesService();
                 ArticlesService Article = new ArticlesService();
                 CategoriesService Category = new CategoriesService();
+                var input = Mapper.Map<Articles>(model);
                 if (input.Id == 0)
                 {
                     input.CreationTime = DateTime.Now;
@@ -81,7 +86,7 @@ namespace FCK.Studio.Web.Controllers
                 else
                 {
                     input.Category = Category.Reposity.Get(input.CategoryId);
-                    input.UpdateTime = DateTime.Now;
+                    //input.UpdateTime = DateTime.Now;
                     input.CreationTime = ArticleRead.Reposity.Get(input.Id).CreationTime;
                 }
                 input.Contents = HttpUtility.HtmlDecode(input.Contents);
@@ -218,6 +223,21 @@ namespace FCK.Studio.Web.Controllers
         }
 
         public JsonResult GetPageLists(int page, int pageSize, string keywords = "")
+        {
+            ArticlesService Article = new ArticlesService();
+            ResultDto<List<Articles>> result = new ResultDto<List<Articles>>();
+            if (string.IsNullOrEmpty(keywords))
+            {
+                result = Article.Reposity.GetPageList(page, pageSize, (o => o.TenantId == TenantId));
+            }
+            else
+                result = Article.Reposity.GetPageList(page, pageSize, (o => o.TenantId == TenantId && o.Title.Contains(keywords)));
+            var lists = Mapper.Map<ResultDto<List<Dto.ArticleDto>>>(result);
+            Article.Dispose();
+            return Json(lists);
+        }
+
+        public JsonResult InsertOrUpdate(Articles input)
         {
             throw new NotImplementedException();
         }

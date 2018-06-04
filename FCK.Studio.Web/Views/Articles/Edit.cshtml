@@ -23,11 +23,12 @@
         <!-- /.box-header -->
         <!-- form start -->
         <form role="form" class="form-horizontal">
-            <div class="box-body">                               
+            <div class="box-body">
                 <div class="nav-tabs-custom">
                     <ul class="nav nav-tabs">
-                        <li class="active"><a href="#tab_1" data-toggle="tab" aria-expanded="true">属性</a></li>
-                        <li class=""><a href="#tab_2" data-toggle="tab" aria-expanded="false">内容</a></li>                        
+                        <li class="active"><a href="#tab_1" data-toggle="tab" aria-expanded="true">基本属性</a></li>
+                        <li class=""><a href="#tab_2" data-toggle="tab" aria-expanded="false">内容属性</a></li>
+                        <li class=""><a href="#tab_3" data-toggle="tab" aria-expanded="false">报名参数</a></li>
                     </ul>
                     <div class="tab-content">
                         <div class="tab-pane active" id="tab_1">
@@ -96,13 +97,39 @@
                                 <div class="col-sm-5">
                                     <img v-bind:src="Article.Images" class="img-rounded" height="30" />
                                 </div>
-                            </div> 
+                            </div>
+                            <div class="form-group">
+                                <label for="UpdateTime" class="col-sm-2 control-label">更新时间</label>
+                                <div class="col-sm-5">
+                                    <input type="text" class="form-control" v-model="Article.UpdateTime" placeholder="Enter UpdateTime">
+                                </div>
+                            </div>
                         </div>
                         <div class="tab-pane" id="tab_2">
                             <div class="form-group">
                                 <div class="col-sm-12">
                                     <textarea class="hidden">{{Article.Contents}}</textarea>
                                     <vue-html5-editor v-bind:content="Article.Contents" height="300" ref="editor" v-on:change="updateData" v-model="Article.Contents"></vue-html5-editor>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane" id="tab_3">
+                            <div class="form-group">
+                                <label for="LimitSignUp" class="col-sm-2 control-label">报名限额</label>
+                                <div class="col-sm-4">
+                                    <input type="number" class="form-control" v-model="Article.LimitSignUp">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="LinkUrl" class="col-sm-2 control-label">截至日期</label>
+                                <div class="col-sm-4">
+                                    <input type="text" class="form-control" v-model="Article.SignUpEndTime">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="LinkUrl" class="col-sm-2 control-label">已报名人数</label>
+                                <div class="col-sm-4">
+                                    <input type="number" class="form-control" v-model="Article.SignUpNums">
                                 </div>
                             </div>
                         </div>
@@ -121,84 +148,84 @@
 </section>
 <!-- /.content -->
 @section css{
-<link rel="stylesheet" href="/Content/bower_components/pekeUpload/css/custom.css" />
-<link rel="stylesheet" href="/Content/bower_components/select2/dist/css/select2.min.css">
- }
+    <link rel="stylesheet" href="/Content/bower_components/pekeUpload/css/custom.css" />
+    <link rel="stylesheet" href="/Content/bower_components/select2/dist/css/select2.min.css">
+}
 @section scripts{
-<script src="/Content/bower_components/pekeUpload/js/pekeUpload.js"></script>
-<script src="/Content/dist/js/vue-html5-editor.js"></script>
-<script src="/Content/bower_components/select2/dist/js/select2.full.min.js"></script>
-<script>
-    var _Id = '@(ViewBag.Id)';
-    $.post('/Articles/GetModelWithCategory', { id: _Id }, function (response) {
-        if (response.Article.Author == null)
-            response.Article.Author = "admin"
-        Vue.use(VueHtml5Editor, {
-            showModuleName: false,
-            image: {
-                sizeLimit: 1920 * 1080,
-                upload: {
-                    url: "/ashx/upload.ashx",
-                    headers: {},
-                    params: {},
-                    fieldName: 'file'
-                },
-                uploadHandler(responseText) {
-                    var json = JSON.parse(responseText)
-                    if (json.error==1) {
-                        alert(json.message)
-                    } else {
-                        return 'http://mage.oplug.cn'+json.url
+    <script src="/Content/bower_components/pekeUpload/js/pekeUpload.js"></script>
+    <script src="/Content/dist/js/vue-html5-editor.js"></script>
+    <script src="/Content/bower_components/select2/dist/js/select2.full.min.js"></script>
+    <script>
+        var _Id = '@(ViewBag.Id)';
+        $.post('/Articles/GetModelWithCategory', { id: _Id }, function (response) {
+            if (response.Article.Author == null)
+                response.Article.Author = "admin"
+            Vue.use(VueHtml5Editor, {
+                showModuleName: false,
+                image: {
+                    sizeLimit: 1920 * 1080,
+                    upload: {
+                        url: "/ashx/upload.ashx",
+                        headers: {},
+                        params: {},
+                        fieldName: 'file'
+                    },
+                    uploadHandler(responseText) {
+                        var json = JSON.parse(responseText)
+                        if (json.error == 1) {
+                            alert(json.message)
+                        } else {
+                            return 'http://mage.oplug.cn' + json.url
+                        }
                     }
                 }
-            }
-        })
-        var vm = new Vue({
-            el: "#formArticleEdit",
-            data: function () { return response },
-            methods: {
-                updateData: function (data) {
-                    response.Article.Contents = data;
-                },
-                initUpload:function(){
-                    $("#fileUpload").pekeUpload({
-                        onSubmit: false,
-                        maxSize: 1,
-                        theme: 'bootstrap',
-                        btnText: "选择图片...",
-                        url: "/ashx/upload.ashx",
-                        showErrorAlerts: false,
-                        showFilename:false,
-                        allowedExtensions: "jpeg|jpg|png|gif",
-                        onFileError: function (file, error) {
-                            toastr.error("error on file: " + file.name + " error: " + error + "")
-                        },
-                        onFileSuccess: function (file, data) {
-                            toastr.success("上传成功");
-                            response.Article.Images = data.url;
-                        }
-                    });
-                    $('.select2').select2();
-                },
-                dosubmit: function () {
-                    //response.Article.Contents = escape(response.Article.Contents);
-                    $.ajax({
-                        url: '/Articles/InsertOrUpdate',
-                        type: "POST",
-                        data: response.Article,
-                        success: function (data) {
-                            if (data.code == 100) {
-                                toastr.success('保存成功！');
+            })
+            var vm = new Vue({
+                el: "#formArticleEdit",
+                data: function () { return response },
+                methods: {
+                    updateData: function (data) {
+                        response.Article.Contents = data;
+                    },
+                    initUpload: function () {
+                        $("#fileUpload").pekeUpload({
+                            onSubmit: false,
+                            maxSize: 1,
+                            theme: 'bootstrap',
+                            btnText: "选择图片...",
+                            url: "/ashx/upload.ashx",
+                            showErrorAlerts: false,
+                            showFilename: false,
+                            allowedExtensions: "jpeg|jpg|png|gif",
+                            onFileError: function (file, error) {
+                                toastr.error("error on file: " + file.name + " error: " + error + "")
+                            },
+                            onFileSuccess: function (file, data) {
+                                toastr.success("上传成功");
+                                response.Article.Images = data.url;
                             }
-                            else
-                                toastr.error(data.message);
-                        }
-                    });
-                    return false;
+                        });
+                        $('.select2').select2();
+                    },
+                    dosubmit: function () {
+                        //response.Article.Contents = escape(response.Article.Contents);
+                        $.ajax({
+                            url: '/Articles/CreateOrUpdate',
+                            type: "POST",
+                            data: response.Article,
+                            success: function (data) {
+                                if (data.code == 100) {
+                                    toastr.success('保存成功！');
+                                }
+                                else
+                                    toastr.error(data.message);
+                            }
+                        });
+                        return false;
+                    }
                 }
-            }
-        })
-        vm.initUpload();
-    });
-</script>
- }
+            })
+            vm.initUpload();
+        });
+    </script>
+}

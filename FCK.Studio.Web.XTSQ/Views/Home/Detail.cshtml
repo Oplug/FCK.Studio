@@ -21,14 +21,22 @@
             }
             else if (Model.Category.CategoryName == "志愿服务" || Model.Category.CategoryName == "活动报名")
             {
-                <a href="/Activity/SignUp/@(Model.Id)" class="btn btn-primary">我要报名</a>
+                <p class="text-center">限额：@(Model.LimitSignUp) 已报名：@(Model.SignUpNums) 截至日期：@(Model.SignUpEndTime==null?"": Model.SignUpEndTime.Value.ToShortDateString())</p>
+                if (Model.SignUpNums >= Model.LimitSignUp || DateTime.Now > Model.SignUpEndTime)
+                {
+                    <p class="text-center"><button class="btn btn-default disabled">我要报名</button></p>
+                }
+                else
+                {
+                    <p class="text-center"><a href="/Activity/SignUp/@(Model.Id)" class="btn btn-primary">我要报名</a></p>
+                }
             }
         </p>
 
     </div>
     <div class="card-footer">
         <small>
-            责任编辑：@(Model.Author). @(Model.Category.CategoryName) 发布时间：@(Model.CreationTime.ToString("yyyy-MM-dd hh:mm:ss")) 
+            <i class="fa fa-pencil"></i> @(Model.Author) <i class="fa fa-reorder"></i> @(Model.Category.CategoryName) <i class="fa fa-clock-o"></i> @(Model.UpdateTime) 
         </small>
     </div>
 </div>

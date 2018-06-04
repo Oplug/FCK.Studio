@@ -22,8 +22,15 @@
                 <button type="button" class="btn btn-default btn-sm"><i class="fa fa-reply"></i></button>
                 <button type="button" class="btn btn-default btn-sm"><i class="fa fa-share"></i></button>
             </div>
-            <!-- /.btn-group -->
-            <button type="button" class="btn btn-default btn-sm" onclick="GetDataList()"><i class="fa fa-refresh"></i></button>
+            <div class="box-tools">
+                <div class="input-group" style="width:180px">
+                    <input type="text" class="form-control" name="keywords" placeholder="keywords">
+                    <span class="input-group-btn">
+                        <button type="button" class="btn btn-info" onclick="GetDataList()"><i class="fa fa-search"></i></button>
+                    </span>
+                </div>
+            </div>
+            
             <input type="hidden" value="1" id="pageindex" />
         </div>
         <!-- /.box-header -->
@@ -127,7 +134,7 @@
 
         function GetDataList() {
             var _page = parseInt($('#pageindex').val())
-            $.post('/Articles/GetLists', { page: _page, pageSize: 10 }, function (response) {
+            $.post('/Articles/GetPageLists', { page: _page, pageSize: 10, keywords: $('input[name=keywords]').val() }, function (response) {
                 Vue.set(vm, 'mydata', response.datas);
                 Vue.set(vm, 'totalpages', response.pages)
                 Vue.set(vm, 'pages', response.pages > 10 ? 10 : response.pages)

@@ -69,22 +69,45 @@ namespace FCK.Studio.Web.XTSQ.Controllers
             {
                 try
                 {
-                    var ishas = subkS.Reposity.GetPageList(1, 0, (o => o.UserName == input.UserName && o.ActvID == input.ActvID)).total;
-                    if (ishas > 0)
+                    ArticlesService articleS = new ArticlesService();
+                    var article = articleS.Reposity.Get(input.ActvID);
+                    if (article != null)
                     {
-                        result.code = 101;
-                        result.message = "Cannot repeat or make an appointment";
-                    }
-                    else
-                    {
-                        if (input.Id == 0)
+                        if (article.SignUpNums < article.LimitSignUp)
                         {
-                            input.TenantId = tenant.Id;
-                            input.CreationTime = DateTime.Now;
+                            if (article.SignUpEndTime != null && article.SignUpEndTime.Value < DateTime.Now)
+                            {
+                                result.code = 103;
+                            }
+                            else
+                            {
+                                var ishas = subkS.Reposity.GetPageList(1, 0, (o => o.UserName == input.UserName && o.ActvID == input.ActvID)).total;
+                                if (ishas > 0)
+                                {
+                                    result.code = 101;
+                                    result.message = "Cannot repeat or make an appointment";
+                                }
+                                else
+                                {
+                                    if (input.Id == 0)
+                                    {
+                                        input.TenantId = tenant.Id;
+                                        input.CreationTime = DateTime.Now;
+                                    }
+                                    var data = subkS.Reposity.InsertOrUpdate(input);
+
+                                    article.SignUpNums += 1;
+                                    articleS.Reposity.Update(article);
+
+                                    result.code = 100;
+                                    result.message = "success";
+                                }
+                            }
+                        }                        
+                        else
+                        {
+                            result.code = 102;
                         }
-                        var data = subkS.Reposity.InsertOrUpdate(input);
-                        result.code = 100;
-                        result.message = "success";
                     }
                 }
                 catch(Exception ex)
