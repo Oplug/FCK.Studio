@@ -96,7 +96,7 @@ namespace FCK.Studio.Web.XTSQ.Controllers
         {
             ResultDto<List<Dto.ArticleDto>> result = new ResultDto<List<Dto.ArticleDto>>();
             ArticlesService article = new ArticlesService();
-            var item = article.Reposity.GetPageList(page, pageSize, o => o.TenantId == tenant.Id && o.Category.CategoryIndex == cateindex);
+            var item = article.GetArticleOrderByTime(page, pageSize, o => o.TenantId == tenant.Id && o.Category.CategoryIndex == cateindex);
             if (isrec >= 0)
             {
                 bool rec = isrec > 0;

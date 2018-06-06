@@ -28,7 +28,7 @@ namespace FCK.Studio.Web.Controllers
         public JsonResult GetLists(int page, int pageSize)
         {
             ArticlesService Article = new ArticlesService();
-            var result = Article.Reposity.GetPageList(page, pageSize, (o => o.TenantId == TenantId));
+            var result = Article.GetArticleOrderByTime(page, pageSize, (o => o.TenantId == TenantId));
             var lists = Mapper.Map<ResultDto<List<Dto.ArticleDto>>>(result);
             return Json(lists);
         }
@@ -228,10 +228,10 @@ namespace FCK.Studio.Web.Controllers
             ResultDto<List<Articles>> result = new ResultDto<List<Articles>>();
             if (string.IsNullOrEmpty(keywords))
             {
-                result = Article.Reposity.GetPageList(page, pageSize, (o => o.TenantId == TenantId));
+                result = Article.GetArticleOrderByTime(page, pageSize, (o => o.TenantId == TenantId));
             }
             else
-                result = Article.Reposity.GetPageList(page, pageSize, (o => o.TenantId == TenantId && o.Title.Contains(keywords)));
+                result = Article.GetArticleOrderByTime(page, pageSize, (o => o.TenantId == TenantId && o.Title.Contains(keywords)));
             var lists = Mapper.Map<ResultDto<List<Dto.ArticleDto>>>(result);
             Article.Dispose();
             return Json(lists);
