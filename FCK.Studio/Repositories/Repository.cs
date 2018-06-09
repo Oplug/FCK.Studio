@@ -116,7 +116,7 @@ namespace FCK.Studio.Repositories
         }
         public List<TEntity> GetAllList(Expression<Func<TEntity, bool>> predicate)
         {
-            var lists = dbEntity.Where(predicate).ToList();
+            var lists = dbEntity.Where(predicate.Compile()).ToList();
             return lists;
         }
 

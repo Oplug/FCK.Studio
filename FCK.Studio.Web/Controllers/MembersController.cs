@@ -11,6 +11,7 @@ using System.IO;
 using NPOI.HSSF.UserModel;
 using NPOI.SS.UserModel;
 using System.Text;
+using System.Linq.Expressions;
 
 namespace FCK.Studio.Web.Controllers
 {
@@ -144,16 +145,10 @@ namespace FCK.Studio.Web.Controllers
             {
                 ResultDto<List<Members>> items = new ResultDto<List<Members>>();
                 MembersService Member = new MembersService();
-                if (!string.IsNullOrEmpty(keywords))
-                {
-                    items = Member.Reposity.GetPageList(page, pageSize, o => (o.UserName.Contains(keywords) || o.NickName.Contains(keywords) || o.Email.Contains(keywords) || o.UserID == keywords || o.TrueName == keywords) && o.TenantId == TenantId);
-                }
-                else
-                {
-                    items = Member.Reposity.GetPageList(page, pageSize, o => o.TenantId == TenantId);
-                }                
+                var predicate = PredicateBuilder.True<Members>();
+                predicate = o => o.TenantId == TenantId;
+                items = Member.GetListOrderByTime(page, pageSize, predicate, keywords);
                 result = Mapper.Map<ResultDto<List<Dto.MemberOutDto>>>(items);
-                result.datas = result.datas.OrderByDescending(o => o.Id).ToList();
                 Member.Dispose();
             }
             catch (Exception ex)
@@ -163,6 +158,10 @@ namespace FCK.Studio.Web.Controllers
             }
             return result;
         }
+
+
+
+
         public JsonResult GetPageLists(int page, int pageSize, string keywords = "")
         {
             return Json(GetDatas(page, pageSize, keywords));
@@ -226,7 +225,7 @@ namespace FCK.Studio.Web.Controllers
         {
             return View();
         }
-        
+
         public JsonResult ImportExcel(HttpPostedFileBase file)
         {
             ResultDto<string> result = new ResultDto<string>();
@@ -374,8 +373,8 @@ namespace FCK.Studio.Web.Controllers
             ms.Seek(0, SeekOrigin.Begin);
             ShipServ.Dispose();
             return File(ms, "application/vnd.ms-excel", "Members" + DateTime.Now.ToString("yyyyMMddhhmmss") + ".xls");
-        }      
-        
-        
+        }
+
+
     }
 }

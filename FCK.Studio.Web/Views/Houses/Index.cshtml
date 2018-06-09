@@ -57,7 +57,7 @@
                     </div>
                     <div class="form-group">
                         <label for="HouseType">属性</label>
-                        <select class="form-control w80" name="HouseType">
+                        <select class="form-control w80" name="HouseType" id="HouseType">
                             <option value="住宅">住宅</option>
                             <option value="商铺">商铺</option>
                             <option value="商业">商业</option>
@@ -231,8 +231,17 @@
         })
         function GetDataList() {
             var _page = parseInt($('#pageindex').val())
+            var _keys = $('input[name=Community]').val()
+                    + ',' + $('input[name=Apartment]').val()
+                    + ',' + $('input[name=UnitNum]').val()
+                    + ',' + $('input[name=DoorCard]').val()
+                    + ',' + $('#HouseType').val()
+                    + ',' + $('input[name=Owner]').val()
+                    + ',' + $('input[name=ShortChar1]').val()
+                    + ',' + $('input[name=ShortChar2]').val()
+                    + ',' + $('input[name=keywords]').val()
             $.post('/Houses/GetPageLists',
-                { page: _page, pageSize: 20, keywords: $('input[name=keywords]').val() },
+                { page: _page, pageSize: 20, keywords: _keys },
                 function (response) {
                     Vue.set(vm, 'mydata', response.datas)
                     Vue.set(vm, 'totalpages', response.pages)

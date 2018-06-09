@@ -58,14 +58,7 @@ namespace FCK.Studio.Web.Controllers
             {
                 ResultDto<List<Houses>> items = new ResultDto<List<Houses>>();
                 HouseService Member = new HouseService();
-                if (!string.IsNullOrEmpty(keywords))
-                {
-                    items = Member.Reposity.GetPageList(page, pageSize, o => (o.HouseName.Contains(keywords) || o.Owner.Contains(keywords)) && o.TenantId == TenantId);
-                }
-                else
-                {
-                    items = Member.Reposity.GetPageList(page, pageSize, o => o.TenantId == TenantId);
-                }
+                items = Member.GetListOrderByID(page, pageSize, o => o.TenantId == TenantId, keywords);
                 result = Mapper.Map<ResultDto<List<Dto.HouseDto>>>(items);
                 Member.Dispose();
             }

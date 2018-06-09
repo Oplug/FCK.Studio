@@ -146,7 +146,7 @@ namespace FCK.Studio.Web
                 age--;
             }
             return age;
-        }
+        }        
     }
 
     public class BirthdayAgeSex
@@ -155,4 +155,6 @@ namespace FCK.Studio.Web
         public int Age { get; set; }
         public string Sex { get; set; }
     }
+
+    
 }

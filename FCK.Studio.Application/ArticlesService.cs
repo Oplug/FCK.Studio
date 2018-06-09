@@ -54,7 +54,7 @@ namespace FCK.Studio.Application
             return result;
         }
 
-        public ResultDto<List<Articles>> GetArticleOrderByTime(int PageIndex, int PageSize, Expression<Func<Articles, bool>> predicate)
+        public ResultDto<List<Articles>> GetListOrderByTime(int PageIndex, int PageSize, Expression<Func<Articles, bool>> predicate)
         {
             ResultDto<List<Articles>> result = new ResultDto<List<Articles>>();
             var query = Reposity.GetAllList(predicate);
