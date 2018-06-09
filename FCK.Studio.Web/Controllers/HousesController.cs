@@ -16,6 +16,13 @@ namespace FCK.Studio.Web.Controllers
 {
     public class HousesController : BaseController, IControllerBase<Houses, int>
     {
+
+        public ActionResult Edit(int id = 0)
+        {
+            ViewBag.Id = id;
+            return View();
+        }
+
         public JsonResult Del(int id)
         {
             ResultDto<string> result = new ResultDto<string>();
