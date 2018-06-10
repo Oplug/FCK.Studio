@@ -65,7 +65,13 @@
                         success: function (data) {
                             if (data.code == 100) {
                                 toastr.success("登录成功");
-                                window.location = "/Member/";
+                                var returnHref = localStorage.getItem("loginReturn");
+                                if (returnHref != null) {
+                                    window.location = returnHref;
+                                }
+                                else {
+                                    window.location = "/Member/";
+                                }
                             }
                             else
                                 toastr.error(data.message);

@@ -195,6 +195,7 @@ namespace FCK.Studio.Web.XTSQ.Controllers
                         result.code = 100;
                         result.message = "ok";
                         SetCookie("MemberId", model.Id.ToString(), 5);
+                        SetCookie("UserName", model.UserName, 5);
                     }
                 }
                 else
@@ -211,5 +212,12 @@ namespace FCK.Studio.Web.XTSQ.Controllers
             }
             return Json(result);
         }
+        public JsonResult Logout()
+        {
+            DelCookie("MemberId", "");
+            DelCookie("UserName", "");
+            return Json("");
+        }
+
     }
 }

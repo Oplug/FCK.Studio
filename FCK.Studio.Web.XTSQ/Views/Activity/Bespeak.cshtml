@@ -2,6 +2,11 @@
 @{
     ViewBag.Title = "办事预约";
     Layout = "~/Views/Shared/_Layout.cshtml";
+    int memberid = 0;
+    if (HttpContext.Current.Request.Cookies["MemberId"] != null)
+    {
+        memberid = int.Parse(HttpContext.Current.Request.Cookies["MemberId"].Value);
+    }
 }
 <div class="card">
     <div class="card-header">
@@ -42,11 +47,36 @@
 <script src="/Content/bower_components/jqueryconfirm/jquery-confirm.js"></script>
     <script>
         $(function () {
+            var _memberid = '@(memberid)';
             var _id = '@(Model.Id)';
             var _tit = '@(Model.Title)';
             $.post('/Activity/GetModel/', { id: 0 }, function (response) {
                 response.ActvID = _id;
                 response.ActvTitle = _tit;
+                if (_memberid == 0) {
+                    $.confirm({
+                        title: '提示',
+                        content: '您还没登录，请先登录哦！',
+                        buttons: {
+                            confirm: {
+                                text: '立即登录',
+                                btnClass: 'btn-blue',
+                                action: function () {
+                                    localStorage.setItem("loginReturn", window.location.href);
+                                    window.location.href = '/Home/Login/';
+                                }
+                            },
+                            cancel: {
+                                text: '返回',
+                                btnClass: 'btn-default',
+                                action: function () {
+                                    window.history.go(-1);
+                                }
+                            }
+                        }
+                    });
+
+                }
                 var vue = new Vue({
                     el: "#formEdit",
                     data: function () { return response },
