@@ -73,7 +73,7 @@ namespace FCK.Studio.Web.XTSQ.Controllers
                     var article = articleS.Reposity.Get(input.ActvID);
                     if (article != null)
                     {
-                        if (article.SignUpNums < article.LimitSignUp)
+                        if (article.SignUpNums < article.LimitSignUp || article.LimitSignUp == 0)
                         {
                             if (article.SignUpEndTime != null && article.SignUpEndTime.Value < DateTime.Now)
                             {

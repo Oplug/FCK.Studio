@@ -24,23 +24,26 @@
                 <label class="radio-inline">
                     <input type="radio" name="inlineRadioOptions" id="inlineRadio3" value="义工" v-model="PoliticalStatus"> 义工
                 </label>
+                <label class="radio-inline">
+                    <input type="radio" name="inlineRadioOptions" id="inlineRadio3" value="其它" v-model="PoliticalStatus"> 其它
+                </label>
             </div>
             <div class="form-group">
                 <label for="UserName">姓名</label>
-                <input type="text" class="form-control" id="UserName" v-model="UserName" placeholder="Your name">
+                <input type="text" class="form-control" id="UserName" v-model="UserName">
             </div>
             <div class="form-group">
                 <label for="Address">联系地址</label>
-                <input type="text" class="form-control" id="Address" v-model="Address" placeholder="XXX街道 XXX社区 XXX小区 X栋X号">
+                <input type="text" class="form-control" id="Address" v-model="Address">
             </div>
             <div class="form-group">
                 <label for="Telphone">联系电话</label>
-                <input type="tel" class="form-control" id="Telphone" v-model="Telphone" placeholder="Your Telphone">
+                <input type="tel" class="form-control" id="Telphone" v-model="Telphone">
             </div>
 
             <div class="form-group">
                 <label for="Email">电子邮件</label>
-                <input type="email" class="form-control" id="Email" v-model="Email" placeholder="Your email">
+                <input type="email" class="form-control" id="Email" v-model="Email">
             </div>
             <input type="hidden" v-model="ActvTitle">
             <input type="hidden" v-model="ActvID">
@@ -70,7 +73,7 @@
                                 $.alert('姓名必填哦！');
                                 $('#UserName').focus();
                             }
-                            else if (response.Telphone == null) {
+                            else if (response.Address == null) {
                                 $.alert('联系地址必填！'); $('#Address').focus();
                             }
                             else if (response.Telphone == null) {
@@ -83,7 +86,7 @@
                                     data: response,
                                     success: function (data) {
                                         if (data.code == 100) {
-                                            $.alert('报名成功！感谢您的热心参与。');
+                                            $.alert('提交成功！感谢您的热心参与。');
                                         }
                                         else if (data.code == 101) {
                                             $.alert('不能重复报名。');

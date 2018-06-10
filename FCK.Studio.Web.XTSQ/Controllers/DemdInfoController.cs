@@ -76,26 +76,33 @@ namespace FCK.Studio.Web.XTSQ.Controllers
             ObjServ.Dispose();
             return Json(result);
         }
-
-        [Filters.FilterCheckLogin]
+        
         public JsonResult Remark(string contents, string objs,long id)
         {
             ResultDto<long> result = new ResultDto<long>();
             try
             {
-                Core.Comments input = new Core.Comments();
-                CommentsService ObjServ = new CommentsService();
-                input.ModelId = id;
-                input.TenantId = tenant.Id;
-                input.MemberId = MemberId;
-                input.CreationTime = DateTime.Now;
-                input.Contents = contents;
-                input.ModelName = objs;
-                ObjServ.Reposity.InsertOrUpdate(input);
-                ObjServ.Dispose();
-                result.code = 100;
-                result.message = "ok";
-                result.datas = input.Id;
+                if (MemberId > 0)
+                {
+                    Core.Comments input = new Core.Comments();
+                    CommentsService ObjServ = new CommentsService();
+                    input.ModelId = id;
+                    input.TenantId = tenant.Id;
+                    input.MemberId = MemberId;
+                    input.CreationTime = DateTime.Now;
+                    input.Contents = contents;
+                    input.ModelName = objs;
+                    ObjServ.Reposity.InsertOrUpdate(input);
+                    ObjServ.Dispose();
+                    result.code = 100;
+                    result.message = "ok";
+                    result.datas = input.Id;
+                }
+                else
+                {
+                    result.code = 500;
+                    result.message = "请先登录再评论！";
+                }
             }
             catch (Exception ex)
             {

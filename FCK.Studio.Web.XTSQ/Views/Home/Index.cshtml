@@ -11,7 +11,7 @@
 <!-- Main content -->
 <section class="content">
     <div class="container-fluid" id="DataList">
-        <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+        @*<div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
             <ol class="carousel-indicators">
                 <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
                 <li data-target="#carouselExampleIndicators" data-slide-to="1" class=""></li>
@@ -30,7 +30,7 @@
                 <span class="carousel-control-next-icon" aria-hidden="true"></span>
                 <span class="sr-only">Next</span>
             </a>
-        </div>
+        </div>*@
         
         <h5 class="mt-4 mb-2"><i class="fa fa-institution"></i> 兴塘社区</h5>
         <div class="row">
@@ -79,14 +79,14 @@
                 </div>
             </div>
             <div class="col-lg-3 col-6">
-                <div class="small-box bg-danger" data-href="/Activity/?cate=通知公告">
+                <div class="small-box bg-danger" data-href="/Activity/?cate=社区动态">
                     <div class="inner">
-                        <h5>通知公告</h5>
+                        <h5>社区动态</h5>
                     </div>
                     <div class="icon">
                         <i class="ion ion-pie-graph"></i>
                     </div>
-                    <a href="/Activity/?cate=通知公告" class="small-box-footer"><small>点击进入</small> <i class="fa fa-arrow-circle-right"></i></a>
+                    <a href="/Activity/?cate=社区动态" class="small-box-footer"><small>点击进入</small> <i class="fa fa-arrow-circle-right"></i></a>
                 </div>
             </div>
             <div class="col-lg-3 col-6">
@@ -199,31 +199,31 @@
 </section>
 @section scripts{
     <script>
-        var mydata = {
-            NewsList: [],
-            UserList: [],
-            ApartList: [],
-            ElectionList: [],
-            UserCount: 0
-        }
-        var vm = new Vue({
-            el: "#DataList",
-            data: mydata,
-            methods: {
-                dovote: function (_id) {
-                    $.post('/Election/DoVote', { id: _id }, function (data) {
-                        if (data.code == 100)
-                            toastr.success(data.message);
-                        else
-                            toastr.error(data.message);
-                    });
-                }
-            }
-        })
+        //var mydata = {
+        //    NewsList: [],
+        //    UserList: [],
+        //    ApartList: [],
+        //    ElectionList: [],
+        //    UserCount: 0
+        //}
+        //var vm = new Vue({
+        //    el: "#DataList",
+        //    data: mydata,
+        //    methods: {
+        //        dovote: function (_id) {
+        //            $.post('/Election/DoVote', { id: _id }, function (data) {
+        //                if (data.code == 100)
+        //                    toastr.success(data.message);
+        //                else
+        //                    toastr.error(data.message);
+        //            });
+        //        }
+        //    }
+        //})
         $(function () {
-            $.post('/Home/GetArticleList', { page: 1, pageSize: 3, keywords: '', cateindex: '社区动态', isrec: 1 }, function (response) {
-                mydata.NewsList = response.datas;
-            });
+            //$.post('/Home/GetArticleList', { page: 1, pageSize: 3, keywords: '', cateindex: '社区动态', isrec: 1 }, function (response) {
+            //    mydata.NewsList = response.datas;
+            //});
             $('.small-box').click(function () {
                 var _href = $(this).data('href');
                 window.location = _href;

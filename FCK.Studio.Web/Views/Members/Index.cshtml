@@ -6,164 +6,112 @@
 <!-- Content Header (Page header) -->
 <section class="content-header">
     <h1>
-        会员管理
+        户籍管理
         <small>Members Manage</small>
     </h1>
     <ol class="breadcrumb">
         <li><a href="/Home/Dashboard"><i class="fa fa-dashboard"></i> Home</a></li>
-        <li class="active">会员管理</li>
+        <li class="active">户籍管理</li>
     </ol>
 </section>
 <!-- Main content -->
 <section class="content">
     <div class="box">
         <div class="box-header with-border">
-            <h3 class="box-title"></h3>
+            <h3 class="box-title">Members Manage</h3>
             <div class="box-tools pull-right">
-                <button type="button" class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip"
-                        title="Collapse">
-                    <i class="fa fa-minus"></i>
-                </button>
-            </div>
-        </div>
-        <div class="box-body">
-            <div class="box-header">
                 <div class="btn-group">
-                    <button type="button" class="btn btn-default" data-toggle="tooltip" data-placement="top" title="保存" onclick="PatchSave()"><i class="fa fa-save"></i></button>
+                    <button type="button" class="btn btn-default hidden" data-toggle="tooltip" data-placement="top" title="保存" onclick="PatchSave()"><i class="fa fa-save"></i></button>
                     <button type="button" class="btn btn-default" data-toggle="tooltip" data-placement="top" title="刷新" onclick="GetDataList()"><i class="fa fa-refresh"></i></button>
                     <button type="button" class="btn btn-default" data-toggle="tooltip" data-placement="top" title="导入"><i class="fa fa-upload" data-toggle="modal" data-target="#modal-default"></i></button>
                     <button type="button" class="btn btn-default" data-toggle="tooltip" data-placement="top" title="导出" onclick="ExportExcel()"><i class="fa fa-download"></i></button>
                     <button type="button" class="btn btn-default" data-toggle="tooltip" data-placement="top" title="删除" onclick="PatchDel()"><i class="fa fa-remove"></i></button>
                     <a href="/Content/v_member.xlsx" class="btn btn-default">透视表查询</a>
                 </div>
-                <div class="box-tools">
-                    
-                </div>
-                <hr />
+            </div>
+        </div>
+        <div class="box-body">
+            <div class="box-header">
                 <form class="form-inline">
                     <div class="form-group">
                         <label for="Apartment">社区</label>
-                        <input type="text" class="form-control w80" name="Community">
+                        <input type="text" class="form-control input-sm w80" name="Community">
                     </div>
                     <div class="form-group">
                         <label for="Apartment">楼盘</label>
-                        <input type="text" class="form-control w100" name="Apartment">
+                        <input type="text" class="form-control input-sm w100" name="Apartment">
                     </div>
                     <div class="form-group">
                         <label for="UnitNum w80">单元</label>
-                        <input type="text" class="form-control w80" name="UnitNum">
+                        <input type="text" class="form-control input-sm w80" name="UnitNum">
                     </div>
                     <div class="form-group">
                         <label for="DoorCard">门牌号</label>
-                        <input type="text" class="form-control w80" name="DoorCard">
+                        <input type="text" class="form-control input-sm w80" name="DoorCard">
                     </div>
                     <div class="form-group">
                         <label for="Truename">姓名</label>
-                        <input type="text" class="form-control w100" name="Truename">
+                        <input type="text" class="form-control input-sm w100" name="Truename">
                     </div>
                     <div class="form-group">
                         <label for="Phone">电话</label>
-                        <input type="text" class="form-control w80" name="Phone">
+                        <input type="text" class="form-control input-sm w80" name="Phone">
                     </div>
                     <div class="form-group">
-                        <input type="text" class="form-control w120" name="keywords" placeholder="keywords">
+                        <input type="text" class="form-control input-sm w120" name="keywords" placeholder="keywords">
                     </div>
                     <input type="hidden" value="1" id="pageindex" />
-                    <button type="button" class="btn btn-default" onclick="GetDataList()"><i class="fa fa-search"></i></button>
+                    <button type="button" class="btn btn-success btn-sm" onclick="search()"><i class="fa fa-search"></i></button>
                 </form>
             </div>
+
             <div id="DataTable">
                 <div class="alert alert-block alert-dismissible" style="margin-bottom:0px">
                     <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
                     <i class="icon fa fa-warning"></i><small class="text-danger"> 温馨提示! 下面表格可在线编辑。导入模板：姓名，关系，民族，身份证号，小区，单元，门牌号，现户籍地址，原户籍地址，服务处所，职务，联系电话1，联系电话2，政治面貌，党员所在支部，特长备注</small>
                 </div>
-                <div class="box-body table-responsive no-padding EditTable">                    
-                    <table class="table table-hover">
-                        <tr class="bg-success">
-                            <th class="text-center"><input type="checkbox" id="SelectAll"></th>
-                            <th>用户名</th>
-                            <th>姓名</th>
-                            <th>关系</th>
-                            <th>性别</th>
-                            <th>民族</th>
-                            <th>出生年月</th>
-                            <th>年龄</th>
-                            <th>楼盘</th>
-                            <th>单元</th>
-                            <th>门牌号</th>
-                            <th>身份证号</th>                            
-                            <th>现户籍地址</th>
-                            <th>原户籍地址</th>
-                            <th>是否兴塘社区户籍</th>
-                            <th>服务处所</th>
-                            <th>职务</th>
-                            <th>联系电话1</th>
-                            <th>联系电话2</th>
-                            <th>职务</th>
-                            <th>政治面貌</th>
-                            <th>党员所在支部</th>
-                            <th>楼道组长</th>
-                            <th>户代表</th>
-                            <th>居民代表</th>
-                            <th>居民组长</th>
-                            <th>愿参加公益</th>
-                            <th>愿从事居民事务</th>
-                            <th>调查时间</th>
-                            <th>专长/备注</th>
-                            <th>审核</th>
-                            <th>操作</th>
-                        </tr>
-                        <tr v-for="item in mydata" v-on:click="listenedit(item)" class="">
-                            <td><div class="w40 text-center"><input type="checkbox" name="obj" class="orm-check-input" v-bind:value="item.Id"></div></td>
-                            <td><div class="w60 text-center">{{item.UserName}}</div></td>
-                            <td><input type="text" class="form-control input-sm w60" v-model="item.TrueName" /></td>
-                            <td><input type="text" class="form-control input-sm w40" v-model="item.Relations" /></td>
-                            <td><input type="text" class="form-control input-sm w40" v-model="item.Sex" /></td>
-                            <td><input type="text" class="form-control input-sm w40" v-model="item.Nation" /></td>
-                            <td><input type="text" class="form-control input-sm w80" v-model="item.Birthday" /></td>
-                            <td><input type="number" class="form-control input-sm w40" v-model="item.Age" /></td>
-                            <td><input type="text" class="form-control input-sm w80" v-model="item.Apartment" /></td>
-                            <td><input type="text" class="form-control input-sm w40" v-model="item.UnitNum" /></td>
-                            <td><input type="text" class="form-control input-sm w60" v-model="item.DoorCard" /></td>
-                            <td><input type="text" class="form-control input-sm w100" v-model="item.UserID" /></td>                            
-                            <td><input type="text" class="form-control input-sm w100" v-model="item.Address" /></td>
-                            <td><input type="text" class="form-control input-sm w100" v-model="item.Address2" /></td>
-                            <td><div class="w120 text-center"><input type="checkbox" class="form-check-input" v-model="item.HhdRegister"></div></td>
-                            <td><input type="text" class="form-control input-sm w100" v-model="item.ServiceAddr" /></td>
-                            <td><input type="text" class="form-control input-sm w60" v-model="item.Duties" /></td>
-                            <td><input type="text" class="form-control input-sm w80" v-model="item.Phone" /></td>
-                            <td><input type="text" class="form-control input-sm w80" v-model="item.Phone2" /></td>
-                            <td><input type="text" class="form-control input-sm w60" v-model="item.Duties" /></td>
-                            <td><input type="text" class="form-control input-sm w80" v-model="item.PoliticalRole" /></td>
-                            <td><input type="text" class="form-control input-sm w100" v-model="item.PartyBranch" /></td>
-                            <td><div class="w60 text-center"><input type="checkbox" class="orm-check-input" v-model="item.CorridorLeader"></div></td>
-                            <td><div class="w60 text-center"><input type="checkbox" class="orm-check-input" v-model="item.HouseLeader"></div></td>
-                            <td><div class="w60 text-center"><input type="checkbox" class="orm-check-input" v-model="item.ResidentRepresentative"></div></td>
-                            <td><div class="w60 text-center"><input type="checkbox" class="orm-check-input" v-model="item.ResidentLeader"></div></td>
-                            <td><div class="w100 text-center"><input type="checkbox" class="orm-check-input" v-model="item.Pipwa"></div></td>
-                            <td><div class="w100 text-center"><input type="checkbox" class="orm-check-input" v-model="item.Eira"></div></td>
-                            <td><div class="w60">{{item.UpdateTime}}</div></td>
-                            <td><input type="text" class="form-control input-sm w100" v-model="item.Speciality" /></td>
-                            <td><a v-bind:class="item.Approved? 'badge bg-green' : 'badge bg-red'" v-on:click="approve(item.Id)">{{item.Approved}}</a></td>
-                            <td>
-                                <div class="btn-group w80">
-                                    <button class="btn btn-danger btn-xs" type="button" v-on:click="udelete(item.Id)">删除</button>
-                                    <button class="btn btn-success btn-xs" type="button" v-on:click="update(item)">保存</button>
-                                </div>
-                            </td>
-                        </tr>
+                <div class="box-body table-responsive no-padding">
+                    <table id="grid" style="width:100%;height:500px">
+                        <thead data-options="frozen:true">
+                            <tr>
+                                <th data-options="field:'Apartment',width:100,editor:'text'">楼盘</th>
+                                <th data-options="field:'UnitNum',width:60,align:'center',editor:'text'">单元</th>
+                                <th data-options="field:'DoorCard',width:60,align:'center',editor:'text'">门牌号</th>
+                                <th data-options="field:'Relations',width:80,align:'center',editor:'text'">关系</th>                                
+                                <th data-options="field:'TrueName',width:60,align:'center',editor:'text'">姓名</th>
+                            </tr>
+                        </thead>
+                        <thead>
+                            <tr>
+                                <th data-options="field:'UserName',width:80,align:'center'">用户名</th>
+                                <th data-options="field:'Sex',width:60,align:'center',editor:'text'">性别</th>
+                                <th data-options="field:'Nation',width:60,align:'center',editor:'text'">民族</th>
+                                <th data-options="field:'Birthday',width:100,align:'center'">出生年月</th>
+                                <th data-options="field:'Age',width:60,align:'center',editor:'numberbox'">年龄</th>
+                                <th data-options="field:'UserID',width:160,editor:'text'">身份证号</th>
+                                <th data-options="field:'Address',width:180,editor:'text'">现户籍地址</th>
+                                <th data-options="field:'Address2',width:200,editor:'text'">原户籍地址</th>
+                                <th data-options="field:'HhdRegister',width:120,align:'center'">是否兴塘社区户籍</th>
+                                <th data-options="field:'ServiceAddr',width:80,editor:'text',align:'center'">服务处所</th>
+                                <th data-options="field:'Duties',width:60,editor:'text',align:'center'">职务</th>
+                                <th data-options="field:'Phone',width:100,align:'center',editor:'text'">联系电话1</th>
+                                <th data-options="field:'Phone2',width:100,align:'center',editor:'text'">联系电话2</th>
+                                <th data-options="field:'PoliticalRole',width:80,align:'center',editor:'text'">政治面貌</th>
+                                <th data-options="field:'PartyBranch',width:100,editor:'text'">党员所在支部</th>
+                                <th data-options="field:'CorridorLeader',width:80,align:'center'">楼道组长</th>
+                                <th data-options="field:'HouseLeader',width:80,align:'center'">户代表</th>
+                                <th data-options="field:'ResidentRepresentative',width:80,align:'center'">居民代表</th>
+                                <th data-options="field:'ResidentLeader',width:80,align:'center'">居民组长</th>
+                                <th data-options="field:'Pipwa',width:100,align:'center'">愿参加公益</th>
+                                <th data-options="field:'Eira',width:100,align:'center'">愿从事居民事务</th>
+                                <th data-options="field:'UpdateTime',width:80,align:'center'">调查时间</th>
+                                <th data-options="field:'Speciality',width:80,editor:'text'">专长/备注</th>
+                                <th data-options="field:'Approved',width:60,align:'center',editor:{type:'checkbox',options:{on:'true',off:'false'}}">审核</th>
+                            </tr>
+                        </thead>
                     </table>
                 </div>
-                <div class="box-footer clearfix">
-                    <select onchange="selpage(this.value)">
-                        <option v-for="value in totalpages" v-bind:value="value">{{value}}</option>
-                    </select> 页码：{{pageindex}}/{{totalpages}} 有 {{needUpdate}}个需要更新
-                    <ul class="pagination pagination-sm no-margin pull-right">
-                        <li v-bind:class="pageindex<=1? 'hidden' : ''"><a href="#" onclick="turnpage(-1)">&laquo;</a></li>
-                        <li v-for="value in pages" v-bind:class="value==pageindex? 'active' : ''"><a href="#" v-on:click="chgpage(value)">{{value}}</a></li>
-                        <li v-bind:class="pageindex==totalpages? 'hidden' : ''"><a href="#" onclick="turnpage(1)">&raquo;</a></li>
-                    </ul>
-                </div>
+
             </div>
         </div>
         <div class="box-footer">
@@ -191,144 +139,40 @@
 </div>
 @section css{
     <link href="/Content/Site.css?v=@(DateTime.Now.ToString("hhmmss"))" rel="stylesheet" />
+    <link href="/Content/easyui/themes/default/easyui.css?v=@(DateTime.Now.ToString("hhmmss"))" rel="stylesheet" />>
+    <link href="/Content/easyui/themes/icon.css?v=@(DateTime.Now.ToString("hhmmss"))" rel="stylesheet" />
 }
 @section scripts{
+    <script src="~/Content/easyui/jquery.easyui.min.js"></script>
     <script>
-        var updateModel = new Array();
-        var vm = new Vue({
-            el: '#DataTable',
-            data: {
-                mydata: [],
-                pages: 0,
-                totalpages: 0,
-                pageindex: 1,
-                needUpdate: 0
-            },
-            methods: {
-                listenedit: function (obj) {
-                    var flag = true;
-                    $.each(updateModel, function (index, item) {
-                        if (obj.Id == item.Id)
-                            flag = false;
-                    });
-                    if (flag)
-                        updateModel.push(obj);
-                    Vue.set(vm, 'needUpdate', updateModel.length)
-                },
-                chgpage: function (p) {
-                    $('#pageindex').val(p);
-                    GetDataList();
-                    return false;
-                },
-                approve: function (_id) {
-                    $.post('/Members/Approve', { id: _id }, function (response) {
-                        GetDataList();
-                    });
-                    return false;
-                },
-                update: function (entity) {
-                    $.ajax({
-                        url: '/Members/InsertOrUpdate',
-                        type: "POST",
-                        data: entity,
-                        success: function (resp) {
-                            if (resp.code == 100) {
-                                toastr.success("更新成功"); GetDataList();
-                            } else {
-                                toastr.error(resp.message);
-                            }
-                        }
-                    });
-                },
-                udelete: function (_id) {
-                    confirmE('确定删除？', function () {
-                        $.ajax({
-                            url: '/Members/Del',
-                            type: "POST",
-                            data: { id: _id },
-                            success: function (resp) {
-                                $.alert('删除成功!');
-                                GetDataList();
-                            }
-                        });
-                    });
+
+        function PatchSave(index, row, changes) {
+            $.ajax({
+                url: '/Members/InsertOrUpdate',
+                type: "POST",
+                data: row,
+                async: true,
+                success: function (resp) {
                 }
-            }
-        })
-        function GetDataList() {
-            var _page = parseInt($('#pageindex').val())
-            var _keys = $('input[name=Community]').val()
-                    + ',' + $('input[name=Apartment]').val()
-                    + ',' + $('input[name=UnitNum]').val()
-                    + ',' + $('input[name=DoorCard]').val()
-                    + ',' + $('input[name=Truename]').val()
-                    + ',' + $('input[name=Phone]').val()
-                    + ',' + $('input[name=keywords]').val()
-            $.post('/Members/GetPageLists',
-                { page: _page, pageSize: 20, keywords: _keys },
-                function (response) {
-                    Vue.set(vm, 'mydata', response.datas)
-                    Vue.set(vm, 'totalpages', response.pages)
-                    Vue.set(vm, 'pages', response.pages > 10 ? 10 : response.pages)
-                    Vue.set(vm, 'pageindex', _page)
-                });
-        }
-        function turnpage(val) {
-            var _page = parseInt($('#pageindex').val());
-            _page = _page + val;
-            $('#pageindex').val(_page);
-            GetDataList();
-            return false;
-        }
-        function selpage(val) {
-            $('#pageindex').val(val);
-            GetDataList();
-            return false;
-        }
-        GetDataList();
-        function PatchSave() {
-            var num = 0;
-            $.each(updateModel, function (index, item) {
-                $.ajax({
-                    url: '/Members/InsertOrUpdate',
-                    type: "POST",
-                    data: item,
-                    async: false,
-                    success: function (resp) {
-                        if (resp.code == 100) {
-                            num++;
-                        }
-                    }
-                });
-            })
-            if (num > 0) {
-                toastr.success("成功更新" + num + "条记录");
-                Vue.set(vm, 'needUpdate', 0);
-                updateModel = new Array();
-                GetDataList();
-            }
+            });
         }
         function ExportExcel() {
             window.location.href = "/Members/ExportExcel";
         }
         function PatchDel() {
             confirmE('确定删除？', function () {
-                var _ids = "";
-                $("#DataTable input[name=obj]").each(function () {
-                    if ($(this).prop("checked")) {
-                        if (_ids == "")
-                            _ids += $(this).val();
-                        else
-                            _ids += "," + $(this).val();
-                    }
-                });
-                if (_ids == "")
+                var ids = [];
+                var rows = datagrid.datagrid('getSelections');
+                for(var i=0; i<rows.length; i++){
+                    ids.push(rows[i].Id);
+                }
+                if (ids.length<=0)
                     alertE("至少选择一项！");
                 else {
                     $.ajax({
                         url: '/Members/DelPatch',
                         type: "POST",
-                        data: { ids: _ids },
+                        data: { ids: ids.join(',') },
                         success: function (resp) {
                             $.alert('删除成功!');
                             GetDataList();
@@ -336,6 +180,77 @@
                     });
                 }
             });
+        }
+
+        var params = {};
+        var datagrid;
+        var editRow = undefined;
+        $(function () {
+            GetDataList();
+            var p = $('#grid').datagrid('getPager');
+            $(p).pagination({
+                beforePageText: '第',
+                afterPageText: '页    共 {pages} 页',
+                displayMsg: '当前显示 {from}-{to} 条记录，共 {total} 条记录'
+            });
+        });
+
+        function GetDataList() {
+            datagrid = $('#grid').datagrid({
+                border: true,
+                rownumbers: true,
+                pageList: [10, 20, 30],
+                pagination: true,
+                pageSize: 20,
+                pageNumber: 1,
+                url: "/Members/GetPageListToEasyUI",
+                idField: 'Id',
+                queryParams: params,
+                onClickCell: onClickCell,
+                onAfterEdit: onAfterEdit
+            });
+        }
+        function search() {
+            var _keys = $('input[name=Community]').val()
+                    + ',' + $('input[name=Apartment]').val()
+                    + ',' + $('input[name=UnitNum]').val()
+                    + ',' + $('input[name=DoorCard]').val()
+                    + ',' + $('input[name=Truename]').val()
+                    + ',' + $('input[name=Phone]').val()
+                    + ',' + $('input[name=keywords]').val()
+            params.keywords = _keys;
+            GetDataList(params);
+        }
+        var editIndex = undefined;
+        function onClickCell(index, field, value) {
+            if (editIndex == undefined) {
+                editIndex = index;
+                $('#grid').datagrid('beginEdit', index);
+                var ed = $(this).datagrid('getEditor', {
+                    index: index,
+                    field: field
+                });
+                $(ed.target).focus();
+            } else {
+                $('#grid').datagrid('endEdit', editIndex);
+                editIndex = index;
+                $('#grid').datagrid('beginEdit', index);
+                var ed = $(this).datagrid('getEditor', {
+                    index: index,
+                    field: field
+                });
+                $(ed.target).focus();
+            }
+        }
+        function onAfterEdit(index, row, changes) {
+            var updated = datagrid.datagrid('getChanges', 'updated');
+            if (updated.length < 1) {
+                editRow = undefined;
+                datagrid.datagrid('unselectAll');
+                return;
+            } else {
+                PatchSave(index, row, changes);
+            }
         }
     </script>
 }

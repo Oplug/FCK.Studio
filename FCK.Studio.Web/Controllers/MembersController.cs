@@ -159,7 +159,17 @@ namespace FCK.Studio.Web.Controllers
             return result;
         }
 
-
+        public JsonResult GetPageListToEasyUI(int page, int rows, string keywords = "")
+        {            
+            var resp = GetDatas(page, rows, keywords);
+            int total = resp.total;
+            var data = new
+            {
+                total, 
+                rows = resp.datas
+            };
+            return Json(data);
+        }
 
 
         public JsonResult GetPageLists(int page, int pageSize, string keywords = "")
