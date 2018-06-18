@@ -42,23 +42,23 @@
                 <form class="form-inline">
                     <div class="form-group">
                         <label for="Apartment">社区</label>
-                        <input type="text" class="form-control w80" name="Community">
+                        <input type="text" class="form-control w80 input-sm" name="Community">
                     </div>
                     <div class="form-group">
                         <label for="Apartment">楼盘</label>
-                        <input type="text" class="form-control w80" name="Apartment">
+                        <input type="text" class="form-control w80 input-sm" name="Apartment">
                     </div>
                     <div class="form-group">
                         <label for="UnitNum w80">单元</label>
-                        <input type="text" class="form-control w80" name="UnitNum">
+                        <input type="text" class="form-control w80 input-sm" name="UnitNum">
                     </div>
                     <div class="form-group">
                         <label for="DoorCard">门牌号</label>
-                        <input type="text" class="form-control w80" name="DoorCard">
+                        <input type="text" class="form-control w80 input-sm" name="DoorCard">
                     </div>
                     <div class="form-group">
                         <label for="HouseType">属性</label>
-                        <select class="form-control w80" name="HouseType" id="HouseType">
+                        <select class="form-control w80 input-sm" name="HouseType" id="HouseType">
                             <option value="住宅">住宅</option>
                             <option value="商铺">商铺</option>
                             <option value="商业">商业</option>
@@ -66,25 +66,26 @@
                     </div>
                     <div class="form-group">
                         <label for="Owner">产权人</label>
-                        <input type="text" class="form-control w80" name="Owner">
+                        <input type="text" class="form-control w80 input-sm" name="Owner">
                     </div>
                     <div class="form-group">
                         <label for="ShortChar1">网格名称</label>
-                        <input type="text" class="form-control w80" name="ShortChar1">
+                        <input type="text" class="form-control w80 input-sm" name="ShortChar1">
                     </div>
                     <div class="form-group">
                         <label for="ShortChar2">网格员</label>
-                        <input type="text" class="form-control w80" name="ShortChar2">
+                        <input type="text" class="form-control w80 input-sm" name="ShortChar2">
                     </div>
                     <div class="form-group">
-                        <input type="text" class="form-control w100" name="keywords" placeholder="keywords">
+                        <input type="text" class="form-control w100 input-sm" name="keywords" placeholder="keywords">
                     </div>
                     <input type="hidden" value="1" id="pageindex" />
-                    <button type="button" class="btn btn-default" onclick="GetDataList()"><i class="fa fa-search"></i></button>
+                    <button type="button" class="btn btn-default btn-sm" onclick="GetDataList()"><i class="fa fa-search"></i></button>
                 </form>
             </div>
             <div id="DataTable">
-                <div class="box-body table-responsive no-padding EditTable">
+                <div class="box-body table-responsive no-padding EditTable" style="height:610px;border:1px solid #ccc">
+                    <div class="loading"></div>
                     <table class="table table-hover">
                         <tr class="bg-success">
                             <th class="text-center"><input type="checkbox" id="SelectAll"></th>
@@ -109,7 +110,9 @@
                         </tr>
                         <tr v-for="item in mydata" v-on:click="listenedit(item)" class="">
                             <td><div class="w40 text-center"><input type="checkbox" name="obj" class="orm-check-input" v-bind:value="item.Id"></div></td>
-                            <td><small class="w60 m-block">{{item.Category.CategoryName}}</small></td>
+                            <td>
+                                <input type="text" class="form-control input-sm w60" v-model="item.Category.CategoryName" disabled />
+                            </td>
                             <td><input type="text" class="form-control input-sm w60" v-model="item.HouseName" /></td>
                             <td><input type="text" class="form-control input-sm w60" v-model="item.UnitNum" /></td>
                             <td><input type="text" class="form-control input-sm w60" v-model="item.DoorCard" /></td>
@@ -140,9 +143,9 @@
                         <option v-for="value in totalpages" v-bind:value="value">{{value}}</option>
                     </select> 页码：{{pageindex}}/{{totalpages}} 有 {{needUpdate}}个需要更新
                     <ul class="pagination pagination-sm no-margin pull-right">
-                        <li v-bind:class="pageindex<=1? 'hidden' : ''"><a href="#" onclick="turnpage(-1)">&laquo;</a></li>
-                        <li v-for="value in pages" v-bind:class="value==pageindex? 'active' : ''"><a href="#" v-on:click="chgpage(value)">{{value}}</a></li>
-                        <li v-bind:class="pageindex==totalpages? 'hidden' : ''"><a href="#" onclick="turnpage(1)">&raquo;</a></li>
+                        <li v-bind:class="pageindex<=1? 'hidden' : ''"><span onclick="turnpage(-1)">&laquo;</span></li>
+                        <li v-for="value in pages" v-bind:class="value==pageindex? 'active' : ''"><span v-on:click="chgpage(value)">{{value}}</span></li>
+                        <li v-bind:class="pageindex==totalpages? 'hidden' : ''"><span onclick="turnpage(1)">&raquo;</span></li>
                     </ul>
                 </div>
             </div>
@@ -172,8 +175,10 @@
 </div>
 @section css{
     <link href="/Content/Site.css?v=@(DateTime.Now.ToString("hhmmss"))" rel="stylesheet" />
+    <link href="/Content/bower_components/jquery.mloading-master/src/jquery.mloading.css" rel="stylesheet" />
 }
 @section scripts{
+    <script src="/Content/bower_components/jquery.mloading-master/src/jquery.mloading.js"></script>
     <script>
         var updateModel = new Array();
         var vm = new Vue({
@@ -231,6 +236,10 @@
             }
         })
         function GetDataList() {
+            $("#DataTable").mLoading({
+                text: "Processing,please wait...",
+                icon: "/Content/easyui/themes/default/images/loading.gif"
+            });
             var _page = parseInt($('#pageindex').val())
             var _keys = $('input[name=Community]').val()
                     + ',' + $('input[name=Apartment]').val()
@@ -248,6 +257,7 @@
                     Vue.set(vm, 'totalpages', response.pages)
                     Vue.set(vm, 'pages', response.pages > 10 ? 10 : response.pages)
                     Vue.set(vm, 'pageindex', _page)
+                    $("#DataTable").mLoading("hide");
                 });
         }
         function turnpage(val) {

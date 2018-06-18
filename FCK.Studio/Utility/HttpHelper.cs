@@ -41,7 +41,7 @@ namespace FCK.Studio.Utility
         /// </summary>
         /// <param name="url"></param>
         /// <returns></returns>
-        public string Get(string url)
+        public static string Get(string url)
         {
             try
             {

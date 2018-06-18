@@ -23,5 +23,9 @@ namespace FCK.Studio.Core
         public string Candidate { get; set; }
         public int NumOfVote { get; set; }
         public bool IsOpen { get; set; }
+        [Required]
+        public int ElectionHdId { get; set; }
+        [ForeignKey("ElectionHdId")]
+        public virtual ElectionHead ElectionHd { get; set; }
     }
 }

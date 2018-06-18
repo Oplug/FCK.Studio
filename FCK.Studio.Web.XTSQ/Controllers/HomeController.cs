@@ -88,6 +88,10 @@ namespace FCK.Studio.Web.XTSQ.Controllers
         {
             return View();
         }
+        public ActionResult LoginHouse()
+        {
+            return View();
+        }
         public ActionResult Regist()
         {
             return View();
@@ -154,6 +158,11 @@ namespace FCK.Studio.Web.XTSQ.Controllers
                     result.code = 500;
                     result.message = "身份证号已经存在";
                 }
+                else if (input.Phone2 != Session["VeryCode"].ToString())
+                {
+                    result.code = 500;
+                    result.message = "手机验证码错误";
+                }
                 else
                 {
                     Random rand = new Random();
@@ -162,6 +171,7 @@ namespace FCK.Studio.Web.XTSQ.Controllers
                     input.Password = MD5(input.Password);
                     input.CreationTime = DateTime.Now;
                     input.TenantId = tenant.Id;
+                    input.Phone2 = "";
                     ObjServ.Reposity.Insert(input);
                     result.code = 100;
                     result.message = "ok";
@@ -208,6 +218,35 @@ namespace FCK.Studio.Web.XTSQ.Controllers
             catch (Exception ex)
             {
                 result.code = 500;
+                result.message = ex.Message;
+            }
+            return Json(result);
+        }
+
+        public JsonResult SendVeryCode(string mobile)
+        {
+            ResultDto<string> result = new ResultDto<string>();
+            try
+            {
+                Random rnd = new Random();
+                int veryCode = rnd.Next(100000, 999999);
+                string smsContent = "短信验证码：VeryCode【兴塘荟】";
+                smsContent = smsContent.Replace("VeryCode", veryCode.ToString());
+                SmsResponse rlt = JisuAPI.SmsSend(mobile, smsContent);
+                if (rlt.status == 0 && rlt.msg == "ok")
+                {
+                    Session["VeryCode"] = veryCode;
+                    result.code = 100;
+                }
+                else
+                {
+                    result.code = 500;
+                    result.message = rlt.msg;
+                }
+            }
+            catch (Exception ex)
+            {
+                result.code = 100;
                 result.message = ex.Message;
             }
             return Json(result);

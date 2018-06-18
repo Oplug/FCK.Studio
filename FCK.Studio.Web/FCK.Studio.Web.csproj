@@ -164,6 +164,11 @@
     <Content Include="Content\bower_components\jexcel-master\dist\js\jquery.jexcel.js" />
     <Content Include="Content\bower_components\jexcel-master\src\excel-formula.js" />
     <Content Include="Content\bower_components\jexcel-master\src\jquery.csv.js" />
+    <Content Include="Content\bower_components\jquery.mloading-master\demo.requirejs.html" />
+    <Content Include="Content\bower_components\jquery.mloading-master\demo.seajs.html" />
+    <Content Include="Content\bower_components\jquery.mloading-master\index.html" />
+    <Content Include="Content\bower_components\jquery.mloading-master\src\jquery.mloading.css" />
+    <Content Include="Content\bower_components\jquery.mloading-master\src\jquery.mloading.js" />
     <Content Include="Content\bower_components\jqueryconfirm\jquery-confirm.css" />
     <Content Include="Content\bower_components\jqueryconfirm\jquery-confirm.js" />
     <Content Include="Content\bower_components\pekeUpload\css\custom.css" />
@@ -1035,6 +1040,7 @@
     <Content Include="Content\v_member.xlsx" />
     <Content Include="Content\easyui\themes\material-teal\images\Thumbs.db" />
     <Content Include="Content\easyui\themes\material\images\Thumbs.db" />
+    <Content Include="Content\bower_components\jquery.mloading-master\src\jquery.mloading.less" />
     <None Include="Properties\PublishProfiles\FCK_Studio_Pub.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
@@ -1112,6 +1118,7 @@
     <Content Include="Views\Members\ImportHouse.cshtml" />
     <Content Include="Views\Members\HouseList.cshtml" />
     <Content Include="Views\Houses\Index.cshtml" />
+    <Content Include="Views\Houses\Edit.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

@@ -19,23 +19,23 @@
             <form action="/Home/DoRegist" method="post">
                 <div class="form-group">
                     <label for="Community">所在社区</label>
-                    <select class="form-control Community" v-model="Member.Community">
+                    <select class="form-control Community" v-model="Member.Community" disabled>
                         <option v-for="option in CommunityList" v-bind:value="option.CategoryIndex">{{option.CategoryName}}</option>
                     </select>
                 </div>
                 <div class="form-group">
                     <label for="Apartment">所在小区</label>
-                    <select class="form-control Apartment" v-model="Member.Apartment">
+                    <select class="form-control Apartment" v-model="Member.Apartment" disabled>
                         <option v-for="option in ApartmentList" v-bind:value="option.CategoryIndex">{{option.CategoryName}}</option>
                     </select>
                 </div>
                 <div class="form-group">
                     <label for="Address">详细地址</label>
-                    <input type="text" class="form-control Address" v-model="Member.Address" placeholder="第几单元-门牌号">
+                    <input type="text" class="form-control Address" v-model="Member.Address" placeholder="第几单元-门牌号" readonly>
                 </div>
                 <div class="form-group">
                     <label for="Address">户主姓名</label>
-                    <input type="text" class="form-control" v-model="Member.NickName" placeholder="户主姓名">
+                    <input type="text" class="form-control" v-model="Member.NickName" placeholder="户主姓名" readonly>
                 </div>
                 <div class="form-group">
                     <label for="UserName">用户名</label>
@@ -43,7 +43,7 @@
                 </div>
                 <div class="form-group">
                     <label for="UserID">身份证号</label>
-                    <input type="text" class="form-control" v-model="Member.UserID" placeholder="身份证号">
+                    <input type="text" class="form-control" v-model="Member.UserID" placeholder="身份证号" readonly>
                 </div>
                 <div class="form-group">
                     <label for="Email">邮箱</label>

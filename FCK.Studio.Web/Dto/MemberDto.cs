@@ -94,6 +94,7 @@ namespace FCK.Studio.Web.Dto
         /// 信用等级分
         /// </summary>
         public int CreditRate { get; set; }
+        public string UpdateTime { get; set; }
     }
 
     public class HouseDto
@@ -116,6 +117,6 @@ namespace FCK.Studio.Web.Dto
         public string Owner5 { get; set; }
         public string Memo { get; set; }
         public string ShortChar1 { get; set; }
-        public string ShortChar2 { get; set; }
+        public string ShortChar2 { get; set; }        
     }
 }

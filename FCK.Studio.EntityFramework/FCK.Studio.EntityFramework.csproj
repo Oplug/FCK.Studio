@@ -196,6 +196,14 @@
     <Compile Include="Migrations\201805302241232_UptAArticle.Designer.cs">
       <DependentUpon>201805302241232_UptAArticle.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201806181407439_AddModelElectionHd.cs" />
+    <Compile Include="Migrations\201806181407439_AddModelElectionHd.Designer.cs">
+      <DependentUpon>201806181407439_AddModelElectionHd.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201806181410183_UptModelElectionHd.cs" />
+    <Compile Include="Migrations\201806181410183_UptModelElectionHd.Designer.cs">
+      <DependentUpon>201806181410183_UptModelElectionHd.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -317,6 +325,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201805302241232_UptAArticle.resx">
       <DependentUpon>201805302241232_UptAArticle.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201806181407439_AddModelElectionHd.resx">
+      <DependentUpon>201806181407439_AddModelElectionHd.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201806181410183_UptModelElectionHd.resx">
+      <DependentUpon>201806181410183_UptModelElectionHd.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

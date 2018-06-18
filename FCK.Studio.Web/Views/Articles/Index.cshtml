@@ -34,7 +34,7 @@
             <input type="hidden" value="1" id="pageindex" />
         </div>
         <!-- /.box-header -->
-        <div class="box-body">
+        <div class="box-body" id="mLoading">
             <table class="table table-bordered table-hover">
                 <thead>
                     <tr>
@@ -78,10 +78,12 @@
 @section css{
     <!-- DataTables -->
     <link rel="stylesheet" href="/Content/bower_components/datatables.net-bs/css/dataTables.bootstrap.min.css">
+<link href="/Content/bower_components/jquery.mloading-master/src/jquery.mloading.css" rel="stylesheet" />
 }
 @section scripts{
     <script src="/Content/bower_components/datatables.net/js/jquery.dataTables.min.js"></script>
     <script src="/Content/bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
+    <script src="/Content/bower_components/jquery.mloading-master/src/jquery.mloading.js"></script>
     <script>
         $(function () {
 
@@ -133,12 +135,17 @@
         GetDataList();
 
         function GetDataList() {
+            $("#mLoading").mLoading({
+                text: "Processing,please wait...",
+                icon: "/Content/easyui/themes/default/images/loading.gif"
+            });
             var _page = parseInt($('#pageindex').val())
             $.post('/Articles/GetPageLists', { page: _page, pageSize: 10, keywords: $('input[name=keywords]').val() }, function (response) {
                 Vue.set(vm, 'mydata', response.datas);
                 Vue.set(vm, 'totalpages', response.pages)
                 Vue.set(vm, 'pages', response.pages > 10 ? 10 : response.pages)
                 Vue.set(vm, 'pageindex', _page)
+                $("#mLoading").mLoading("hide");
             });
             //$('#DataTable').dataTable({
             //    "order": [[3, "desc"]],

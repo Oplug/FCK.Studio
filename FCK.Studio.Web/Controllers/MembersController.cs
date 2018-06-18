@@ -80,6 +80,15 @@ namespace FCK.Studio.Web.Controllers
                     else
                     {
                         input.TenantId = TenantId;
+
+                        BirthdayAgeSex user = AppBase.GetBirthdayAgeSex(input.UserID);
+                        if (user != null)
+                        {
+                            input.Age = user.Age;
+                            input.Birthday = user.Birthday;
+                            input.Sex = user.Sex;
+                        }
+
                         Member.Reposity.InsertOrUpdate(input);
                         result.code = 100;
                         result.datas = input.Id;
@@ -87,6 +96,32 @@ namespace FCK.Studio.Web.Controllers
                     }
                     ObjRead.Dispose();
                 }
+            }
+            catch (Exception ex)
+            {
+                result.code = 500;
+                result.message = ex.Message;
+            }
+            return Json(result);
+        }
+
+        public JsonResult InsertBlank()
+        {
+            ResultDto<int> result = new ResultDto<int>();
+            try {                
+                using (MembersService Member = new MembersService())
+                {
+                    Members obj = new Members();
+                    obj.UserName = GetRndCode(6);
+                    obj.Password = "96E79218965EB72C92A549DD5A330112";
+                    obj.Email = "0";
+                    obj.UserID = "0";                    
+                    obj.TenantId = TenantId;
+                    obj.CreationTime = DateTime.Now;
+                    Member.Reposity.Insert(obj);
+                    result.code = 100;
+                    result.message = "ok";
+                }                
             }
             catch (Exception ex)
             {

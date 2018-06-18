@@ -25,9 +25,12 @@
 }
 .EditTable td {
     border:1px solid #ccc !important;
-    padding:3px  !important;
+    padding:2px  !important;
 }
 .m-block{
     display:block;
+}
+.pagination span{
+    cursor:pointer
 }
 

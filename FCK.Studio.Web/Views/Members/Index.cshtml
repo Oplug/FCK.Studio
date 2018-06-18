@@ -22,6 +22,7 @@
             <div class="box-tools pull-right">
                 <div class="btn-group">
                     <button type="button" class="btn btn-default hidden" data-toggle="tooltip" data-placement="top" title="保存" onclick="PatchSave()"><i class="fa fa-save"></i></button>
+                    <button type="button" class="btn btn-default" data-toggle="tooltip" data-placement="top" title="新增" onclick="AddNew()"><i class="fa fa-plus"></i></button>
                     <button type="button" class="btn btn-default" data-toggle="tooltip" data-placement="top" title="刷新" onclick="GetDataList()"><i class="fa fa-refresh"></i></button>
                     <button type="button" class="btn btn-default" data-toggle="tooltip" data-placement="top" title="导入"><i class="fa fa-upload" data-toggle="modal" data-target="#modal-default"></i></button>
                     <button type="button" class="btn btn-default" data-toggle="tooltip" data-placement="top" title="导出" onclick="ExportExcel()"><i class="fa fa-download"></i></button>
@@ -74,7 +75,7 @@
                     <table id="grid" style="width:100%;height:500px">
                         <thead data-options="frozen:true">
                             <tr>
-                                <th data-options="field:'Apartment',width:100,editor:'text'">楼盘</th>
+                                <th data-options="field:'Apartment',width:99,editor:'text'">楼盘</th>
                                 <th data-options="field:'UnitNum',width:60,align:'center',editor:'text'">单元</th>
                                 <th data-options="field:'DoorCard',width:60,align:'center',editor:'text'">门牌号</th>
                                 <th data-options="field:'Relations',width:80,align:'center',editor:'text'">关系</th>                                
@@ -98,15 +99,15 @@
                                 <th data-options="field:'Phone2',width:100,align:'center',editor:'text'">联系电话2</th>
                                 <th data-options="field:'PoliticalRole',width:80,align:'center',editor:'text'">政治面貌</th>
                                 <th data-options="field:'PartyBranch',width:100,editor:'text'">党员所在支部</th>
-                                <th data-options="field:'CorridorLeader',width:80,align:'center'">楼道组长</th>
-                                <th data-options="field:'HouseLeader',width:80,align:'center'">户代表</th>
-                                <th data-options="field:'ResidentRepresentative',width:80,align:'center'">居民代表</th>
-                                <th data-options="field:'ResidentLeader',width:80,align:'center'">居民组长</th>
-                                <th data-options="field:'Pipwa',width:100,align:'center'">愿参加公益</th>
-                                <th data-options="field:'Eira',width:100,align:'center'">愿从事居民事务</th>
-                                <th data-options="field:'UpdateTime',width:80,align:'center'">调查时间</th>
+                                <th data-options="field:'CorridorLeader',width:80,align:'center',editor:{type:'checkbox',options:{on:'true',off:'false'}}">楼道组长</th>
+                                <th data-options="field:'HouseLeader',width:80,align:'center',editor:{type:'checkbox',options:{on:'true',off:'false'}}">户代表</th>
+                                <th data-options="field:'ResidentRepresentative',width:80,align:'center',editor:{type:'checkbox',options:{on:'true',off:'false'}}">居民代表</th>
+                                <th data-options="field:'ResidentLeader',width:80,align:'center',editor:{type:'checkbox',options:{on:'true',off:'false'}}">居民组长</th>
+                                <th data-options="field:'Pipwa',width:100,align:'center',editor:{type:'checkbox',options:{on:'true',off:'false'}}">愿参加公益</th>
+                                <th data-options="field:'Eira',width:100,align:'center',editor:{type:'checkbox',options:{on:'true',off:'false'}}">愿从事居民事务</th>
+                                <th data-options="field:'UpdateTime',width:120,align:'center'">更新时间</th>
                                 <th data-options="field:'Speciality',width:80,editor:'text'">专长/备注</th>
-                                <th data-options="field:'Approved',width:60,align:'center',editor:{type:'checkbox',options:{on:'true',off:'false'}}">审核</th>
+                                <th data-options="field:'Approved',width:60,align:'center',editor:{type:'checkbox',options:{on:true,off:false}}">审核</th>
                             </tr>
                         </thead>
                     </table>
@@ -206,7 +207,7 @@
                 url: "/Members/GetPageListToEasyUI",
                 idField: 'Id',
                 queryParams: params,
-                onClickCell: onClickCell,
+                onDblClickRow: onClickCell,
                 onAfterEdit: onAfterEdit
             });
         }
@@ -251,6 +252,18 @@
             } else {
                 PatchSave(index, row, changes);
             }
+        }
+        function AddNew() {
+            $.ajax({
+                url: '/Members/InsertBlank',
+                type: "POST",
+                success: function (resp) {
+                    if (resp.code == 100) {
+                        GetDataList();
+                    }else
+                        toastr.error(resp.message);
+                }
+            });
         }
     </script>
 }
