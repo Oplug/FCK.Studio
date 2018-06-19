@@ -20,14 +20,14 @@
         <div class="box-body">
             <div class="box-header">
                 <div class="btn-group">
-                    <a href="/Election/Edit/0" class="btn btn-default" data-toggle="tooltip" data-placement="top" title="新建"><i class="fa fa-file-o"></i></a>
+                    <a href="/ElectionHD/Edit/0" class="btn btn-default" data-toggle="tooltip" data-placement="top" title="新建"><i class="fa fa-file-o"></i></a>
                     <button type="button" class="btn btn-default" data-toggle="tooltip" data-placement="top" title="保存"><i class="fa fa-save"></i></button>
                     <button type="button" class="btn btn-default" data-toggle="tooltip" data-placement="top" title="刷新" onclick="GetDataList()"><i class="fa fa-refresh"></i></button>
                     <button type="button" class="btn btn-default" data-toggle="tooltip" data-placement="top" title="删除"><i class="fa fa-remove"></i></button>
                 </div>
                 <div class="box-tools">
                     <div class="input-group input-group-sm" style="width: 150px;">
-                        <input type="text" name="table_search" class="form-control pull-right" placeholder="Search">
+                        <input type="text" name="keywords" class="form-control pull-right" placeholder="Search">
                         <div class="input-group-btn">
                             <input type="hidden" value="1" id="pageindex" />
                             <button type="button" class="btn btn-default" onclick="GetDataList()"><i class="fa fa-search"></i></button>
@@ -39,24 +39,20 @@
                 <div class="box-body table-responsive no-padding">
                     <table class="table table-hover">
                         <tr>
-                            <th>候选人</th>
-                            <th>选举项目</th>
-                            <th>票数</th>
+                            <th>标题</th>
                             <th>开启</th>
                             <th>开始时间</th>
                             <th>结束时间</th>
                             <th>操作</th>
                         </tr>
                         <tr v-for="item in mydata">
-                            <td>{{item.Candidate}}</td>
-                            <td>{{item.ElectionHd.Title}}</td>
-                            <td>{{item.NumOfVote}}</td>
+                            <td>{{item.Title}}</td>
                             <td><a v-bind:class="item.IsOpen? 'badge bg-green' : 'badge bg-red'" v-on:click="doopen(item.Id)">{{item.IsOpen}}</a></td>
                             <td>{{item.CreationTime}}</td>
                             <td>{{item.EndTime}}</td>
                             <td>
                                 <a class="btn btn-danger btn-xs" href="#" v-on:click="udelete(item.Id)">删除</a>
-                                <a class="btn btn-success btn-xs" v-bind:href="'/Election/Edit/'+item.Id">编辑</a>
+                                <a class="btn btn-success btn-xs" v-bind:href="'/ElectionHD/Edit/'+item.Id">编辑</a>
                             </td>
                         </tr>
                     </table>
@@ -93,7 +89,7 @@
                     return false;
                 },
                 doopen: function (_id) {
-                    $.post('/Election/DoOpen', { id: _id }, function (response) {
+                    $.post('/ElectionHD/DoOpen', { id: _id }, function (response) {
                         GetDataList();
                     });
                     return false;
@@ -101,7 +97,7 @@
                 udelete: function (_id) {
                     confirmE('确定删除？', function () {
                         $.ajax({
-                            url: '/Election/Del',
+                            url: '/ElectionHD/Del',
                             type: "POST",
                             data: { id: _id },
                             success: function (resp) {
@@ -115,8 +111,8 @@
         })
         function GetDataList() {
             var _page = parseInt($('#pageindex').val())
-            $.post('/Election/GetPageLists',
-                { page: _page, pageSize: 10, keywords: $('input[name=table_search]').val() },
+            $.post('/ElectionHD/GetPageLists',
+                { page: _page, pageSize: 10, keywords: $('input[name=keywords]').val() },
                 function (response) {
                     Vue.set(vm, 'mydata', response.datas)
                     Vue.set(vm, 'totalpages', response.pages)

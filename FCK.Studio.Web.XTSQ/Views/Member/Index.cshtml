@@ -1,6 +1,6 @@
 ﻿
 @{
-    ViewBag.Title = "户籍中心";
+    ViewBag.Title = "会员中心";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 <section class="content-header">
@@ -11,7 +11,7 @@
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
                     <li class="breadcrumb-item"><a href="/Home/">首页</a></li>
-                    <li class="breadcrumb-item active">户籍中心</li>
+                    <li class="breadcrumb-item active">会员中心</li>
                 </ol>
             </div>
         </div>
@@ -40,8 +40,8 @@
                 </li>
             </ul>
 
-            <a v-bind:href="'/Member/MyProfile/'+Model.Id" class="btn btn-primary btn-block"><b>户籍录改</b></a>
-            <a href="/Home/Election" class="btn btn-danger btn-block"><b>投票选举</b></a>
+            <a v-bind:href="'/Member/MyProfile/'+Model.Id" class="btn btn-primary btn-block"><b>个人资料修改</b></a>
+            <a href="/Election/" class="btn btn-danger btn-block"><b>投票选举</b></a>
         </div>
         <!-- /.card-body -->
     </div>

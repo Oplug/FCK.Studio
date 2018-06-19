@@ -1,0 +1,96 @@
+﻿
+@{
+    ViewBag.Title = "投票";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<section class="content-header">
+    <div class="container-fluid">
+        <ol class="breadcrumb pull-right">
+            <li class="breadcrumb-item"><a href="/Home/"><span class="fa fa-home"></span> 首页</a></li>
+            <li class="breadcrumb-item"><a href="/Election/"> 投票选举</a></li>
+            <li class="breadcrumb-item active">投票</li>
+        </ol>
+        <div class="clearfix"></div>
+    </div>
+</section>
+<section class="content" id="DataList">
+    <div class="callout callout-info">
+        <h5><i class="fa fa-info"></i> 投票说明：</h5>
+        {{Election.Intro}}
+        <hr>
+        必选人数：{{Election.VoteNum}}，截止时间：{{Election.EndTime}}
+    </div>
+    <div class="card">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-3 col-sm-6 col-12" v-for="item in ElectionList">
+                    <div class="info-box bg-info">
+                        <span class="info-box-icon"><input type="checkbox" name="candi"  v-bind:value="item.Id"></span>
+                        <div class="info-box-content">
+                            <span class="info-box-text">{{item.Candidate}}</span>
+                            <span class="info-box-number">票数：{{item.NumOfVote}}</span>
+                            <span class="progress-description">
+                                {{item.Intro}}
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <button type="button" class="btn btn-block btn-danger btn-lg" v-on:click="dovote()">确定投票</button>
+        </div>
+    </div>
+</section>
+@section scripts{
+    <script>
+        var _id = "@(ViewBag.Id)";
+        var mydata = {
+            ElectionList: [],
+            Election:{}
+        }
+        var _ids = "";
+        var vm = new Vue({
+            el: "#DataList",
+            data: mydata,
+            methods: {
+                dosel: function (_id) {
+                    if (_ids == "")
+                        _ids += "" + _id;
+                    else
+                        _ids += "," + _id;
+                },
+                dovote: function () {
+                    $("input[name='candi']").each(function () {
+                        if ($(this).is(":checked")) {
+                            if (_ids == "")
+                                _ids += "" + $(this).val();
+                            else
+                                _ids += "," + $(this).val();
+                        }
+                    });
+                    var idarr = _ids.split(",");
+                    if (idarr.length < mydata.Election.VoteNum)
+                    {
+                        toastr.error("请选择" + mydata.Election.VoteNum + "位参选人员");
+                    }
+                    else {
+                        $.post('/Election/DoVote', { ids: _ids }, function (data) {
+                            if (data.code == 100)
+                                toastr.success(data.message);
+                            else
+                                toastr.error(data.message);
+                        });
+                    }
+                }
+            }
+        })
+        $(function () {
+            $.post('/Election/GetLists', { page: 1, pageSize: 0, electionHdId: _id }, function (response) {
+                mydata.ElectionList = response.datas;
+            });
+            $.post('/Election/GetModel', { id: _id }, function (response) {
+                mydata.Election = response;
+            });
+        });
+    </script>
+}
+

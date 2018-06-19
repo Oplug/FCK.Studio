@@ -897,6 +897,7 @@
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\DemdInfoController.cs" />
     <Compile Include="Controllers\ElectionController.cs" />
+    <Compile Include="Controllers\ElectionHDController.cs" />
     <Compile Include="Controllers\HousesController.cs" />
     <Compile Include="Controllers\SignUpBespeakController.cs" />
     <Compile Include="Controllers\TenantsController.cs" />
@@ -1119,6 +1120,8 @@
     <Content Include="Views\Members\HouseList.cshtml" />
     <Content Include="Views\Houses\Index.cshtml" />
     <Content Include="Views\Houses\Edit.cshtml" />
+    <Content Include="Views\ElectionHD\Index.cshtml" />
+    <Content Include="Views\ElectionHD\Edit.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

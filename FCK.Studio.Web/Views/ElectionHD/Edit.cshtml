@@ -5,12 +5,12 @@
 }
 <section class="content-header">
     <h1>
-        候选人编辑
+        选举编辑
         <small>Election Manage</small>
     </h1>
     <ol class="breadcrumb">
         <li><a href="/Home/"><i class="fa fa-dashboard"></i> Home</a></li>
-        <li class="active">候选人编辑</li>
+        <li class="active">选举编辑</li>
     </ol>
 </section>
 <!-- Main content -->
@@ -25,14 +25,16 @@
         <form role="form" id="formEdit">
             <div class="box-body">
                 <div class="form-group">
-                    <label for="Candidate">选举项目</label>
-                    <select class="form-control" v-model="Model.ElectionHdId">
-                        <option v-for="option in ElectionHdList" v-bind:value="option.Id">{{option.Title}}</option>
-                    </select>
+                    <label for="Candidate">标题</label>
+                    <input type="text" class="form-control" v-model="Model.Title" placeholder="Enter Title">
                 </div>
                 <div class="form-group">
-                    <label for="Candidate">候选人</label>
-                    <input type="text" class="form-control" v-model="Model.Candidate" placeholder="Enter Candidate">
+                    <label for="Candidate">选举人数</label>
+                    <input type="text" class="form-control" v-model="Model.CandiNum" placeholder="Enter CandiNum">
+                </div>
+                <div class="form-group">
+                    <label for="Candidate">必选人数</label>
+                    <input type="text" class="form-control" v-model="Model.VoteNum" placeholder="Enter VoteNum">
                 </div>
                 <div class="form-group">
                     <label for="CreationTime">开始时间</label>
@@ -43,15 +45,15 @@
                     <input type="text" class="form-control datepicker EndTime" v-model="Model.EndTime" placeholder="Enter EndTime">
                 </div>
                 <div class="form-group">
-                    <label for="TenantSelect">候选人简介</label>
-                    <textarea class="form-control" v-model="Model.Intro" placeholder="add multiple lines"></textarea>
+                    <label for="TenantSelect">选举说明</label>
+                    <textarea class="form-control" v-model="Model.Intro"></textarea>
                 </div>
 
             </div>
             <!-- /.box-body -->
             <div class="box-footer">
                 <button type="button" class="btn btn-primary" v-on:click="dosubmit">确定</button>
-                <a href="/Election/" class="btn btn-default">返回</a>
+                <a href="/ElectionHD/" class="btn btn-default">返回</a>
             </div>
         </form>
     </div>
@@ -66,8 +68,7 @@
     <script>
         var _Id = "@(ViewBag.Id)";
         var mydata = {
-            Model: {},
-            ElectionHdList:[]
+            Model: {}
         };
         var vm = new Vue({
             el: "#formEdit",
@@ -78,7 +79,7 @@
                 },
                 dosubmit: function () {
                     $.ajax({
-                        url: '/Election/InsertOrUpdate',
+                        url: '/ElectionHD/InsertOrUpdate',
                         type: "POST",
                         data: mydata.Model,
                         success: function (data) {
@@ -106,11 +107,8 @@
             $('.EndTime').on('change', function () {
                 mydata.Model.EndTime = $(this).val();
             })
-            $.post('/Election/GetModel', { id: _Id }, function (response) {
+            $.post('/ElectionHD/GetModel', { id: _Id }, function (response) {
                 mydata.Model = response;
-            });
-            $.post('/ElectionHD/GetPageLists', { page: 1, pageSize:0 }, function (response) {
-                mydata.ElectionHdList = response.datas;
             });
         });
     </script>

@@ -13,15 +13,11 @@
     </div>
 </section>
 <section class="content">
-    <div class="callout callout-info">
-        <h5><i class="fa fa-info"></i> 注意事项:</h5>
-        以下名单是本社区参选人员，依据《中华人民共和国选举法》，每一个公民都有投票权。
-    </div>
     <div class="card">
-        <div class="card-body" id="DataList">            
+        <div class="card-body" id="DataList">
             <div class="row">
                 <div class="col-md-3 col-sm-6 col-12" v-for="item in ElectionHdList">
-                    <div class="info-box bg-success">
+                    <div class="info-box bg-success" v-on:click="dovote(item.Id)">
                         <span class="info-box-icon"><i class="fa fa-thumbs-o-up"></i></span>
                         <div class="info-box-content">
                             <span class="info-box-text">{{item.Title}}</span>
@@ -49,12 +45,7 @@
             data: mydata,
             methods: {
                 dovote: function (_id) {
-                    $.post('/Election/DoVote', { id: _id }, function (data) {
-                        if (data.code == 100)
-                            toastr.success(data.message);
-                        else
-                            toastr.error(data.message);
-                    });
+                    window.location.href = '/Election/Detail/' + _id;
                 }
             }
         })
@@ -65,3 +56,4 @@
         });
     </script>
 }
+

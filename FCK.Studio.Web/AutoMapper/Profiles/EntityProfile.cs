@@ -12,6 +12,7 @@ namespace FCK.Studio.Web.AutoMapper.Profiles
         public EntityProfile()
         {
             CreateMap<Election, Dto.ElectionDto>();
+            CreateMap<ElectionHead, Dto.ElectionHdDto>();
             CreateMap<Products, Dto.ProductDto>();
             CreateMap<Houses, Dto.HouseDto>();
         }
