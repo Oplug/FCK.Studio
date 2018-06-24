@@ -1122,6 +1122,7 @@
     <Content Include="Views\Houses\Edit.cshtml" />
     <Content Include="Views\ElectionHD\Index.cshtml" />
     <Content Include="Views\ElectionHD\Edit.cshtml" />
+    <Content Include="Views\Members\UserList.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

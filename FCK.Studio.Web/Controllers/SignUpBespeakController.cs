@@ -14,7 +14,41 @@ namespace FCK.Studio.Web.Controllers
     {
         public JsonResult Del(long id)
         {
-            throw new NotImplementedException();
+            ResultDto<string> result = new ResultDto<string>();
+            try
+            {
+                SignUpBespeakService Serv = new SignUpBespeakService();
+                Serv.Reposity.Delete(id);
+                result.code = 100;
+                result.message = "success";
+                Serv.Dispose();
+            }
+            catch (Exception ex)
+            {
+                result.message = ex.Message;
+            }
+            return Json(result);
+        }
+
+        public JsonResult DelPatch(string[] ids)
+        {
+            ResultDto<string> result = new ResultDto<string>();
+            try
+            {
+                SignUpBespeakService Serv = new SignUpBespeakService();
+                foreach(string id in ids)
+                {
+                    Serv.Reposity.Delete(int.Parse(id));
+                }                
+                result.code = 100;
+                result.message = "success";
+                Serv.Dispose();
+            }
+            catch (Exception ex)
+            {
+                result.message = ex.Message;
+            }
+            return Json(result);
         }
 
         public JsonResult GetLists(int page, int pageSize)
@@ -22,6 +56,20 @@ namespace FCK.Studio.Web.Controllers
             SignUpBespeakService Serv = new SignUpBespeakService();
             var result = Serv.Reposity.GetPageList(page, pageSize, (o => o.TenantId == TenantId));
             var lists = Mapper.Map<ResultDto<List<Dto.SignUpBespeakDto>>>(result);
+            return Json(lists);
+        }
+        public JsonResult GetPageLists(int page, int pageSize, string keywords = "")
+        {
+            SignUpBespeakService Serv = new SignUpBespeakService();
+            ResultDto<List<SignUpBespeak>> result = new ResultDto<List<SignUpBespeak>>();
+            if (string.IsNullOrEmpty(keywords))
+            {
+                result = Serv.GetListOrderByTime(page, pageSize, (o => o.TenantId == TenantId));
+            }
+            else
+                result = Serv.GetListOrderByTime(page, pageSize, (o => o.TenantId == TenantId && o.ActvTitle.Contains(keywords)));
+            var lists = Mapper.Map<ResultDto<List<Dto.SignUpBespeakDto>>>(result);
+            Serv.Dispose();
             return Json(lists);
         }
 
@@ -52,10 +100,6 @@ namespace FCK.Studio.Web.Controllers
         {
             throw new NotImplementedException();
         }
-
-        public JsonResult GetPageLists(int page, int pageSize, string keywords = "")
-        {
-            throw new NotImplementedException();
-        }
+        
     }
 }

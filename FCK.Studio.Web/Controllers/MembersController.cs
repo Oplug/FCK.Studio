@@ -21,6 +21,10 @@ namespace FCK.Studio.Web.Controllers
         {
             return View();
         }
+        public ActionResult UserList()
+        {
+            return View();
+        }
         public ActionResult Report()
         {
             return View();
@@ -71,7 +75,7 @@ namespace FCK.Studio.Web.Controllers
                         input.UpdateTime = DateTime.Now;
                     }
                     MembersService ObjRead = new MembersService();
-                    var obj = ObjRead.Reposity.GetAllList(o => o.UserID == input.UserID && o.Id != input.Id).FirstOrDefault();
+                    var obj = ObjRead.Reposity.GetAllList(o => o.UserID == input.UserID && o.Id != input.Id && o.UserID != "00" && o.UserID != "").FirstOrDefault();
                     if (obj != null)
                     {
                         result.code = 500;
@@ -108,20 +112,21 @@ namespace FCK.Studio.Web.Controllers
         public JsonResult InsertBlank()
         {
             ResultDto<int> result = new ResultDto<int>();
-            try {                
+            try
+            {
                 using (MembersService Member = new MembersService())
                 {
                     Members obj = new Members();
                     obj.UserName = GetRndCode(6);
                     obj.Password = "96E79218965EB72C92A549DD5A330112";
                     obj.Email = "0";
-                    obj.UserID = "0";                    
+                    obj.UserID = "0";
                     obj.TenantId = TenantId;
                     obj.CreationTime = DateTime.Now;
                     Member.Reposity.Insert(obj);
                     result.code = 100;
                     result.message = "ok";
-                }                
+                }
             }
             catch (Exception ex)
             {
@@ -173,7 +178,7 @@ namespace FCK.Studio.Web.Controllers
             }
             return Json(result);
         }
-        private ResultDto<List<Dto.MemberOutDto>> GetDatas(int page = 1, int pageSize = 0, string keywords = "")
+        private ResultDto<List<Dto.MemberOutDto>> GetDatas(int page = 1, int pageSize = 0, string keywords = "", bool hhdRegister = true)
         {
             ResultDto<List<Dto.MemberOutDto>> result = new ResultDto<List<Dto.MemberOutDto>>();
             try
@@ -181,7 +186,7 @@ namespace FCK.Studio.Web.Controllers
                 ResultDto<List<Members>> items = new ResultDto<List<Members>>();
                 MembersService Member = new MembersService();
                 var predicate = PredicateBuilder.True<Members>();
-                predicate = o => o.TenantId == TenantId;
+                predicate = o => o.TenantId == TenantId && o.HhdRegister == hhdRegister;
                 items = Member.GetListOrderByTime(page, pageSize, predicate, keywords);
                 result = Mapper.Map<ResultDto<List<Dto.MemberOutDto>>>(items);
                 Member.Dispose();
@@ -194,13 +199,13 @@ namespace FCK.Studio.Web.Controllers
             return result;
         }
 
-        public JsonResult GetPageListToEasyUI(int page, int rows, string keywords = "")
-        {            
-            var resp = GetDatas(page, rows, keywords);
+        public JsonResult GetPageListToEasyUI(int page, int rows, string keywords = "", bool hhdRegister = true)
+        {
+            var resp = GetDatas(page, rows, keywords, hhdRegister);
             int total = resp.total;
             var data = new
             {
-                total, 
+                total,
                 rows = resp.datas
             };
             return Json(data);

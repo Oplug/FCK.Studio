@@ -57,7 +57,7 @@ namespace FCK.Studio.Application
                 if (!string.IsNullOrEmpty(condis[6]))
                 {
                     s = condis[6];
-                    query = query.Where(o => o.UserID.Contains(s)).ToList();
+                    query = query.Where(o => o.UserID.Contains(s) || o.UserName.Contains(s)).ToList();
                 }
             }
             query = query.OrderByDescending(entity => entity.CreationTime).ToList();

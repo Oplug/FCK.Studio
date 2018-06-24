@@ -15,22 +15,29 @@
 </section>
 <!-- Main content -->
 <section class="content">
-    <div class="box">
+    <div class="box" id="DataTable">
         <div class="box-header  with-border">
-            <h3 class="box-title">所有内容</h3>
-            <div class="box-tools pull-right">
-                <button type="button" class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip"
-                        title="Collapse">
-                    <i class="fa fa-minus"></i>
-                </button>
+            <div class="btn-group">
+                <button type="button" class="btn btn-default btn-sm" onclick="DelPatch()"><i class="fa fa-remove"></i></button>
             </div>
+            <div class="box-tools">
+                <div class="input-group" style="width:180px">
+                    <input type="text" class="form-control" name="keywords" placeholder="keywords">
+                    <span class="input-group-btn">
+                        <button type="button" class="btn btn-info" onclick="GetDataList()"><i class="fa fa-search"></i></button>
+                    </span>
+                </div>
+            </div>
+
+            <input type="hidden" value="1" id="pageindex" />
         </div>
-        <!-- /.box-header -->
         <div class="box-body">
-            <table id="DataTable" class="table table-bordered table-hover">
+            <table class="table table-hover" id="mLoading">
                 <thead>
                     <tr>
+                        <th></th>
                         <th>姓名</th>
+                        <th>用户</th>
                         <th>电话</th>
                         <th>邮箱</th>
                         <th>项目标题</th>
@@ -40,52 +47,123 @@
                 </thead>
                 <tbody>
                     <tr v-for="item in mydata">
+                        <td align="center"><input type="checkbox" name="obj" v-bind:value="item.Id"></td>
                         <td>{{item.UserName}}</td>
+                        <td>{{item.MemberName}}</td>
                         <td>{{item.Telphone}}</td>
                         <td>{{item.Email}}</td>
                         <td>{{item.ActvTitle}}</td>
                         <td><small>{{item.CreationTime}}</small></td>
                         <td>
-                            <a class="btn btn-primary btn-xs" href="#" v-on:click="viewd(item.Id)">查看</a>
+                            <a class="btn btn-primary btn-xs" v-bind:href="'/SignUpBespeak/Edit/'+item.Id">查看</a>
+                            <a class="btn btn-danger btn-xs" v-on:click="dodel(item.Id)">删除</a>
                         </td>
                     </tr>
                 </tbody>                
             </table>
         </div>
-        <!-- /.box-body -->
+        <div class="box-footer clearfix">
+            <select onchange="selpage(this.value)">
+                <option v-for="value in totalpages" v-bind:value="value">{{value}}</option>
+            </select> 页码：{{pageindex}}/{{totalpages}}
+            <ul class="pagination pagination-sm no-margin pull-right">
+                <li v-bind:class="pageindex<=1? 'hidden' : ''"><a href="#" onclick="turnpage(-1)">&laquo;</a></li>
+                <li v-for="value in pages" v-bind:class="value==pageindex? 'active' : ''"><a href="#" v-on:click="chgpage(value)">{{value}}</a></li>
+                <li v-bind:class="pageindex==totalpages? 'hidden' : ''"><a href="#" onclick="turnpage(1)">&raquo;</a></li>
+            </ul>
+        </div>
     </div>
 </section>
 <!-- /.content -->
 @section css{
     <!-- DataTables -->
     <link rel="stylesheet" href="/Content/bower_components/datatables.net-bs/css/dataTables.bootstrap.min.css">
+    <link href="/Content/bower_components/jquery.mloading-master/src/jquery.mloading.css" rel="stylesheet" />
 }
 @section scripts{
 <script src="/Content/bower_components/datatables.net/js/jquery.dataTables.min.js"></script>
 <script src="/Content/bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
+<script src="/Content/bower_components/jquery.mloading-master/src/jquery.mloading.js"></script>
 <script>
-    $(function () {
-        $.post('/SignUpBespeak/GetLists', { page: 1, pageSize: 0 }, function (response) {
-            var vm = new Vue({
-                el: '#DataTable',
-                data: {
-                    mydata: response.datas
-                },
-                methods: {
-                    initDatas: function () {
-                        $('#DataTable').dataTable({
-                            "order": [[4, "desc"]],
-                            'language': DataTableLanguage
-                        });
-                    },
-                    viewd: function (_id)
-                    {
-                        window.location = '/SignUpBespeak/Edit/'+_id;
-                    }
-                }
-            });
-            vm.initDatas();
+    var vm = new Vue({
+        el: '#DataTable',
+        data: {
+            mydata: [],
+            pages: 0,
+            totalpages: 0,
+            pageindex: 1
+        },
+        methods: {
+            dodel: function (_id) {
+                var ids = [];
+                ids.push(_id);
+                DelAct(ids);
+            },
+            chgpage: function (p) {
+                $('#pageindex').val(p);
+                GetDataList();
+            }
+        }
+    });
+    
+    function GetDataList()
+    {
+        $("#mLoading").mLoading({
+            text: "Processing,please wait...",
+            icon: "/Content/easyui/themes/default/images/loading.gif"
         });
-    })
+        var _page = parseInt($('#pageindex').val())
+        $.post('/SignUpBespeak/GetPageLists', { page: _page, pageSize: 10, keywords: $('input[name=keywords]').val() }, function (response) {
+            Vue.set(vm, 'mydata', response.datas);
+            Vue.set(vm, 'totalpages', response.pages)
+            Vue.set(vm, 'pages', response.pages > 10 ? 10 : response.pages)
+            Vue.set(vm, 'pageindex', _page)
+            $("#mLoading").mLoading("hide");
+        });        
+    }
+    //$('#DataTable').dataTable({
+    //    "order": [[4, "desc"]],
+    //    'language': DataTableLanguage
+    //});
+    
+    GetDataList();
+
+    function DelAct(_id) {
+        confirmE('确定删除？', function () {
+            $.post('/SignUpBespeak/DelPatch', { ids: _id }, function (response) {
+                if (response.code == 100) {
+                    GetDataList();
+                }
+                else
+                    $.alert(response.message);
+            });
+        });       
+        return false;
+    }
+    function DelPatch()
+    {
+        var ids = [];        
+        $("#DataTable input[name=obj]").each(function () {
+            if ($(this).prop("checked")) {
+                ids.push($(this).val());
+            }
+        });
+        if (ids.length <= 0)
+            alertE("至少选择一项！");
+        else
+            DelAct(ids);
+    }
+    function selpage(val) {
+        $('#pageindex').val(val);
+        GetDataList();
+        return false;
+    }
+    function turnpage(val) {
+        var _page = parseInt($('#pageindex').val());
+        _page = _page + val;
+        $('#pageindex').val(_page);
+        GetDataList();
+        return false;
+    }
 </script>
 }

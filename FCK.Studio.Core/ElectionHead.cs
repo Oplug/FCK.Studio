@@ -15,7 +15,7 @@ namespace FCK.Studio.Core
         public DateTime EndTime { get; set; }
         public int CandiNum { get; set; }
         public int VoteNum { get; set; }
-        [MaxLength(500)]
+        [Column(TypeName = "text")]
         public string Intro { get; set; }
         public int TenantId { get; set; }
         public bool IsOpen { get; set; }

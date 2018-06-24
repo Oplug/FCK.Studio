@@ -21,5 +21,6 @@ namespace FCK.Studio.Web.Dto
         public long ActvID { get; set; }
         public string Memo { get; set; }
         public string CreationTime { get; set; }
+        public string MemberName { get; set; }
     }
 }

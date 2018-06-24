@@ -37,6 +37,8 @@ namespace FCK.Studio.Core
         public string Memo { get; set; }
         public DateTime CreationTime { get; set; }
         public int TenantId { get; set; }
+        [MaxLength(50)]
+        public string MemberName { get; set; }
 
         public SignUpBespeak()
         {

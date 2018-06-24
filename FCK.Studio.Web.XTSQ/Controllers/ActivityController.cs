@@ -94,6 +94,7 @@ namespace FCK.Studio.Web.XTSQ.Controllers
                                         input.TenantId = tenant.Id;
                                         input.CreationTime = DateTime.Now;
                                     }
+                                    input.MemberName = Member != null ? Member.UserName : "";
                                     var data = subkS.Reposity.InsertOrUpdate(input);
 
                                     article.SignUpNums += 1;

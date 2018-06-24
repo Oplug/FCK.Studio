@@ -140,7 +140,7 @@
 </div>
 @section css{
     <link href="/Content/Site.css?v=@(DateTime.Now.ToString("hhmmss"))" rel="stylesheet" />
-    <link href="/Content/easyui/themes/default/easyui.css?v=@(DateTime.Now.ToString("hhmmss"))" rel="stylesheet" />>
+    <link href="/Content/easyui/themes/default/easyui.css?v=@(DateTime.Now.ToString("hhmmss"))" rel="stylesheet" />
     <link href="/Content/easyui/themes/icon.css?v=@(DateTime.Now.ToString("hhmmss"))" rel="stylesheet" />
 }
 @section scripts{
@@ -220,6 +220,7 @@
                     + ',' + $('input[name=Phone]').val()
                     + ',' + $('input[name=keywords]').val()
             params.keywords = _keys;
+            params.hhdRegister = true;
             GetDataList(params);
         }
         var editIndex = undefined;

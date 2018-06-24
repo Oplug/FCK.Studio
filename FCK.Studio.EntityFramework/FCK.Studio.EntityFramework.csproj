@@ -204,6 +204,14 @@
     <Compile Include="Migrations\201806181410183_UptModelElectionHd.Designer.cs">
       <DependentUpon>201806181410183_UptModelElectionHd.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201806222238158_UptModelElectionHead.cs" />
+    <Compile Include="Migrations\201806222238158_UptModelElectionHead.Designer.cs">
+      <DependentUpon>201806222238158_UptModelElectionHead.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201806242220082_UptSignUpModel.cs" />
+    <Compile Include="Migrations\201806242220082_UptSignUpModel.Designer.cs">
+      <DependentUpon>201806242220082_UptSignUpModel.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -331,6 +339,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201806181410183_UptModelElectionHd.resx">
       <DependentUpon>201806181410183_UptModelElectionHd.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201806222238158_UptModelElectionHead.resx">
+      <DependentUpon>201806222238158_UptModelElectionHead.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201806242220082_UptSignUpModel.resx">
+      <DependentUpon>201806242220082_UptSignUpModel.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
