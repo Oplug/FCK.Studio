@@ -38,9 +38,10 @@
                         <th></th>
                         <th>姓名</th>
                         <th>用户</th>
+                        <th>参与类型</th>
                         <th>电话</th>
                         <th>邮箱</th>
-                        <th>项目标题</th>
+                        <th>参与项目</th>
                         <th>时间</th>
                         <th>操作</th>
                     </tr>
@@ -50,6 +51,7 @@
                         <td align="center"><input type="checkbox" name="obj" v-bind:value="item.Id"></td>
                         <td>{{item.UserName}}</td>
                         <td>{{item.MemberName}}</td>
+                        <td>{{item.PoliticalStatus}}</td>
                         <td>{{item.Telphone}}</td>
                         <td>{{item.Email}}</td>
                         <td>{{item.ActvTitle}}</td>
