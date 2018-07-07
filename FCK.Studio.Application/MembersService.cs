@@ -16,7 +16,7 @@ namespace FCK.Studio.Application
         {
             Reposity = new Repository<Members, int>(dbContext);
         }
-        public ResultDto<List<Members>> GetListOrderByTime(int PageIndex, int PageSize, Expression<Func<Members, bool>> predicate, string keywords = "")
+        public ResultDto<List<Members>> GetListOrderByTime(int PageIndex, int PageSize, Expression<Func<Members, bool>> predicate, string keywords = "", string sort = "", string order = "")
         {
             ResultDto<List<Members>> result = new ResultDto<List<Members>>();
             var query = Reposity.GetAllList(predicate);
@@ -27,6 +27,7 @@ namespace FCK.Studio.Application
                 if (!string.IsNullOrEmpty(condis[0]))
                 {
                     s = condis[0];
+                    query = query.Where(o => o.Community != null).ToList();
                     query = query.Where(o => o.Community.Contains(s)).ToList();
                 }
                 if (!string.IsNullOrEmpty(condis[1]))
@@ -37,7 +38,7 @@ namespace FCK.Studio.Application
                 if (!string.IsNullOrEmpty(condis[2]))
                 {
                     s = condis[2];
-                    query = query.Where(o => o.UnitNum !=null && o.UnitNum.Contains(s)).ToList();
+                    query = query.Where(o => o.UnitNum != null && o.UnitNum.Contains(s)).ToList();
                 }
                 if (!string.IsNullOrEmpty(condis[3]))
                 {
@@ -60,7 +61,44 @@ namespace FCK.Studio.Application
                     query = query.Where(o => o.UserID.Contains(s) || o.UserName.Contains(s)).ToList();
                 }
             }
-            query = query.OrderByDescending(entity => entity.CreationTime).ToList();
+            if (sort == "Birthday" && order == "desc")
+                query = query.OrderByDescending(o => o.Birthday).ToList();
+            if (sort == "Birthday" && order == "asc")
+                query = query.OrderBy(o => o.Birthday).ToList();
+            if (sort == "TrueName" && order == "desc")
+                query = query.OrderByDescending(o => o.TrueName).ToList();
+            if (sort == "TrueName" && order == "asc")
+                query = query.OrderBy(o => o.TrueName).ToList();
+            if (sort == "UnitNum" && order == "desc")
+                query = query.OrderByDescending(o => o.UnitNum).ToList();
+            if (sort == "UnitNum" && order == "asc")
+                query = query.OrderBy(o => o.UnitNum).ToList();
+            if (sort == "Age" && order == "desc")
+                query = query.OrderByDescending(o => o.Age).ToList();
+            if (sort == "Age" && order == "asc")
+                query = query.OrderBy(o => o.Age).ToList();
+            if (sort == "UserName" && order == "desc")
+                query = query.OrderByDescending(o => o.UserName).ToList();
+            if (sort == "UserName" && order == "asc")
+                query = query.OrderBy(o => o.UserName).ToList();
+            if (sort == "UserID" && order == "desc")
+                query = query.OrderByDescending(o => o.UserID).ToList();
+            if (sort == "UserID" && order == "asc")
+                query = query.OrderBy(o => o.UserID).ToList();
+            if (sort == "UpdateTime" && order == "desc")
+                query = query.OrderByDescending(o => o.UpdateTime).ToList();
+            if (sort == "UpdateTime" && order == "asc")
+                query = query.OrderBy(o => o.UpdateTime).ToList();
+            if (sort == "DoorCard" && order == "desc")
+                query = query.OrderByDescending(o => o.DoorCard).ToList();
+            if (sort == "DoorCard" && order == "asc")
+                query = query.OrderBy(o => o.DoorCard).ToList();
+            if (sort == "CreationTime" && order == "desc")
+                query = query.OrderByDescending(o => o.CreationTime).ToList();
+            if (sort == "CreationTime" && order == "asc")
+                query = query.OrderBy(o => o.CreationTime).ToList();
+            if (string.IsNullOrEmpty(sort))
+                query = query.OrderByDescending(o => o.CreationTime).ToList();
             result.total = query.Count;
             if (PageSize > 0)
             {

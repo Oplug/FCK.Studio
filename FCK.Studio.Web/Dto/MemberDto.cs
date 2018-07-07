@@ -99,6 +99,7 @@ namespace FCK.Studio.Web.Dto
 
     public class HouseDto
     {
+        public int Id { get; set; }
         public int TenantId { get; set; }
         public int CategoryId { get; set; }
         public Categories Category { get; set; }

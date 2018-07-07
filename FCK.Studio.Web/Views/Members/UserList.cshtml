@@ -43,13 +43,14 @@
                     <table id="grid" style="width:100%;height:500px">
                         <thead>
                             <tr>
-                                <th data-options="field:'UserName',width:60,align:'center'">用户名</th>
-                                <th data-options="field:'TrueName',width:60,align:'center',editor:'text'">姓名</th>
+                                <th field="ck" checkbox="true"></th>
+                                <th data-options="field:'UserName',width:60,align:'center',sortable : true">用户名</th>
+                                <th data-options="field:'TrueName',width:60,align:'center',editor:'text',sortable : true">姓名</th>
                                 <th data-options="field:'Sex',width:60,align:'center',editor:'text'">性别</th>
                                 <th data-options="field:'Email',width:60,align:'center',editor:'text'">邮箱</th>
                                 <th data-options="field:'Mobile',width:60,align:'center',editor:'text'">手机号码</th>
-                                <th data-options="field:'UpdateTime',width:60,align:'center'">更新时间</th>
-                                <th data-options="field:'CreationTime',width:60,align:'center'">注册时间</th>
+                                <th data-options="field:'UpdateTime',width:60,align:'center',sortable : true">更新时间</th>
+                                <th data-options="field:'CreationTime',width:60,align:'center',sortable : true">注册时间</th>
                                 <th data-options="field:'Speciality',width:120,align:'center',editor:'text'">备注</th>
                                 <th data-options="field:'Approved',width:60,align:'center',editor:{type:'checkbox',options:{on:true,off:false}}">审核</th>
                             </tr>
@@ -145,7 +146,7 @@
             datagrid = $('#grid').datagrid({
                 border: true,
                 rownumbers: true,
-                fitColumns:true,
+                fitColumns: true,
                 pageList: [10, 20, 30],
                 pagination: true,
                 pageSize: 20,
@@ -197,6 +198,7 @@
             $.ajax({
                 url: '/Members/InsertBlank',
                 type: "POST",
+                data: { hhd: false },
                 success: function (resp) {
                     if (resp.code == 100) {
                         GetDataList();

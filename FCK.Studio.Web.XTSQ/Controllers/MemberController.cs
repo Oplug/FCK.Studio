@@ -57,7 +57,7 @@ namespace FCK.Studio.Web.XTSQ.Controllers
                 MembersService ObjServRead = new MembersService();
                 var item1 = ObjServ.Reposity.GetAllList(o => o.UserName == input.UserName && o.Id != MemberId).Count();
                 var item2 = ObjServ.Reposity.GetAllList(o => o.Mobile == input.Mobile && o.Id != MemberId).Count();
-                var item3 = ObjServ.Reposity.GetAllList(o => o.UserID == input.UserID && o.Id != MemberId).Count();
+                var item3 = ObjServ.Reposity.GetAllList(o => o.UserID == input.UserID && o.Id != MemberId && o.UserID != "00").Count();
                 if (item1 > 0)
                 {
                     result.code = 500;

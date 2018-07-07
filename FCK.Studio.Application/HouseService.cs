@@ -47,7 +47,7 @@ namespace FCK.Studio.Application
                 if (!string.IsNullOrEmpty(condis[4]))
                 {
                     s = condis[4];
-                    query = query.Where(o => o.HouseType.Contains(s)).ToList();
+                    query = query.Where(o => o.HouseType != null && o.HouseType.Contains(s)).ToList();
                 }
                 if (!string.IsNullOrEmpty(condis[5]))
                 {

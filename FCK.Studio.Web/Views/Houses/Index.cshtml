@@ -42,11 +42,21 @@
                 <form class="form-inline">
                     <div class="form-group">
                         <label for="Apartment">社区</label>
-                        <input type="text" class="form-control w80 input-sm" name="Community">
+                        <select id="Community" class="form-control input-sm w100">
+                            <option value="">请选择</option>
+                            <option value="兴塘社区">兴塘社区</option>
+                        </select>
                     </div>
                     <div class="form-group">
                         <label for="Apartment">楼盘</label>
-                        <input type="text" class="form-control w80 input-sm" name="Apartment">
+                        <select id="Apartment" class="form-control input-sm w100">
+                            <option value="">请选择</option>
+                            <option value="东方天郡花园">东方天郡花园</option>
+                            <option value="恒大御澜湾">恒大御澜湾</option>
+                            <option value="金瑚湾世家">金瑚湾世家</option>
+                            <option value="玫瑰香堤">玫瑰香堤</option>
+                            <option value="花海家园">花海家园</option>
+                        </select>
                     </div>
                     <div class="form-group">
                         <label for="UnitNum w80">单元</label>
@@ -109,7 +119,7 @@
                             <th>操作</th>
                         </tr>
                         <tr v-for="item in mydata" v-on:click="listenedit(item)" class="">
-                            <td><div class="w40 text-center"><input type="checkbox" name="obj" class="orm-check-input" v-bind:value="item.Id"></div></td>
+                            <td><div class="w40 text-center"><input type="checkbox" name="obj" class="orm-check-input"  v-bind:value="item.Id" ></div></td>
                             <td>
                                 <input type="text" class="form-control input-sm w60" v-model="item.Category.CategoryName" disabled />
                             </td>
@@ -241,8 +251,8 @@
                 icon: "/Content/easyui/themes/default/images/loading.gif"
             });
             var _page = parseInt($('#pageindex').val())
-            var _keys = $('input[name=Community]').val()
-                    + ',' + $('input[name=Apartment]').val()
+            var _keys = $('#Community').val()
+                    + ',' + $('#Apartment').val()
                     + ',' + $('input[name=UnitNum]').val()
                     + ',' + $('input[name=DoorCard]').val()
                     + ',' + $('#HouseType').val()
@@ -300,16 +310,13 @@
         }
         function PatchDel() {
             confirmE('确定删除？', function () {
-                var _ids = "";
-                $("#DataTable input[name=obj]").each(function () {
+                var _ids = [];
+                $("#DataTable input[name=obj]").each(function () {                    
                     if ($(this).prop("checked")) {
-                        if (_ids == "")
-                            _ids += $(this).val();
-                        else
-                            _ids += "," + $(this).val();
+                        _ids.push($(this).val());
                     }
                 });
-                if (_ids == "")
+                if (_ids.length <= 0)
                     alertE("至少选择一项！");
                 else {
                     $.ajax({

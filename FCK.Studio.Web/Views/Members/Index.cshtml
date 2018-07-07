@@ -21,7 +21,7 @@
             <h3 class="box-title">Members Manage</h3>
             <div class="box-tools pull-right">
                 <div class="btn-group">
-                    <button type="button" class="btn btn-default hidden" data-toggle="tooltip" data-placement="top" title="保存" onclick="PatchSave()"><i class="fa fa-save"></i></button>
+                    <button type="button" class="btn btn-default" data-toggle="tooltip" data-placement="top" title="保存" onclick="PatchSave()"><i class="fa fa-save"></i></button>
                     <button type="button" class="btn btn-default" data-toggle="tooltip" data-placement="top" title="新增" onclick="AddNew()"><i class="fa fa-plus"></i></button>
                     <button type="button" class="btn btn-default" data-toggle="tooltip" data-placement="top" title="刷新" onclick="GetDataList()"><i class="fa fa-refresh"></i></button>
                     <button type="button" class="btn btn-default" data-toggle="tooltip" data-placement="top" title="导入"><i class="fa fa-upload" data-toggle="modal" data-target="#modal-default"></i></button>
@@ -36,11 +36,21 @@
                 <form class="form-inline">
                     <div class="form-group">
                         <label for="Apartment">社区</label>
-                        <input type="text" class="form-control input-sm w80" name="Community">
+                        <select id="Community" class="form-control input-sm w100">
+                            <option value="">请选择</option>
+                            <option value="兴塘社区">兴塘社区</option>
+                        </select>
                     </div>
                     <div class="form-group">
                         <label for="Apartment">楼盘</label>
-                        <input type="text" class="form-control input-sm w100" name="Apartment">
+                        <select id="Apartment" class="form-control input-sm w100">
+                            <option value="">请选择</option>
+                            <option value="东方天郡花园">东方天郡花园</option>
+                            <option value="恒大御澜湾">恒大御澜湾</option>                            
+                            <option value="金瑚湾世家">金瑚湾世家</option>
+                            <option value="玫瑰香堤">玫瑰香堤</option>
+                            <option value="花海家园">花海家园</option>
+                        </select>
                     </div>
                     <div class="form-group">
                         <label for="UnitNum w80">单元</label>
@@ -75,21 +85,22 @@
                     <table id="grid" style="width:100%;height:500px">
                         <thead data-options="frozen:true">
                             <tr>
+                                <th field="ck" checkbox="true"></th>
                                 <th data-options="field:'Apartment',width:99,editor:'text'">楼盘</th>
-                                <th data-options="field:'UnitNum',width:60,align:'center',editor:'text'">单元</th>
-                                <th data-options="field:'DoorCard',width:60,align:'center',editor:'text'">门牌号</th>
+                                <th data-options="field:'UnitNum',width:60,align:'center',editor:'text',sortable : true">单元</th>
+                                <th data-options="field:'DoorCard',width:80,align:'center',editor:'text',sortable : true">门牌号</th>
                                 <th data-options="field:'Relations',width:80,align:'center',editor:'text'">关系</th>                                
-                                <th data-options="field:'TrueName',width:60,align:'center',editor:'text'">姓名</th>
+                                <th data-options="field:'TrueName',width:60,align:'center',editor:'text',sortable : true">姓名</th>
                             </tr>
                         </thead>
                         <thead>
                             <tr>
-                                <th data-options="field:'UserName',width:80,align:'center'">用户名</th>
+                                <th data-options="field:'UserName',width:80,align:'center',sortable : true">用户名</th>
                                 <th data-options="field:'Sex',width:60,align:'center',editor:'text'">性别</th>
                                 <th data-options="field:'Nation',width:60,align:'center',editor:'text'">民族</th>
-                                <th data-options="field:'Birthday',width:100,align:'center'">出生年月</th>
-                                <th data-options="field:'Age',width:60,align:'center',editor:'numberbox'">年龄</th>
-                                <th data-options="field:'UserID',width:160,editor:'text'">身份证号</th>
+                                <th data-options="field:'Birthday',width:100,align:'center',sortable : true">出生年月</th>
+                                <th data-options="field:'Age',width:60,align:'center',editor:'numberbox',sortable : true">年龄</th>
+                                <th data-options="field:'UserID',width:160,editor:'text',sortable : true">身份证号</th>
                                 <th data-options="field:'Address',width:180,editor:'text'">现户籍地址</th>
                                 <th data-options="field:'Address2',width:200,editor:'text'">原户籍地址</th>
                                 <th data-options="field:'HhdRegister',width:120,align:'center'">是否兴塘社区户籍</th>
@@ -105,7 +116,7 @@
                                 <th data-options="field:'ResidentLeader',width:80,align:'center',editor:{type:'checkbox',options:{on:'true',off:'false'}}">居民组长</th>
                                 <th data-options="field:'Pipwa',width:100,align:'center',editor:{type:'checkbox',options:{on:'true',off:'false'}}">愿参加公益</th>
                                 <th data-options="field:'Eira',width:100,align:'center',editor:{type:'checkbox',options:{on:'true',off:'false'}}">愿从事居民事务</th>
-                                <th data-options="field:'UpdateTime',width:120,align:'center'">更新时间</th>
+                                <th data-options="field:'UpdateTime',width:120,align:'center',sortable : true">更新时间</th>
                                 <th data-options="field:'Speciality',width:80,editor:'text'">专长/备注</th>
                                 <th data-options="field:'Approved',width:60,align:'center',editor:{type:'checkbox',options:{on:true,off:false}}">审核</th>
                             </tr>
@@ -146,14 +157,38 @@
 @section scripts{
     <script src="~/Content/easyui/jquery.easyui.min.js"></script>
     <script>
-
-        function PatchSave(index, row, changes) {
+        var updateModel = new Array();
+        function PatchSave() {
+            var num = 0;
+            $.each(updateModel, function (index, item) {
+                $.ajax({
+                    url: '/Members/InsertOrUpdate',
+                    type: "POST",
+                    data: item,
+                    async: false,
+                    success: function (resp) {
+                        if (resp.code == 100)
+                            num++;
+                        else
+                            toastr.error(resp.message);
+                    }
+                });
+            })
+            if (num > 0) {
+                toastr.success("成功更新" + num + "条记录");
+                updateModel = new Array();
+                GetDataList();
+            }            
+        }
+        function DoSave(index, row, changes) {
             $.ajax({
                 url: '/Members/InsertOrUpdate',
                 type: "POST",
                 data: row,
                 async: true,
                 success: function (resp) {
+                    if(resp.code!=100)
+                        toastr.error(resp.message);
                 }
             });
         }
@@ -207,13 +242,13 @@
                 url: "/Members/GetPageListToEasyUI",
                 idField: 'Id',
                 queryParams: params,
-                onDblClickRow: onClickCell,
+                onDblClickRow: onDbClickRow,
                 onAfterEdit: onAfterEdit
             });
         }
         function search() {
-            var _keys = $('input[name=Community]').val()
-                    + ',' + $('input[name=Apartment]').val()
+            var _keys = $('#Community').val()
+                    + ',' + $('#Apartment').val()
                     + ',' + $('input[name=UnitNum]').val()
                     + ',' + $('input[name=DoorCard]').val()
                     + ',' + $('input[name=Truename]').val()
@@ -224,7 +259,7 @@
             GetDataList(params);
         }
         var editIndex = undefined;
-        function onClickCell(index, field, value) {
+        function onDbClickRow(index, field, value) {
             if (editIndex == undefined) {
                 editIndex = index;
                 $('#grid').datagrid('beginEdit', index);
@@ -232,7 +267,7 @@
                     index: index,
                     field: field
                 });
-                $(ed.target).focus();
+                //$(ed.target).focus();
             } else {
                 $('#grid').datagrid('endEdit', editIndex);
                 editIndex = index;
@@ -241,7 +276,7 @@
                     index: index,
                     field: field
                 });
-                $(ed.target).focus();
+                //$(ed.target).focus();
             }
         }
         function onAfterEdit(index, row, changes) {
@@ -250,14 +285,22 @@
                 editRow = undefined;
                 datagrid.datagrid('unselectAll');
                 return;
-            } else {
-                PatchSave(index, row, changes);
-            }
+            } else {                
+                //DoSave(index, row, changes);
+                var flag = true;
+                $.each(updateModel, function (index, item) {
+                    if (row.Id == item.Id)
+                        flag = false;
+                });
+                if (flag)
+                    updateModel.push(row);
+            }            
         }
         function AddNew() {
             $.ajax({
                 url: '/Members/InsertBlank',
                 type: "POST",
+                data: { hhd: true },
                 success: function (resp) {
                     if (resp.code == 100) {
                         GetDataList();

@@ -42,6 +42,29 @@ namespace FCK.Studio.Web.Controllers
             return Json(result);
         }
 
+        public JsonResult DelPatch(string[] ids)
+        {
+            ResultDto<string> result = new ResultDto<string>();
+            try
+            {
+                HouseService ObjServ = new HouseService();
+                foreach (string val in ids)
+                {
+                    int id = Convert.ToInt32(val);
+                    ObjServ.Reposity.Delete(id);
+                }
+                result.code = 100;
+                result.message = "success";
+                ObjServ.Dispose();
+            }
+            catch (Exception ex)
+            {
+                result.code = 500;
+                result.message = ex.Message;
+            }
+            return Json(result);
+        }
+
         public JsonResult GetLists(int page, int pageSize)
         {
             throw new NotImplementedException();
@@ -144,6 +167,7 @@ namespace FCK.Studio.Web.Controllers
                         string failRow = "#";
                         int okRow = 0;
                         HouseService ObjServ = new HouseService();
+                        HouseService ObjServRead = new HouseService();
                         for (int i = (sheet.FirstRowNum + 1); i <= rowCount; i++)
                         {
                             IRow row = sheet.GetRow(i);
@@ -169,15 +193,26 @@ namespace FCK.Studio.Web.Controllers
                                     entity.Memo = CellVal(headerRow, "备注", row);
                                     entity.TenantId = TenantId;
                                     entity.CategoryId = cateid;
-                                    ObjServ.Reposity.Insert(entity);
+                                    var obj = ObjServRead.Reposity.GetAllList(o => o.HouseName == entity.HouseName && o.UnitNum == entity.UnitNum && o.DoorCard == entity.DoorCard).FirstOrDefault();
+                                    if (obj != null)
+                                    {
+                                        entity.Id = obj.Id;
+                                        obj = entity;
+                                        ObjServ.Reposity.Update(obj);
+                                    }
+                                    else
+                                    {
+                                        ObjServ.Reposity.Insert(entity);
+                                    }
                                     okRow++;
                                 }
-                                catch { failRow += "," + i + "行"; }
+                                catch (Exception ex) { failRow += "," + i + "行：" + ex.Message; }
                             }
                         }
                         result.code = 100;
                         result.message = okRow + "行导入成功！";
                         ObjServ.Dispose();
+                        ObjServRead.Dispose();
                     }
                 }
 
@@ -209,21 +244,21 @@ namespace FCK.Studio.Web.Controllers
             foreach (var item in DataLists)
             {
                 IRow row = sheet1.CreateRow(RowNum + 1);
-                row.CreateCell(1).SetCellValue(item.HouseName);
-                row.CreateCell(2).SetCellValue(item.UnitNum);
-                row.CreateCell(3).SetCellValue(item.DoorCard);
-                row.CreateCell(4).SetCellValue(item.HouseType);
-                row.CreateCell(5).SetCellValue(item.HouseArea);
-                row.CreateCell(6).SetCellValue(item.SaleStatus);
-                row.CreateCell(7).SetCellValue(item.BuildStatus);
-                row.CreateCell(8).SetCellValue(item.Owner);
-                row.CreateCell(9).SetCellValue(item.Owner2);
-                row.CreateCell(10).SetCellValue(item.Owner3);
+                row.CreateCell(0).SetCellValue(item.HouseName);
+                row.CreateCell(1).SetCellValue(item.UnitNum);
+                row.CreateCell(2).SetCellValue(item.DoorCard);
+                row.CreateCell(3).SetCellValue(item.HouseType);
+                row.CreateCell(4).SetCellValue(item.HouseArea);
+                row.CreateCell(5).SetCellValue(item.SaleStatus);
+                row.CreateCell(6).SetCellValue(item.BuildStatus);
+                row.CreateCell(7).SetCellValue(item.Owner);
+                row.CreateCell(8).SetCellValue(item.Owner2);
+                row.CreateCell(9).SetCellValue(item.Owner3);
                 row.CreateCell(10).SetCellValue(item.Owner4);
-                row.CreateCell(10).SetCellValue(item.Owner5);
-                row.CreateCell(11).SetCellValue(item.ShortChar1);
-                row.CreateCell(12).SetCellValue(item.ShortChar2);
-                row.CreateCell(13).SetCellValue(item.Memo);
+                row.CreateCell(11).SetCellValue(item.Owner5);
+                row.CreateCell(12).SetCellValue(item.ShortChar1);
+                row.CreateCell(13).SetCellValue(item.ShortChar2);
+                row.CreateCell(14).SetCellValue(item.Memo);
                 RowNum++;
             }
 

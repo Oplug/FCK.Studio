@@ -109,7 +109,7 @@ namespace FCK.Studio.Web.Controllers
             return Json(result);
         }
 
-        public JsonResult InsertBlank()
+        public JsonResult InsertBlank(bool hhd = false)
         {
             ResultDto<int> result = new ResultDto<int>();
             try
@@ -123,6 +123,7 @@ namespace FCK.Studio.Web.Controllers
                     obj.UserID = "0";
                     obj.TenantId = TenantId;
                     obj.CreationTime = DateTime.Now;
+                    obj.HhdRegister = hhd;
                     Member.Reposity.Insert(obj);
                     result.code = 100;
                     result.message = "ok";
@@ -178,7 +179,7 @@ namespace FCK.Studio.Web.Controllers
             }
             return Json(result);
         }
-        private ResultDto<List<Dto.MemberOutDto>> GetDatas(int page = 1, int pageSize = 0, string keywords = "", bool hhdRegister = true)
+        private ResultDto<List<Dto.MemberOutDto>> GetDatas(int page = 1, int pageSize = 0, string keywords = "", bool hhdRegister = true, string sort = "", string order = "")
         {
             ResultDto<List<Dto.MemberOutDto>> result = new ResultDto<List<Dto.MemberOutDto>>();
             try
@@ -187,7 +188,7 @@ namespace FCK.Studio.Web.Controllers
                 MembersService Member = new MembersService();
                 var predicate = PredicateBuilder.True<Members>();
                 predicate = o => o.TenantId == TenantId && o.HhdRegister == hhdRegister;
-                items = Member.GetListOrderByTime(page, pageSize, predicate, keywords);
+                items = Member.GetListOrderByTime(page, pageSize, predicate, keywords, sort, order);
                 result = Mapper.Map<ResultDto<List<Dto.MemberOutDto>>>(items);
                 Member.Dispose();
             }
@@ -199,13 +200,12 @@ namespace FCK.Studio.Web.Controllers
             return result;
         }
 
-        public JsonResult GetPageListToEasyUI(int page, int rows, string keywords = "", bool hhdRegister = true)
+        public JsonResult GetPageListToEasyUI(int page, int rows, string keywords = "", bool hhdRegister = true, string sort = "", string order = "")
         {
-            var resp = GetDatas(page, rows, keywords, hhdRegister);
-            int total = resp.total;
+            var resp = GetDatas(page, rows, keywords, hhdRegister, sort, order);
             var data = new
             {
-                total,
+                total = resp.total,
                 rows = resp.datas
             };
             return Json(data);
@@ -310,6 +310,7 @@ namespace FCK.Studio.Web.Controllers
                     if (isValid)
                     {
                         MembersService ObjServ = new MembersService();
+                        MembersService ObjServRead = new MembersService();
                         for (int i = (sheet.FirstRowNum + 1); i <= rowCount; i++)
                         {
                             IRow row = sheet.GetRow(i);
@@ -350,13 +351,21 @@ namespace FCK.Studio.Web.Controllers
                                     entity.Birthday = user.Birthday;
                                     entity.Sex = user.Sex;
                                 }
-
-                                ObjServ.Reposity.Insert(entity);
+                                var obj = ObjServRead.Reposity.GetAllList(o => o.UserID == entity.UserID && o.UserID != "0" && o.HhdRegister).FirstOrDefault();
+                                if (obj != null)
+                                {
+                                    entity.Id = obj.Id;
+                                    obj = entity;
+                                    ObjServ.Reposity.Update(obj);
+                                }
+                                else
+                                    ObjServ.Reposity.Insert(entity);
                             }
                         }
                         result.code = 100;
                         result.message = "上传成功";
                         ObjServ.Dispose();
+                        ObjServRead.Dispose();
                     }
                 }
 
@@ -378,7 +387,7 @@ namespace FCK.Studio.Web.Controllers
 
 
             IRow rowhead = sheet1.CreateRow(0);
-            string[] colums = ("编号|姓名|关系|性别|民族|出生年月|年龄|楼盘|单元|门牌号|身份证号|现户籍地址|原户籍地址|是否兴塘社区户籍|服务处处所|职务|联系方式|政治面貌|党支部|是否楼道组长|是否户代表|是否居民代表|是否居民组长|是否愿意参加公益|是否愿意从事居民事务|调查时间|专长/备注").Split('|');
+            string[] colums = ("编号|姓名|关系|性别|民族|出生年月|年龄|楼盘|单元|门牌号|身份证号|现户籍地址|原户籍地址|是否兴塘社区户籍|服务处所|职务|联系电话|政治面貌|党支部|是否楼道组长|是否户代表|是否居民代表|是否居民组长|是否愿意参加公益|是否愿意从事居民事务|调查时间|特长备注").Split('|');
             for (int i = 0; i < colums.Length; i++)
             {
                 rowhead.CreateCell(i).SetCellValue(colums[i]);
