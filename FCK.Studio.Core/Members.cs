@@ -111,7 +111,7 @@ namespace FCK.Studio.Core
         /// <summary>
         /// 职务
         /// </summary>
-        [MaxLength(8)]
+        [MaxLength(20)]
         public string Duties { get; set; }
         /// <summary>
         /// 政治面貌
@@ -179,5 +179,6 @@ namespace FCK.Studio.Core
         public DateTime? UpdateTime { get; set; }
         [Required]
         public int TenantId { get; set; }
+        public bool IsReger { get; set; }
     }
 }

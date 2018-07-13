@@ -109,7 +109,7 @@ namespace FCK.Studio.Web.Controllers
             return Json(result);
         }
 
-        public JsonResult InsertBlank(bool hhd = false)
+        public JsonResult InsertBlank(bool IsReger = false)
         {
             ResultDto<int> result = new ResultDto<int>();
             try
@@ -123,7 +123,7 @@ namespace FCK.Studio.Web.Controllers
                     obj.UserID = "0";
                     obj.TenantId = TenantId;
                     obj.CreationTime = DateTime.Now;
-                    obj.HhdRegister = hhd;
+                    obj.IsReger = IsReger;
                     Member.Reposity.Insert(obj);
                     result.code = 100;
                     result.message = "ok";
@@ -179,7 +179,7 @@ namespace FCK.Studio.Web.Controllers
             }
             return Json(result);
         }
-        private ResultDto<List<Dto.MemberOutDto>> GetDatas(int page = 1, int pageSize = 0, string keywords = "", bool hhdRegister = true, string sort = "", string order = "")
+        private ResultDto<List<Dto.MemberOutDto>> GetDatas(int page = 1, int pageSize = 0, string keywords = "", bool IsReger = true, string sort = "", string order = "")
         {
             ResultDto<List<Dto.MemberOutDto>> result = new ResultDto<List<Dto.MemberOutDto>>();
             try
@@ -187,7 +187,7 @@ namespace FCK.Studio.Web.Controllers
                 ResultDto<List<Members>> items = new ResultDto<List<Members>>();
                 MembersService Member = new MembersService();
                 var predicate = PredicateBuilder.True<Members>();
-                predicate = o => o.TenantId == TenantId && o.HhdRegister == hhdRegister;
+                predicate = o => o.TenantId == TenantId && o.IsReger == IsReger;
                 items = Member.GetListOrderByTime(page, pageSize, predicate, keywords, sort, order);
                 result = Mapper.Map<ResultDto<List<Dto.MemberOutDto>>>(items);
                 Member.Dispose();
@@ -200,9 +200,9 @@ namespace FCK.Studio.Web.Controllers
             return result;
         }
 
-        public JsonResult GetPageListToEasyUI(int page, int rows, string keywords = "", bool hhdRegister = true, string sort = "", string order = "")
+        public JsonResult GetPageListToEasyUI(int page, int rows, string keywords = "", bool IsReger = true, string sort = "", string order = "")
         {
-            var resp = GetDatas(page, rows, keywords, hhdRegister, sort, order);
+            var resp = GetDatas(page, rows, keywords, IsReger, sort, order);
             var data = new
             {
                 total = resp.total,
@@ -215,6 +215,11 @@ namespace FCK.Studio.Web.Controllers
         public JsonResult GetPageLists(int page, int pageSize, string keywords = "")
         {
             return Json(GetDatas(page, pageSize, keywords));
+        }
+
+        public JsonResult GetMemberList(int page, int pageSize, string keywords = "", bool IsReger = true, string sort = "", string order = "")
+        {
+            return Json(GetDatas(page, pageSize, keywords, IsReger, sort, order));
         }
 
         public FileResult GetCSV(int page, int pageSize, string keywords = "")
@@ -294,7 +299,7 @@ namespace FCK.Studio.Web.Controllers
                     IRow headerRow = sheet.GetRow(0);
                     int cellCount = headerRow.LastCellNum;
                     int rowCount = sheet.LastRowNum;
-                    string[] CellArr = ("姓名|关系|民族|身份证号|楼盘|单元|门牌号|现户籍地址|原户籍地址|服务处所|职务|联系电话1|联系电话2|政治面貌|党员所在支部|特长备注").Split('|');
+                    string[] CellArr = ("姓名|关系|性别|民族|年龄|楼盘|单元|门牌号|身份证号|现户籍地址|原户籍地址|是否兴塘社区户籍|服务处所|职务|联系电话1|联系电话2|政治面貌|党员所在支部|是否楼道组长|是否户代表|是否居民代表|是否居民组长|是否愿意参加公益|是否愿意从事居民事务|调查时间|特长备注").Split('|');
                     bool isValid = true;
                     foreach (string item in CellArr)
                     {
@@ -311,61 +316,121 @@ namespace FCK.Studio.Web.Controllers
                     {
                         MembersService ObjServ = new MembersService();
                         MembersService ObjServRead = new MembersService();
+                        TenantsService ObjTenant = new TenantsService();
+                        string community = "";
+                        var tent = ObjTenant.Reposity.Get(TenantId);
+                        if (tent != null)
+                        {
+                            community = tent.TenantName;
+                        }
+                        string msgs = "";
+                        int nums = 0;
                         for (int i = (sheet.FirstRowNum + 1); i <= rowCount; i++)
                         {
                             IRow row = sheet.GetRow(i);
                             if (row != null)
                             {
-
-                                Members entity = new Members();
-                                entity.TrueName = CellVal(headerRow, "姓名", row);
-                                entity.Relations = CellVal(headerRow, "关系", row);
-                                entity.Nation = CellVal(headerRow, "民族", row);
-                                entity.UserID = CellVal(headerRow, "身份证号", row);
-                                entity.Apartment = CellVal(headerRow, "楼盘", row);
-                                entity.UnitNum = CellVal(headerRow, "单元", row);
-                                entity.DoorCard = CellVal(headerRow, "门牌号", row);
-                                entity.Address = CellVal(headerRow, "现户籍地址", row);
-                                entity.Address2 = CellVal(headerRow, "原户籍地址", row);
-                                entity.ServiceAddr = CellVal(headerRow, "服务处所", row);
-                                entity.Duties = CellVal(headerRow, "职务", row);
-                                entity.Phone = CellVal(headerRow, "联系电话1", row);
-                                entity.Phone2 = CellVal(headerRow, "联系电话2", row);
-                                entity.PoliticalRole = CellVal(headerRow, "政治面貌", row);
-                                entity.PartyBranch = CellVal(headerRow, "党员所在支部", row);
-                                entity.Speciality = CellVal(headerRow, "特长备注", row);
-                                entity.HhdRegister = entity.Address.Contains(entity.Apartment);
-                                entity.UserName = GetRndCode(6);
-                                entity.Password = "96E79218965EB72C92A549DD5A330112";
-                                entity.Email = "-";
-                                entity.CreationTime = DateTime.Now;
-                                entity.TenantId = TenantId;
-                                BirthdayAgeSex user = AppBase.GetBirthdayAgeSex(entity.UserID);
-                                if (user == null)
+                                string userid = CellVal(headerRow, "身份证号", row);
+                                try
                                 {
-                                    entity.UserID = "身份证不合法";
+                                    var obj = ObjServRead.Reposity.GetAllList(o => o.UserID == userid && o.UserID != "0" && o.HhdRegister).FirstOrDefault();
+                                    if (obj != null)
+                                    {
+                                        obj.TrueName = CellVal(headerRow, "姓名", row);
+                                        obj.Relations = CellVal(headerRow, "关系", row);
+                                        obj.Sex = CellVal(headerRow, "性别", row);
+                                        obj.Nation = CellVal(headerRow, "民族", row);
+                                        //obj.Birthday = CellVal(headerRow, "出生年月", row);
+                                        obj.Age = int.Parse(CellVal(headerRow, "年龄", row));
+                                        obj.Apartment = CellVal(headerRow, "楼盘", row);
+                                        obj.UnitNum = CellVal(headerRow, "单元", row);
+                                        obj.DoorCard = CellVal(headerRow, "门牌号", row);
+                                        obj.UserID = CellVal(headerRow, "身份证号", row);
+                                        obj.Address = CellVal(headerRow, "现户籍地址", row);
+                                        obj.Address2 = CellVal(headerRow, "原户籍地址", row);
+                                        obj.HhdRegister = CellVal(headerRow, "是否兴塘社区户籍", row) == "是";
+                                        obj.ServiceAddr = CellVal(headerRow, "服务处所", row);
+                                        obj.Duties = CellVal(headerRow, "职务", row);
+                                        obj.Phone = CellVal(headerRow, "联系电话1", row);
+                                        obj.Phone2 = CellVal(headerRow, "联系电话2", row);
+                                        obj.PoliticalRole = CellVal(headerRow, "政治面貌", row);
+                                        obj.PartyBranch = CellVal(headerRow, "党员所在支部", row);
+                                        obj.CorridorLeader = CellVal(headerRow, "是否楼道组长", row) == "是";
+                                        obj.HouseLeader = CellVal(headerRow, "是否户代表", row) == "是";
+                                        obj.ResidentRepresentative = CellVal(headerRow, "是否居民代表", row) == "是";
+                                        obj.ResidentLeader = CellVal(headerRow, "是否居民组长", row) == "是";
+                                        obj.Pipwa = CellVal(headerRow, "是否愿意参加公益", row) == "是";
+                                        obj.Eira = CellVal(headerRow, "是否愿意从事居民事务", row) == "是";
+                                        obj.UpdateTime = DateTime.Now;
+                                        obj.Speciality = CellVal(headerRow, "特长备注", row);
+                                        obj.TenantId = TenantId;
+                                        obj.Community = community;
+                                        obj.IsReger = false;
+                                        ObjServ.Reposity.Update(obj);
+                                    }
+                                    else
+                                    {
+                                        Members entity = new Members();
+                                        entity.TrueName = CellVal(headerRow, "姓名", row);
+                                        entity.Relations = CellVal(headerRow, "关系", row);
+                                        entity.Sex = CellVal(headerRow, "性别", row);
+                                        entity.Nation = CellVal(headerRow, "民族", row);
+                                        //entity.Birthday = CellVal(headerRow, "出生年月", row);
+                                        //entity.Age = int.Parse(CellVal(headerRow, "年龄", row));
+                                        entity.Apartment = CellVal(headerRow, "楼盘", row);
+                                        entity.UnitNum = CellVal(headerRow, "单元", row);
+                                        entity.DoorCard = CellVal(headerRow, "门牌号", row);
+                                        entity.UserID = CellVal(headerRow, "身份证号", row);
+                                        entity.Address = CellVal(headerRow, "现户籍地址", row);
+                                        entity.Address2 = CellVal(headerRow, "原户籍地址", row);
+                                        entity.HhdRegister = CellVal(headerRow, "是否兴塘社区户籍", row) == "是";
+                                        entity.ServiceAddr = CellVal(headerRow, "服务处所", row);
+                                        entity.Duties = CellVal(headerRow, "职务", row);
+                                        entity.Phone = CellVal(headerRow, "联系电话1", row);
+                                        entity.Phone2 = CellVal(headerRow, "联系电话2", row);
+                                        entity.PoliticalRole = CellVal(headerRow, "政治面貌", row);
+                                        entity.PartyBranch = CellVal(headerRow, "党员所在支部", row);
+                                        entity.CorridorLeader = CellVal(headerRow, "是否楼道组长", row) == "是";
+                                        entity.HouseLeader = CellVal(headerRow, "是否户代表", row) == "是";
+                                        entity.ResidentRepresentative = CellVal(headerRow, "是否居民代表", row) == "是";
+                                        entity.ResidentLeader = CellVal(headerRow, "是否居民组长", row) == "是";
+                                        entity.Pipwa = CellVal(headerRow, "是否愿意参加公益", row) == "是";
+                                        entity.Eira = CellVal(headerRow, "是否愿意从事居民事务", row) == "是";
+                                        entity.UpdateTime = DateTime.Now;
+                                        entity.Speciality = CellVal(headerRow, "特长备注", row);
+                                        entity.UserName = GetRndCode(6);
+                                        entity.Password = "96E79218965EB72C92A549DD5A330112";
+                                        entity.Email = "-";
+                                        entity.CreationTime = DateTime.Now;
+                                        entity.TenantId = TenantId;
+                                        entity.Community = community;
+                                        entity.IsReger = false;
+                                        BirthdayAgeSex user = AppBase.GetBirthdayAgeSex(entity.UserID);
+                                        if (user != null)
+                                        {
+                                            entity.Age = user.Age;
+                                            entity.Birthday = user.Birthday;
+                                            entity.Sex = user.Sex;
+                                        }
+                                        else
+                                        {
+                                            entity.UserID = "身份证号码不合法";
+                                        }
+                                        ObjServ.Reposity.Insert(entity);
+                                    }
+                                    nums++;
                                 }
-                                else
+                                catch (Exception ex)
                                 {
-                                    entity.Age = user.Age;
-                                    entity.Birthday = user.Birthday;
-                                    entity.Sex = user.Sex;
+                                    msgs += userid + "错误：" + ex.Message + "，"; continue;
                                 }
-                                var obj = ObjServRead.Reposity.GetAllList(o => o.UserID == entity.UserID && o.UserID != "0" && o.HhdRegister).FirstOrDefault();
-                                if (obj != null)
-                                {
-                                    entity.Id = obj.Id;
-                                    obj = entity;
-                                    ObjServ.Reposity.Update(obj);
-                                }
-                                else
-                                    ObjServ.Reposity.Insert(entity);
                             }
                         }
                         result.code = 100;
-                        result.message = "上传成功";
+                        result.message = "上传成功" + nums + "条。发生错误条目：" + msgs;
                         ObjServ.Dispose();
                         ObjServRead.Dispose();
+                        ObjTenant.Dispose();
                     }
                 }
 
@@ -387,7 +452,7 @@ namespace FCK.Studio.Web.Controllers
 
 
             IRow rowhead = sheet1.CreateRow(0);
-            string[] colums = ("编号|姓名|关系|性别|民族|出生年月|年龄|楼盘|单元|门牌号|身份证号|现户籍地址|原户籍地址|是否兴塘社区户籍|服务处所|职务|联系电话|政治面貌|党支部|是否楼道组长|是否户代表|是否居民代表|是否居民组长|是否愿意参加公益|是否愿意从事居民事务|调查时间|特长备注").Split('|');
+            string[] colums = ("编号|姓名|关系|性别|民族|出生年月|年龄|楼盘|单元|门牌号|身份证号|现户籍地址|原户籍地址|是否兴塘社区户籍|服务处所|职务|联系电话1|联系电话2|政治面貌|党员所在支部|是否楼道组长|是否户代表|是否居民代表|是否居民组长|是否愿意参加公益|是否愿意从事居民事务|调查时间|特长备注").Split('|');
             for (int i = 0; i < colums.Length; i++)
             {
                 rowhead.CreateCell(i).SetCellValue(colums[i]);
@@ -413,17 +478,18 @@ namespace FCK.Studio.Web.Controllers
                 row.CreateCell(13).SetCellValue(item.HhdRegister);
                 row.CreateCell(14).SetCellValue(item.ServiceAddr);
                 row.CreateCell(15).SetCellValue(item.Duties);
-                row.CreateCell(16).SetCellValue(item.Phone + " " + item.Phone2);
-                row.CreateCell(17).SetCellValue(item.PoliticalRole);
-                row.CreateCell(18).SetCellValue(item.PartyBranch);
-                row.CreateCell(19).SetCellValue(item.CorridorLeader);
-                row.CreateCell(20).SetCellValue(item.HouseLeader);
-                row.CreateCell(21).SetCellValue(item.ResidentRepresentative);
-                row.CreateCell(22).SetCellValue(item.ResidentLeader);
-                row.CreateCell(23).SetCellValue(item.Pipwa);
-                row.CreateCell(24).SetCellValue(item.Eira);
-                row.CreateCell(25).SetCellValue(item.CreationTime.ToString());
-                row.CreateCell(26).SetCellValue(item.Speciality);
+                row.CreateCell(16).SetCellValue(item.Phone);
+                row.CreateCell(17).SetCellValue(item.Phone2);
+                row.CreateCell(18).SetCellValue(item.PoliticalRole);
+                row.CreateCell(19).SetCellValue(item.PartyBranch);
+                row.CreateCell(20).SetCellValue(item.CorridorLeader);
+                row.CreateCell(21).SetCellValue(item.HouseLeader);
+                row.CreateCell(22).SetCellValue(item.ResidentRepresentative);
+                row.CreateCell(23).SetCellValue(item.ResidentLeader);
+                row.CreateCell(24).SetCellValue(item.Pipwa);
+                row.CreateCell(25).SetCellValue(item.Eira);
+                row.CreateCell(26).SetCellValue(item.CreationTime.ToString());
+                row.CreateCell(27).SetCellValue(item.Speciality);
                 RowNum++;
             }
 

@@ -28,7 +28,7 @@ namespace FCK.Studio.EntityFramework
         public virtual IDbSet<ElectionHead> ElectionHead { get; set; }
         public virtual IDbSet<Election> Election { get; set; }
         public virtual IDbSet<CreditRecords> CreditRecords { get; set; }
-        public virtual IDbSet<Houses> Houses { get; set; }
+        public virtual DbSet<Houses> Houses { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {

@@ -1,0 +1,314 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_LayoutPageInner.cshtml";
+}
+<!-- Content Header (Page header) -->
+<section class="content-header">
+    <h1>
+        户籍管理
+        <small>Members Manage</small>
+    </h1>
+    <ol class="breadcrumb">
+        <li><a href="/Home/Dashboard"><i class="fa fa-dashboard"></i> Home</a></li>
+        <li class="active">户籍管理</li>
+    </ol>
+</section>
+<!-- Main content -->
+<section class="content">
+    <div class="box">
+        <div class="box-header with-border">
+            <h3 class="box-title">Members Manage</h3>
+            <div class="box-tools pull-right">
+                <div class="btn-group">
+                    <button type="button" class="btn btn-default" data-toggle="tooltip" data-placement="top" title="保存" onclick="PatchSave()"><i class="fa fa-save"></i></button>
+                    <button type="button" class="btn btn-default" data-toggle="tooltip" data-placement="top" title="新增" onclick="AddNew()"><i class="fa fa-plus"></i></button>
+                    <button type="button" class="btn btn-default" data-toggle="tooltip" data-placement="top" title="刷新" onclick="GetDataList()"><i class="fa fa-refresh"></i></button>
+                    <button type="button" class="btn btn-default" data-toggle="tooltip" data-placement="top" title="导入"><i class="fa fa-upload" data-toggle="modal" data-target="#modal-default"></i></button>
+                    <button type="button" class="btn btn-default" data-toggle="tooltip" data-placement="top" title="导出" onclick="ExportExcel()"><i class="fa fa-download"></i></button>
+                    <button type="button" class="btn btn-default" data-toggle="tooltip" data-placement="top" title="删除" onclick="PatchDel()"><i class="fa fa-remove"></i></button>
+                    <a href="/Content/v_member.xlsx" class="btn btn-default">透视表查询</a>
+                </div>
+            </div>
+        </div>
+        <div class="box-body">
+            <div class="box-header">
+                <form class="form-inline">
+                    <div class="form-group">
+                        <label for="Apartment">社区</label>
+                        <select id="Community" class="form-control input-sm w100">
+                            <option value="">请选择</option>
+                            <option value="兴塘社区">兴塘社区</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="Apartment">楼盘</label>
+                        <select id="Apartment" class="form-control input-sm w100">
+                            <option value="">请选择</option>
+                            <option value="东方天郡花园">东方天郡花园</option>
+                            <option value="恒大御澜湾">恒大御澜湾</option>                            
+                            <option value="金瑚湾世家">金瑚湾世家</option>
+                            <option value="玫瑰香堤">玫瑰香堤</option>
+                            <option value="花海家园">花海家园</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="UnitNum w80">单元</label>
+                        <input type="text" class="form-control input-sm w80" name="UnitNum">
+                    </div>
+                    <div class="form-group">
+                        <label for="DoorCard">门牌号</label>
+                        <input type="text" class="form-control input-sm w80" name="DoorCard">
+                    </div>
+                    <div class="form-group">
+                        <label for="Truename">姓名</label>
+                        <input type="text" class="form-control input-sm w100" name="Truename">
+                    </div>
+                    <div class="form-group">
+                        <label for="Phone">电话</label>
+                        <input type="text" class="form-control input-sm w80" name="Phone">
+                    </div>
+                    <div class="form-group">
+                        <input type="text" class="form-control input-sm w120" name="keywords" placeholder="keywords">
+                    </div>
+                    <input type="hidden" value="1" id="pageindex" />
+                    <button type="button" class="btn btn-success btn-sm" onclick="search()"><i class="fa fa-search"></i></button>
+                </form>
+            </div>
+
+            <div id="DataTable">
+                <div class="alert alert-block alert-dismissible" style="margin-bottom:0px">
+                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                    <i class="icon fa fa-warning"></i><small class="text-danger"> 温馨提示! 下面表格可在线编辑。导入模板：姓名，关系，民族，身份证号，小区，单元，门牌号，现户籍地址，原户籍地址，服务处所，职务，联系电话1，联系电话2，政治面貌，党员所在支部，特长备注</small>
+                </div>
+                <div class="box-body table-responsive no-padding">
+                    <table id="grid" style="width:100%;height:500px">
+                        <thead data-options="frozen:true">
+                            <tr>
+                                <th field="ck" checkbox="true"></th>
+                                <th data-options="field:'Apartment',width:99,editor:'text'">楼盘</th>
+                                <th data-options="field:'UnitNum',width:60,align:'center',editor:'text',sortable : true">单元</th>
+                                <th data-options="field:'DoorCard',width:80,align:'center',editor:'text',sortable : true">门牌号</th>
+                                <th data-options="field:'Relations',width:80,align:'center',editor:'text'">关系</th>                                
+                                <th data-options="field:'TrueName',width:60,align:'center',editor:'text',sortable : true">姓名</th>
+                            </tr>
+                        </thead>
+                        <thead>
+                            <tr>
+                                <th data-options="field:'UserName',width:80,align:'center',sortable : true">用户名</th>
+                                <th data-options="field:'Sex',width:60,align:'center',editor:'text'">性别</th>
+                                <th data-options="field:'Nation',width:60,align:'center',editor:'text'">民族</th>
+                                <th data-options="field:'Birthday',width:100,align:'center',sortable : true">出生年月</th>
+                                <th data-options="field:'Age',width:60,align:'center',editor:'numberbox',sortable : true">年龄</th>
+                                <th data-options="field:'UserID',width:160,editor:'text',sortable : true">身份证号</th>
+                                <th data-options="field:'Address',width:180,editor:'text'">现户籍地址</th>
+                                <th data-options="field:'Address2',width:200,editor:'text'">原户籍地址</th>
+                                <th data-options="field:'HhdRegister',width:120,align:'center'">是否兴塘社区户籍</th>
+                                <th data-options="field:'ServiceAddr',width:80,editor:'text',align:'center'">服务处所</th>
+                                <th data-options="field:'Duties',width:60,editor:'text',align:'center'">职务</th>
+                                <th data-options="field:'Phone',width:100,align:'center',editor:'text'">联系电话1</th>
+                                <th data-options="field:'Phone2',width:100,align:'center',editor:'text'">联系电话2</th>
+                                <th data-options="field:'PoliticalRole',width:80,align:'center',editor:'text'">政治面貌</th>
+                                <th data-options="field:'PartyBranch',width:100,editor:'text'">党员所在支部</th>
+                                <th data-options="field:'CorridorLeader',width:80,align:'center',editor:{type:'checkbox',options:{on:'true',off:'false'}}">楼道组长</th>
+                                <th data-options="field:'HouseLeader',width:80,align:'center',editor:{type:'checkbox',options:{on:'true',off:'false'}}">户代表</th>
+                                <th data-options="field:'ResidentRepresentative',width:80,align:'center',editor:{type:'checkbox',options:{on:'true',off:'false'}}">居民代表</th>
+                                <th data-options="field:'ResidentLeader',width:80,align:'center',editor:{type:'checkbox',options:{on:'true',off:'false'}}">居民组长</th>
+                                <th data-options="field:'Pipwa',width:100,align:'center',editor:{type:'checkbox',options:{on:'true',off:'false'}}">愿参加公益</th>
+                                <th data-options="field:'Eira',width:100,align:'center',editor:{type:'checkbox',options:{on:'true',off:'false'}}">愿从事居民事务</th>
+                                <th data-options="field:'UpdateTime',width:120,align:'center',sortable : true">更新时间</th>
+                                <th data-options="field:'Speciality',width:80,editor:'text'">专长/备注</th>
+                                <th data-options="field:'Approved',width:60,align:'center',editor:{type:'checkbox',options:{on:true,off:false}}">审核</th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+
+            </div>
+        </div>
+        <div class="box-footer">
+
+        </div>
+    </div>
+</section>
+<div class="modal fade" id="modal-default">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title">导入</h4>
+            </div>
+            <div class="modal-body">
+                <iframe frameborder="0" scrolling="no" style="width:100%; height:240px" src="/Members/ImportData/" id="WinEdit"></iframe>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+            </div>
+        </div>
+    </div>
+</div>
+@section css{
+    <link href="/Content/Site.css?v=@(DateTime.Now.ToString("hhmmss"))" rel="stylesheet" />
+    <link href="/Content/easyui/themes/default/easyui.css?v=@(DateTime.Now.ToString("hhmmss"))" rel="stylesheet" />
+    <link href="/Content/easyui/themes/icon.css?v=@(DateTime.Now.ToString("hhmmss"))" rel="stylesheet" />
+}
+@section scripts{
+    <script src="~/Content/easyui/jquery.easyui.min.js"></script>
+    <script>
+        var updateModel = new Array();
+        function PatchSave() {
+            var num = 0;
+            $.each(updateModel, function (index, item) {
+                $.ajax({
+                    url: '/Members/InsertOrUpdate',
+                    type: "POST",
+                    data: item,
+                    async: false,
+                    success: function (resp) {
+                        if (resp.code == 100)
+                            num++;
+                        else
+                            toastr.error(resp.message);
+                    }
+                });
+            })
+            if (num > 0) {
+                toastr.success("成功更新" + num + "条记录");
+                updateModel = new Array();
+                GetDataList();
+            }            
+        }
+        function DoSave(index, row, changes) {
+            $.ajax({
+                url: '/Members/InsertOrUpdate',
+                type: "POST",
+                data: row,
+                async: true,
+                success: function (resp) {
+                    if(resp.code!=100)
+                        toastr.error(resp.message);
+                }
+            });
+        }
+        function ExportExcel() {
+            window.location.href = "/Members/ExportExcel";
+        }
+        function PatchDel() {
+            confirmE('确定删除？', function () {
+                var ids = [];
+                var rows = datagrid.datagrid('getSelections');
+                for(var i=0; i<rows.length; i++){
+                    ids.push(rows[i].Id);
+                }
+                if (ids.length<=0)
+                    alertE("至少选择一项！");
+                else {
+                    $.ajax({
+                        url: '/Members/DelPatch',
+                        type: "POST",
+                        data: { ids: ids.join(',') },
+                        success: function (resp) {
+                            $.alert('删除成功!');
+                            GetDataList();
+                        }
+                    });
+                }
+            });
+        }
+
+        var params = {};
+        var datagrid;
+        var editRow = undefined;
+        $(function () {
+            GetDataList();
+            var p = $('#grid').datagrid('getPager');
+            $(p).pagination({
+                beforePageText: '第',
+                afterPageText: '页    共 {pages} 页',
+                displayMsg: '当前显示 {from}-{to} 条记录，共 {total} 条记录'
+            });
+        });
+
+        function GetDataList() {
+            datagrid = $('#grid').datagrid({
+                border: true,
+                rownumbers: true,
+                pageList: [10, 20, 30],
+                pagination: true,
+                pageSize: 20,
+                pageNumber: 1,
+                url: "/Members/GetPageListToEasyUI",
+                idField: 'Id',
+                queryParams: params,
+                onDblClickRow: onDbClickRow,
+                onAfterEdit: onAfterEdit
+            });
+        }
+        function search() {
+            var _keys = $('#Community').val()
+                    + ',' + $('#Apartment').val()
+                    + ',' + $('input[name=UnitNum]').val()
+                    + ',' + $('input[name=DoorCard]').val()
+                    + ',' + $('input[name=Truename]').val()
+                    + ',' + $('input[name=Phone]').val()
+                    + ',' + $('input[name=keywords]').val()
+            params.keywords = _keys;
+            params.hhdRegister = true;
+            GetDataList(params);
+        }
+        var editIndex = undefined;
+        function onDbClickRow(index, field, value) {
+            if (editIndex == undefined) {
+                editIndex = index;
+                $('#grid').datagrid('beginEdit', index);
+                var ed = $(this).datagrid('getEditor', {
+                    index: index,
+                    field: field
+                });
+                //$(ed.target).focus();
+            } else {
+                $('#grid').datagrid('endEdit', editIndex);
+                editIndex = index;
+                $('#grid').datagrid('beginEdit', index);
+                var ed = $(this).datagrid('getEditor', {
+                    index: index,
+                    field: field
+                });
+                //$(ed.target).focus();
+            }
+        }
+        function onAfterEdit(index, row, changes) {
+            var updated = datagrid.datagrid('getChanges', 'updated');
+            if (updated.length < 1) {
+                editRow = undefined;
+                datagrid.datagrid('unselectAll');
+                return;
+            } else {                
+                //DoSave(index, row, changes);
+                var flag = true;
+                $.each(updateModel, function (index, item) {
+                    if (row.Id == item.Id)
+                        flag = false;
+                });
+                if (flag)
+                    updateModel.push(row);
+            }            
+        }
+        function AddNew() {
+            $.ajax({
+                url: '/Members/InsertBlank',
+                type: "POST",
+                data: { hhd: true },
+                success: function (resp) {
+                    if (resp.code == 100) {
+                        GetDataList();
+                    }else
+                        toastr.error(resp.message);
+                }
+            });
+        }
+    </script>
+}
+

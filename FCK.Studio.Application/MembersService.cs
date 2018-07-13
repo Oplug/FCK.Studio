@@ -33,7 +33,7 @@ namespace FCK.Studio.Application
                 if (!string.IsNullOrEmpty(condis[1]))
                 {
                     s = condis[1];
-                    query = query.Where(o => o.Apartment.Contains(s)).ToList();
+                    query = query.Where(o => o.Apartment != null && o.Apartment.Contains(s)).ToList();
                 }
                 if (!string.IsNullOrEmpty(condis[2]))
                 {

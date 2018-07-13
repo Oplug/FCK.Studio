@@ -31,7 +31,7 @@ namespace FCK.Studio.Web.Controllers
         }
         public string CellVal(IRow header, string CellName, IRow row)
         {
-            string result = "";
+            string result = "0";
             try
             {
                 ICell cell = header.Cells.Where(o => o.StringCellValue == CellName).FirstOrDefault();

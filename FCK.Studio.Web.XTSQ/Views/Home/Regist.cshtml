@@ -107,6 +107,7 @@
                 dosubmit: function () {
                     mydata.Member.Email = '00';
                     mydata.Member.UserID = "00";
+                    mydata.Member.IsReger = true;
                     if ((mydata.Member.TrueName == "" || mydata.Member.TrueName == null) &&  regtype == "HJ") {
                         toastr.error("户主姓名必填"); return false;
                     }

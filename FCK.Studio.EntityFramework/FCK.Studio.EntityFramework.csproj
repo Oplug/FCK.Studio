@@ -212,6 +212,14 @@
     <Compile Include="Migrations\201806242220082_UptSignUpModel.Designer.cs">
       <DependentUpon>201806242220082_UptSignUpModel.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201807092150458_UpdateMemberModel_AddIsReger.cs" />
+    <Compile Include="Migrations\201807092150458_UpdateMemberModel_AddIsReger.Designer.cs">
+      <DependentUpon>201807092150458_UpdateMemberModel_AddIsReger.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201807101247498_ModMemberDuties.cs" />
+    <Compile Include="Migrations\201807101247498_ModMemberDuties.Designer.cs">
+      <DependentUpon>201807101247498_ModMemberDuties.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -345,6 +353,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201806242220082_UptSignUpModel.resx">
       <DependentUpon>201806242220082_UptSignUpModel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201807092150458_UpdateMemberModel_AddIsReger.resx">
+      <DependentUpon>201807092150458_UpdateMemberModel_AddIsReger.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201807101247498_ModMemberDuties.resx">
+      <DependentUpon>201807101247498_ModMemberDuties.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

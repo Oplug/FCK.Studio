@@ -88,7 +88,8 @@ namespace FCK.Studio.Web.Controllers
             {
                 ResultDto<List<Houses>> items = new ResultDto<List<Houses>>();
                 HouseService Member = new HouseService();
-                items = Member.GetListOrderByID(page, pageSize, o => o.TenantId == TenantId, keywords);
+                //items = Member.GetListOrderByID(page, pageSize, o => o.TenantId == TenantId, keywords);
+                items = Member.GetListSQL(page, pageSize, TenantId, keywords);
                 result = Mapper.Map<ResultDto<List<Dto.HouseDto>>>(items);
                 Member.Dispose();
             }
@@ -175,38 +176,53 @@ namespace FCK.Studio.Web.Controllers
                             {
                                 try
                                 {
-                                    Houses entity = new Houses();
-                                    entity.HouseName = CellVal(headerRow, "楼盘名称", row);
-                                    entity.UnitNum = CellVal(headerRow, "单元号", row);
-                                    entity.DoorCard = CellVal(headerRow, "门牌号", row);
-                                    entity.HouseType = CellVal(headerRow, "房屋属性", row);
-                                    entity.HouseArea = CellVal(headerRow, "房屋面积", row);
-                                    entity.SaleStatus = CellVal(headerRow, "销售状态", row);
-                                    entity.BuildStatus = CellVal(headerRow, "已建未建", row);
-                                    entity.Owner = CellVal(headerRow, "产权所有人1", row);
-                                    entity.Owner2 = CellVal(headerRow, "产权所有人2", row);
-                                    entity.Owner3 = CellVal(headerRow, "产权所有人3", row);
-                                    entity.Owner4 = CellVal(headerRow, "产权所有人4", row);
-                                    entity.Owner5 = CellVal(headerRow, "产权所有人5", row);
-                                    entity.ShortChar1 = CellVal(headerRow, "网格名称", row);
-                                    entity.ShortChar2 = CellVal(headerRow, "网格员", row);
-                                    entity.Memo = CellVal(headerRow, "备注", row);
-                                    entity.TenantId = TenantId;
-                                    entity.CategoryId = cateid;
-                                    var obj = ObjServRead.Reposity.GetAllList(o => o.HouseName == entity.HouseName && o.UnitNum == entity.UnitNum && o.DoorCard == entity.DoorCard).FirstOrDefault();
+                                    string houseName = CellVal(headerRow, "楼盘名称", row);
+                                    string unitNum = CellVal(headerRow, "单元号", row);
+                                    string doorCard = CellVal(headerRow, "门牌号", row);
+                                    var obj = ObjServRead.Reposity.GetAllList(o => o.HouseName == houseName && o.UnitNum == unitNum && o.DoorCard == doorCard).FirstOrDefault();
                                     if (obj != null)
                                     {
-                                        entity.Id = obj.Id;
-                                        obj = entity;
+                                        obj.HouseType = CellVal(headerRow, "房屋属性", row);
+                                        obj.HouseArea = CellVal(headerRow, "房屋面积", row);
+                                        obj.SaleStatus = CellVal(headerRow, "销售状态", row);
+                                        obj.BuildStatus = CellVal(headerRow, "已建未建", row);
+                                        obj.Owner = CellVal(headerRow, "产权所有人1", row);
+                                        obj.Owner2 = CellVal(headerRow, "产权所有人2", row);
+                                        obj.Owner3 = CellVal(headerRow, "产权所有人3", row);
+                                        obj.Owner4 = CellVal(headerRow, "产权所有人4", row);
+                                        obj.Owner5 = CellVal(headerRow, "产权所有人5", row);
+                                        obj.ShortChar1 = CellVal(headerRow, "网格名称", row);
+                                        obj.ShortChar2 = CellVal(headerRow, "网格员", row);
+                                        obj.Memo = CellVal(headerRow, "备注", row);
+                                        obj.TenantId = TenantId;
+                                        obj.CategoryId = cateid;
                                         ObjServ.Reposity.Update(obj);
                                     }
                                     else
                                     {
+                                        Houses entity = new Houses();
+                                        entity.HouseName = CellVal(headerRow, "楼盘名称", row);
+                                        entity.UnitNum = CellVal(headerRow, "单元号", row);
+                                        entity.DoorCard = CellVal(headerRow, "门牌号", row);
+                                        entity.HouseType = CellVal(headerRow, "房屋属性", row);
+                                        entity.HouseArea = CellVal(headerRow, "房屋面积", row);
+                                        entity.SaleStatus = CellVal(headerRow, "销售状态", row);
+                                        entity.BuildStatus = CellVal(headerRow, "已建未建", row);
+                                        entity.Owner = CellVal(headerRow, "产权所有人1", row);
+                                        entity.Owner2 = CellVal(headerRow, "产权所有人2", row);
+                                        entity.Owner3 = CellVal(headerRow, "产权所有人3", row);
+                                        entity.Owner4 = CellVal(headerRow, "产权所有人4", row);
+                                        entity.Owner5 = CellVal(headerRow, "产权所有人5", row);
+                                        entity.ShortChar1 = CellVal(headerRow, "网格名称", row);
+                                        entity.ShortChar2 = CellVal(headerRow, "网格员", row);
+                                        entity.Memo = CellVal(headerRow, "备注", row);
+                                        entity.TenantId = TenantId;
+                                        entity.CategoryId = cateid;
                                         ObjServ.Reposity.Insert(entity);
                                     }
                                     okRow++;
                                 }
-                                catch (Exception ex) { failRow += "," + i + "行：" + ex.Message; }
+                                catch (Exception ex) { failRow += "," + i + "行：" + ex.Message; continue; }
                             }
                         }
                         result.code = 100;
