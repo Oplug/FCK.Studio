@@ -113,13 +113,13 @@ namespace FCK.Studio.Tools
 
             for (int i = headerRow.FirstCellNum; i < cellCount; i++)
             {
-                if (headerRow.GetCell(i) == null || headerRow.GetCell(i).StringCellValue.Trim() == "")
+                if (headerRow.GetCell(i) == null || GetCellValue(headerRow.GetCell(i)) == "")
                 {
                     // 如果遇到第一个空列，则不再继续向后读取
                     cellCount = i + 1;
                     break;
                 }
-                DataColumn column = new DataColumn(headerRow.GetCell(i).StringCellValue);
+                DataColumn column = new DataColumn(GetCellValue(headerRow.GetCell(i)));
                 table.Columns.Add(column);
             }
 
@@ -127,7 +127,7 @@ namespace FCK.Studio.Tools
             {
                 IRow row = sheet.GetRow(i);
 
-                if (row != null && !string.IsNullOrEmpty(row.Cells[0].StringCellValue))
+                if (row != null && !string.IsNullOrEmpty(GetCellValue(row.Cells[0])))
                 {
                     DataRow dataRow = table.NewRow();
 
@@ -135,7 +135,7 @@ namespace FCK.Studio.Tools
                     {
                         if (row.GetCell(j) != null)
                         {
-                            dataRow[j] = row.GetCell(j).ToString();
+                            dataRow[j] = GetCellValue(row.GetCell(j));
                         }
                     }
 
@@ -144,6 +144,37 @@ namespace FCK.Studio.Tools
             }
 
             return table;
+        }
+        public static string GetCellValue(ICell cell)
+        {
+            if (cell == null)
+                return string.Empty;
+            switch (cell.CellType)
+            {
+                case CellType.Blank:
+                    return string.Empty;
+                case CellType.Boolean:
+                    return cell.BooleanCellValue.ToString();
+                case CellType.Error:
+                    return cell.ErrorCellValue.ToString();
+                case CellType.Numeric:
+                case CellType.Unknown:
+                default:
+                    return cell.ToString();
+                case CellType.String:
+                    return cell.StringCellValue;
+                case CellType.Formula:
+                    try
+                    {
+                        HSSFFormulaEvaluator e = new HSSFFormulaEvaluator(cell.Sheet.Workbook);
+                        e.EvaluateInCell(cell);
+                        return cell.ToString();
+                    }
+                    catch
+                    {
+                        return cell.NumericCellValue.ToString();
+                    }
+            }
         }
 
         #endregion

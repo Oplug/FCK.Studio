@@ -10,9 +10,11 @@ namespace FCK.Studio.Tools
         [STAThread]
         static void Main()
         {
+            AutoMapper.Configuration.Configure();
             System.Windows.Forms.Application.EnableVisualStyles();
             System.Windows.Forms.Application.SetCompatibleTextRenderingDefault(false);
-            System.Windows.Forms.Application.Run(new FormMain());
+            System.Windows.Forms.Application.Run(new FormLogin());
+            
         }
     }
 }

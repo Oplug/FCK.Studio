@@ -62,6 +62,27 @@ namespace FCK.Studio.Tools
             }
             return age;
         }
+        public static int CInt(object val)
+        {
+            try
+            {
+                return Convert.ToInt32(val);
+            }
+            catch
+            {
+                return 0;
+            }
+        }
+        public static string GetRndCode(int length)
+        {
+            var result = new System.Text.StringBuilder();
+            for (var i = 0; i < length; i++)
+            {
+                var r = new Random(Guid.NewGuid().GetHashCode());
+                result.Append(r.Next(0, 10));
+            }
+            return result.ToString();
+        }
     }
     public class BirthdayAgeSex
     {
