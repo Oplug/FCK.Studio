@@ -42,6 +42,8 @@
             this.toolBtnRefresh = new System.Windows.Forms.ToolStripButton();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.toolSLabel = new System.Windows.Forms.ToolStripStatusLabel();
+            this.toolSLabel2 = new System.Windows.Forms.ToolStripStatusLabel();
+            this.toolSLabel3 = new System.Windows.Forms.ToolStripStatusLabel();
             this.dgvMain = new System.Windows.Forms.DataGridView();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.tabControlMain = new System.Windows.Forms.TabControl();
@@ -54,8 +56,6 @@
             this.labelCount = new System.Windows.Forms.Label();
             this.progressBarM = new System.Windows.Forms.ProgressBar();
             this.timerMain = new System.Windows.Forms.Timer(this.components);
-            this.toolSLabel3 = new System.Windows.Forms.ToolStripStatusLabel();
-            this.toolSLabel2 = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolStrip1.SuspendLayout();
             this.statusStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvMain)).BeginInit();
@@ -194,6 +194,28 @@
             this.toolSLabel.Size = new System.Drawing.Size(43, 24);
             this.toolSLabel.Text = "就绪";
             // 
+            // toolSLabel2
+            // 
+            this.toolSLabel2.BorderSides = ((System.Windows.Forms.ToolStripStatusLabelBorderSides)((((System.Windows.Forms.ToolStripStatusLabelBorderSides.Left | System.Windows.Forms.ToolStripStatusLabelBorderSides.Top) 
+            | System.Windows.Forms.ToolStripStatusLabelBorderSides.Right) 
+            | System.Windows.Forms.ToolStripStatusLabelBorderSides.Bottom)));
+            this.toolSLabel2.BorderStyle = System.Windows.Forms.Border3DStyle.SunkenInner;
+            this.toolSLabel2.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
+            this.toolSLabel2.Name = "toolSLabel2";
+            this.toolSLabel2.Size = new System.Drawing.Size(43, 24);
+            this.toolSLabel2.Text = "就绪";
+            // 
+            // toolSLabel3
+            // 
+            this.toolSLabel3.BorderSides = ((System.Windows.Forms.ToolStripStatusLabelBorderSides)((((System.Windows.Forms.ToolStripStatusLabelBorderSides.Left | System.Windows.Forms.ToolStripStatusLabelBorderSides.Top) 
+            | System.Windows.Forms.ToolStripStatusLabelBorderSides.Right) 
+            | System.Windows.Forms.ToolStripStatusLabelBorderSides.Bottom)));
+            this.toolSLabel3.BorderStyle = System.Windows.Forms.Border3DStyle.SunkenInner;
+            this.toolSLabel3.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
+            this.toolSLabel3.Name = "toolSLabel3";
+            this.toolSLabel3.Size = new System.Drawing.Size(43, 24);
+            this.toolSLabel3.Text = "就绪";
+            // 
             // dgvMain
             // 
             this.dgvMain.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
@@ -202,7 +224,7 @@
             this.dgvMain.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.dgvMain.Name = "dgvMain";
             this.dgvMain.RowTemplate.Height = 27;
-            this.dgvMain.Size = new System.Drawing.Size(866, 203);
+            this.dgvMain.Size = new System.Drawing.Size(866, 202);
             this.dgvMain.TabIndex = 2;
             // 
             // splitContainer1
@@ -225,7 +247,7 @@
             this.splitContainer1.Panel2.Controls.Add(this.labelCount);
             this.splitContainer1.Panel2.Controls.Add(this.progressBarM);
             this.splitContainer1.Size = new System.Drawing.Size(883, 498);
-            this.splitContainer1.SplitterDistance = 248;
+            this.splitContainer1.SplitterDistance = 247;
             this.splitContainer1.TabIndex = 3;
             // 
             // tabControlMain
@@ -239,7 +261,7 @@
             this.tabControlMain.Location = new System.Drawing.Point(3, 3);
             this.tabControlMain.Name = "tabControlMain";
             this.tabControlMain.SelectedIndex = 0;
-            this.tabControlMain.Size = new System.Drawing.Size(880, 242);
+            this.tabControlMain.Size = new System.Drawing.Size(880, 241);
             this.tabControlMain.TabIndex = 3;
             // 
             // tabPage1
@@ -248,7 +270,7 @@
             this.tabPage1.Location = new System.Drawing.Point(4, 29);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(872, 209);
+            this.tabPage1.Size = new System.Drawing.Size(872, 208);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "户籍";
             this.tabPage1.UseVisualStyleBackColor = true;
@@ -259,7 +281,7 @@
             this.tabPage2.Location = new System.Drawing.Point(4, 29);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(872, 211);
+            this.tabPage2.Size = new System.Drawing.Size(872, 208);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "房屋";
             this.tabPage2.UseVisualStyleBackColor = true;
@@ -271,7 +293,7 @@
             this.dgvHouse.Location = new System.Drawing.Point(3, 3);
             this.dgvHouse.Name = "dgvHouse";
             this.dgvHouse.RowTemplate.Height = 27;
-            this.dgvHouse.Size = new System.Drawing.Size(866, 205);
+            this.dgvHouse.Size = new System.Drawing.Size(866, 202);
             this.dgvHouse.TabIndex = 0;
             // 
             // labelTotal
@@ -306,7 +328,7 @@
             this.textBoxError.Multiline = true;
             this.textBoxError.Name = "textBoxError";
             this.textBoxError.ReadOnly = true;
-            this.textBoxError.Size = new System.Drawing.Size(880, 168);
+            this.textBoxError.Size = new System.Drawing.Size(880, 169);
             this.textBoxError.TabIndex = 2;
             // 
             // labelCount
@@ -332,28 +354,6 @@
             // timerMain
             // 
             this.timerMain.Tick += new System.EventHandler(this.timerMain_Tick);
-            // 
-            // toolSLabel3
-            // 
-            this.toolSLabel3.BorderSides = ((System.Windows.Forms.ToolStripStatusLabelBorderSides)((((System.Windows.Forms.ToolStripStatusLabelBorderSides.Left | System.Windows.Forms.ToolStripStatusLabelBorderSides.Top) 
-            | System.Windows.Forms.ToolStripStatusLabelBorderSides.Right) 
-            | System.Windows.Forms.ToolStripStatusLabelBorderSides.Bottom)));
-            this.toolSLabel3.BorderStyle = System.Windows.Forms.Border3DStyle.SunkenInner;
-            this.toolSLabel3.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
-            this.toolSLabel3.Name = "toolSLabel3";
-            this.toolSLabel3.Size = new System.Drawing.Size(43, 24);
-            this.toolSLabel3.Text = "就绪";
-            // 
-            // toolSLabel2
-            // 
-            this.toolSLabel2.BorderSides = ((System.Windows.Forms.ToolStripStatusLabelBorderSides)((((System.Windows.Forms.ToolStripStatusLabelBorderSides.Left | System.Windows.Forms.ToolStripStatusLabelBorderSides.Top) 
-            | System.Windows.Forms.ToolStripStatusLabelBorderSides.Right) 
-            | System.Windows.Forms.ToolStripStatusLabelBorderSides.Bottom)));
-            this.toolSLabel2.BorderStyle = System.Windows.Forms.Border3DStyle.SunkenInner;
-            this.toolSLabel2.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
-            this.toolSLabel2.Name = "toolSLabel2";
-            this.toolSLabel2.Size = new System.Drawing.Size(43, 24);
-            this.toolSLabel2.Text = "就绪";
             // 
             // FormMain
             // 

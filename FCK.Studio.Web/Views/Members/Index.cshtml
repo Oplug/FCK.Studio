@@ -72,9 +72,9 @@
                         <input type="text" class="form-control input-sm w120" name="keywords" placeholder="keywords">
                     </div>
                     <input type="hidden" value="1" id="pageindex" />
-                    <button type="button" class="btn btn-success btn-sm" onclick="GetDataList()"><i class="fa fa-search"></i></button>
+                    <button type="button" class="btn btn-success btn-sm" onclick="DoSearch()"><i class="fa fa-search"></i></button>
                     <div class="form-group">
-                        <select id="sort" class="form-control input-sm w100" onchange="GetDataList()">
+                        <select id="sort" class="form-control input-sm w100" onchange="DoSearch()">
                             <option value="CreationTime">创建时间</option>                            
                             <option value="TrueName">姓名</option>
                             <option value="DoorCard">门牌号</option>
@@ -85,7 +85,7 @@
                             <option value="UserID">身份证号</option>
                             <option value="UpdateTime">更新时间</option>                            
                         </select>
-                        <select id="order" class="form-control input-sm w80" onchange="GetDataList()">
+                        <select id="order" class="form-control input-sm w80" onchange="DoSearch()">
                             <option value="desc">降序</option>
                             <option value="asc">升序</option>                            
                         </select>
@@ -312,6 +312,10 @@
             return false;
         }
         GetDataList();
+        function DoSearch() {
+            $('#pageindex').val(1);
+            GetDataList();
+        }
         function PatchSave() {
             var num = 0;
             var msg = '';

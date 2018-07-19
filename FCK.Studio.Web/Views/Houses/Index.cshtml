@@ -69,6 +69,7 @@
                     <div class="form-group">
                         <label for="HouseType">属性</label>
                         <select class="form-control w80 input-sm" name="HouseType" id="HouseType">
+                            <option value="">全部</option>
                             <option value="住宅">住宅</option>
                             <option value="商铺">商铺</option>
                             <option value="商业">商业</option>
@@ -90,7 +91,7 @@
                         <input type="text" class="form-control w100 input-sm" name="keywords" placeholder="keywords">
                     </div>
                     <input type="hidden" value="1" id="pageindex" />
-                    <button type="button" class="btn btn-default btn-sm" onclick="GetDataList()"><i class="fa fa-search"></i></button>
+                    <button type="button" class="btn btn-default btn-sm" onclick="DoSearch()"><i class="fa fa-search"></i></button>
                 </form>
             </div>
             <div id="DataTable">
@@ -269,6 +270,10 @@
                     Vue.set(vm, 'pageindex', _page)
                     $("#DataTable").mLoading("hide");
                 });
+        }
+        function DoSearch() {
+            $('#pageindex').val(1);
+            GetDataList();
         }
         function turnpage(val) {
             var _page = parseInt($('#pageindex').val());

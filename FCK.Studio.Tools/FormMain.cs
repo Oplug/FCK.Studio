@@ -393,7 +393,10 @@ namespace FCK.Studio.Tools
 
         private void toolBtnDownload_Click(object sender, EventArgs e)
         {
-            ExcelHelper.ExportToExcel(dgvMain);
+            if (tabControlMain.SelectedIndex == 0)
+                ExcelHelper.ExportToExcel(dgvMain);
+            else
+                ExcelHelper.ExportToExcel(dgvHouse);
         }
 
         private void toolBtnValid_Click(object sender, EventArgs e)
