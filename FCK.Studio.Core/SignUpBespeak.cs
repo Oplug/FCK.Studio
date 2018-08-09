@@ -39,6 +39,7 @@ namespace FCK.Studio.Core
         public int TenantId { get; set; }
         [MaxLength(50)]
         public string MemberName { get; set; }
+        public bool SignIn { get; set; }
 
         public SignUpBespeak()
         {

@@ -44,8 +44,9 @@
                     <b>留言内容：</b><br>
                     <br>
                     <p class="text-muted well well-sm no-shadow">{{Memo}}</p>
-                    <br>提交时间：{{CreationTime}}                  
-                </div>
+                    <P>提交时间：{{CreationTime}}        </P>
+                    <a v-bind:class="SignIn? 'badge bg-green' : 'badge bg-red'">{{SignIn?"已签到":"未签到"}}
+</div>
                 <!-- /.col -->
             </div>
         </div>

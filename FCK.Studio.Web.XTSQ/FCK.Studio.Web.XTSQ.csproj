@@ -381,6 +381,8 @@
     <Content Include="Views\Home\LoginHouse.cshtml" />
     <Content Include="Views\Election\Index.cshtml" />
     <Content Include="Views\Election\Detail.cshtml" />
+    <Content Include="Views\Activity\SignIn.cshtml" />
+    <Content Include="Views\Home\ForgetPsw.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

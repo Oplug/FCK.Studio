@@ -96,6 +96,10 @@ namespace FCK.Studio.Web.XTSQ.Controllers
         {
             return View();
         }
+        public ActionResult ForgetPsw()
+        {
+            return View();
+        }
         public JsonResult GetArticleList(int page, int pageSize, string keywords = "", string cateindex = "", int isrec = -1)
         {
             ResultDto<List<Dto.ArticleDto>> result = new ResultDto<List<Dto.ArticleDto>>();
@@ -222,7 +226,51 @@ namespace FCK.Studio.Web.XTSQ.Controllers
             }
             return Json(result);
         }
-
+        public JsonResult GetbackPsw(string UserName, string Mobile, string VeryCode)
+        {
+            ResultDto<int> result = new ResultDto<int>();
+            try
+            {
+                MembersService ObjServ = new MembersService();
+                var model = ObjServ.Reposity.GetAllList(o => o.UserName == UserName).FirstOrDefault();
+                if (model != null)
+                {
+                    if (model.Mobile != Mobile)
+                    {
+                        result.code = 500;
+                        result.message = "用户名和手机号码不匹配";
+                    }
+                    else
+                    {
+                        if (VeryCode != Session["VeryCode"].ToString())
+                        {
+                            result.code = 500;
+                            result.message = "验证码输入错误";
+                        }
+                        else
+                        {
+                            var entity = model;
+                            entity.Password = MD5(VeryCode);
+                            ObjServ.Reposity.Update(entity);
+                            result.code = 100;
+                            result.message = "密码已重置为验证码，请妥善保存！";
+                        }
+                    }
+                }
+                else
+                {
+                    result.code = 500;
+                    result.message = "用户不存在";
+                }
+                ObjServ.Dispose();
+            }
+            catch (Exception ex)
+            {
+                result.code = 500;
+                result.message = ex.Message;
+            }
+            return Json(result);
+        }
         public JsonResult SendVeryCode(string mobile)
         {
             ResultDto<string> result = new ResultDto<string>();

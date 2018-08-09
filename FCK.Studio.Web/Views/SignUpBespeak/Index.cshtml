@@ -40,9 +40,9 @@
                         <th>用户</th>
                         <th>参与类型</th>
                         <th>电话</th>
-                        <th>邮箱</th>
                         <th>参与项目</th>
                         <th>时间</th>
+                        <th>签到</th>
                         <th>操作</th>
                     </tr>
                 </thead>
@@ -53,10 +53,10 @@
                         <td>{{item.MemberName}}</td>
                         <td>{{item.PoliticalStatus}}</td>
                         <td>{{item.Telphone}}</td>
-                        <td>{{item.Email}}</td>
                         <td>{{item.ActvTitle}}</td>
                         <td><small>{{item.CreationTime}}</small></td>
-                        <td>
+                        <td><a v-bind:class="item.SignIn? 'badge bg-green' : 'badge bg-red'" v-on:click="SignIn(item.Id)">{{item.SignIn?"已签到":"未签到"}}</a></td>
+                        <td>                            
                             <a class="btn btn-primary btn-xs" v-bind:href="'/SignUpBespeak/Edit/'+item.Id">查看</a>
                             <a class="btn btn-danger btn-xs" v-on:click="dodel(item.Id)">删除</a>
                         </td>
@@ -100,6 +100,15 @@
                 var ids = [];
                 ids.push(_id);
                 DelAct(ids);
+            },
+            SignIn: function (_id) {
+                $.post('/SignUpBespeak/DoSignIn', { id: _id }, function (response) {
+                    if (response.code == 100) {
+                        GetDataList();
+                    }
+                    else
+                        $.alert(response.message);
+                });
             },
             chgpage: function (p) {
                 $('#pageindex').val(p);

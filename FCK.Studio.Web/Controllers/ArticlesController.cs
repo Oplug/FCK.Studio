@@ -241,5 +241,15 @@ namespace FCK.Studio.Web.Controllers
         {
             throw new NotImplementedException();
         }
+
+        public JsonResult GetQRCode(string strCode)
+        {
+            AppBase apps = new AppBase();
+            var bitmap = apps.CreateQRCode(strCode);
+            string guid = Guid.NewGuid().ToString().Replace("-", "") + ".png";
+            string qrCodePath = this.Server.MapPath("~/") + "/UploadResource/" + guid;
+            bitmap.Save(qrCodePath, System.Drawing.Imaging.ImageFormat.Png);
+            return Json("/UploadResource/" + guid);
+        }
     }
 }

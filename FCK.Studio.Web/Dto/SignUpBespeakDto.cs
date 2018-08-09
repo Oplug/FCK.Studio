@@ -22,5 +22,6 @@ namespace FCK.Studio.Web.Dto
         public string Memo { get; set; }
         public string CreationTime { get; set; }
         public string MemberName { get; set; }
+        public bool SignIn { get; set; }
     }
 }

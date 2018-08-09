@@ -7,6 +7,9 @@
     if (HttpContext.Current.Request.Cookies["MemberId"] != null)
     {
         memberid = int.Parse(HttpContext.Current.Request.Cookies["MemberId"].Value);
+    }
+    if (HttpContext.Current.Request.Cookies["UserName"] != null)
+    {
         UserName = HttpContext.Current.Request.Cookies["UserName"].Value;
     }
 }

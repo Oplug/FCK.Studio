@@ -95,6 +95,7 @@ namespace FCK.Studio.Web.Dto
         /// </summary>
         public int CreditRate { get; set; }
         public string UpdateTime { get; set; }
+        public bool IsReger { get; set; }
     }
 
     public class HouseDto

@@ -1,5 +1,9 @@
-﻿using System;
+﻿using QRCoder;
+using System;
 using System.Collections.Generic;
+using System.Drawing;
+using System.Drawing.Imaging;
+using System.IO;
 using System.Linq;
 using System.Web;
 
@@ -146,7 +150,19 @@ namespace FCK.Studio.Web
                 age--;
             }
             return age;
-        }        
+        }
+
+        public Bitmap CreateQRCode(string strCode)
+        {
+            QRCodeGenerator qrGenerator = new QRCoder.QRCodeGenerator();
+            QRCodeData qrCodeData = qrGenerator.CreateQrCode(strCode, QRCodeGenerator.ECCLevel.Q);
+            QRCode qrcode = new QRCode(qrCodeData);
+
+            Bitmap qrCodeImage = qrcode.GetGraphic(5, Color.Black, Color.White, null, 15, 6, false);
+            MemoryStream ms = new MemoryStream();
+            qrCodeImage.Save(ms, ImageFormat.Jpeg);
+            return qrCodeImage;
+        }
     }
 
     public class BirthdayAgeSex
@@ -156,5 +172,5 @@ namespace FCK.Studio.Web
         public string Sex { get; set; }
     }
 
-    
+
 }

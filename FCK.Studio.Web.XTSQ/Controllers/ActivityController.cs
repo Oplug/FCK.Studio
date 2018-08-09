@@ -1,5 +1,6 @@
 ﻿using FCK.Studio.Application;
 using FCK.Studio.Core;
+using FCK.Studio.Dto;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -34,8 +35,21 @@ namespace FCK.Studio.Web.XTSQ.Controllers
             }
             return View(model);
         }
+        public ActionResult SignIn(long id = 0)
+        {
+            Articles model = new Articles();
+            using (ArticlesService articleS = new ArticlesService())
+            {
+                var result = articleS.Reposity.Get(id);
+                if (result != null)
+                {
+                    model = result;
+                }
+            }
+            return View(model);
+        }
 
-        public ActionResult Bespeak(long id=0)
+        public ActionResult Bespeak(long id = 0)
         {
             Articles model = new Articles();
             using (ArticlesService articleS = new ArticlesService())
@@ -59,7 +73,7 @@ namespace FCK.Studio.Web.XTSQ.Controllers
                 {
                     model = result;
                 }
-            }                
+            }
             return Json(model);
         }
         public JsonResult InsertOrUpdate(SignUpBespeak input)
@@ -104,21 +118,71 @@ namespace FCK.Studio.Web.XTSQ.Controllers
                                     result.message = "success";
                                 }
                             }
-                        }                        
+                        }
                         else
                         {
                             result.code = 102;
                         }
                     }
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
                     result.code = 500;
                     result.message = ex.Message;
                 }
-                            
+
                 return Json(result);
             }
+        }
+
+        public JsonResult DoSignIn(string UserName, string Mobile, long ActvID)
+        {
+            ResultDto<int> result = new ResultDto<int>();
+            try
+            {
+                MembersService userServ = new MembersService();
+                SignUpBespeakService signupServ = new SignUpBespeakService();
+                var model = signupServ.Reposity.GetAllList(o => o.UserName == UserName && o.Telphone == Mobile && o.ActvID == ActvID).FirstOrDefault();
+                if (model != null)
+                {
+                    if (!model.SignIn)
+                    {
+                        var user = userServ.Reposity.GetAllList(o => o.Mobile == Mobile).FirstOrDefault();
+                        if (user != null)
+                        {
+                            result.code = 100;
+                            result.message = "ok";
+                            user.Points += 10;
+                            userServ.Reposity.Update(user);
+
+                            model.SignIn = true;
+                            signupServ.Reposity.Update(model);
+                        }
+                        else
+                        {
+                            result.code = 500;
+                            result.message = "签到失败！签到手机号与用户注册手机号不符！";
+                        }
+                    }
+                    else
+                    {
+                        result.code = 500;
+                        result.message = "对不起，您已经签到过了！";
+                    }
+                }
+                else
+                {
+                    result.code = 500;
+                    result.message = "签到失败！未找到预约信息！";
+                }
+                userServ.Dispose();
+            }
+            catch (Exception ex)
+            {
+                result.code = 500;
+                result.message = ex.Message;
+            }
+            return Json(result);
         }
     }
 }

@@ -36,16 +36,67 @@ namespace FCK.Studio.Web.Controllers
             try
             {
                 SignUpBespeakService Serv = new SignUpBespeakService();
-                foreach(string id in ids)
+                foreach (string id in ids)
                 {
                     Serv.Reposity.Delete(int.Parse(id));
-                }                
+                }
                 result.code = 100;
                 result.message = "success";
                 Serv.Dispose();
             }
             catch (Exception ex)
             {
+                result.message = ex.Message;
+            }
+            return Json(result);
+        }
+
+        public JsonResult DoSignIn(long id)
+        {
+            ResultDto<int> result = new ResultDto<int>();
+            try
+            {
+                MembersService userServ = new MembersService();
+                SignUpBespeakService signupServ = new SignUpBespeakService();
+                var model = signupServ.Reposity.Get(id);
+                if (model != null)
+                {
+                    if (!model.SignIn)
+                    {
+                        var user = userServ.Reposity.GetAllList(o => o.Mobile == model.Telphone && o.TenantId == TenantId).FirstOrDefault();
+                        if (user != null)
+                        {
+                            result.code = 100;
+                            result.message = "ok";
+                            user.Points += 10;
+                            userServ.Reposity.Update(user);
+
+                            model.SignIn = true;
+                            signupServ.Reposity.Update(model);
+                        }
+                        else
+                        {
+                            result.code = 500;
+                            result.message = "签到失败！签到手机号与用户注册手机号不符！";
+                        }
+                    }
+                    else
+                    {
+                        result.code = 500;
+                        result.message = "对不起，已经签到过了！";
+                    }
+                }
+                else
+                {
+                    result.code = 500;
+                    result.message = "签到失败！未找到预约信息！";
+                }
+                userServ.Dispose();
+                signupServ.Dispose();
+            }
+            catch (Exception ex)
+            {
+                result.code = 500;
                 result.message = ex.Message;
             }
             return Json(result);
@@ -67,7 +118,7 @@ namespace FCK.Studio.Web.Controllers
                 result = Serv.GetListOrderByTime(page, pageSize, (o => o.TenantId == TenantId));
             }
             else
-                result = Serv.GetListOrderByTime(page, pageSize, (o => o.TenantId == TenantId && o.ActvTitle.Contains(keywords)));
+                result = Serv.GetListOrderByTime(page, pageSize, o => o.TenantId == TenantId && (o.ActvTitle.Contains(keywords) || o.UserName.Contains(keywords) || o.Telphone.Contains(keywords)) );
             var lists = Mapper.Map<ResultDto<List<Dto.SignUpBespeakDto>>>(result);
             Serv.Dispose();
             return Json(lists);
@@ -84,13 +135,13 @@ namespace FCK.Studio.Web.Controllers
             }
             return Json(model);
         }
-        
+
         public ActionResult Index()
         {
             return View();
         }
 
-        public ActionResult Edit(int id=0)
+        public ActionResult Edit(int id = 0)
         {
             ViewBag.Id = id;
             return View();
@@ -100,6 +151,6 @@ namespace FCK.Studio.Web.Controllers
         {
             throw new NotImplementedException();
         }
-        
+
     }
 }

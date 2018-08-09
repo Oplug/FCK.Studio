@@ -19,23 +19,19 @@
             <form action="/Home/DoRegist" method="post">
                 <div class="form-group">
                     <label for="Community">所在社区</label>
-                    <select class="form-control Community" v-model="Member.Community" disabled>
-                        <option v-for="option in CommunityList" v-bind:value="option.CategoryIndex">{{option.CategoryName}}</option>
-                    </select>
+                    <input type="text" class="form-control" v-model="Member.Community" placeholder="" readonly>
                 </div>
                 <div class="form-group">
                     <label for="Apartment">所在小区</label>
-                    <select class="form-control Apartment" v-model="Member.Apartment" disabled>
-                        <option v-for="option in ApartmentList" v-bind:value="option.CategoryIndex">{{option.CategoryName}}</option>
-                    </select>
+                    <input type="text" class="form-control" v-model="Member.Apartment" placeholder="" readonly>
                 </div>
                 <div class="form-group">
                     <label for="Address">详细地址</label>
                     <input type="text" class="form-control Address" v-model="Member.Address" placeholder="第几单元-门牌号" readonly>
                 </div>
                 <div class="form-group">
-                    <label for="Address">户主姓名</label>
-                    <input type="text" class="form-control" v-model="Member.NickName" placeholder="户主姓名" readonly>
+                    <label for="TrueName">户主姓名</label>
+                    <input type="text" class="form-control" v-model="Member.TrueName" placeholder="户主姓名" readonly>
                 </div>
                 <div class="form-group">
                     <label for="UserName">用户名</label>

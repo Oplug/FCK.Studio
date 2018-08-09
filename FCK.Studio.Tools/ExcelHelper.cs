@@ -109,40 +109,42 @@ namespace FCK.Studio.Tools
             DataTable table = new DataTable();
 
             IRow headerRow = sheet.GetRow(headerRowIndex);
-            int cellCount = headerRow.LastCellNum;
-
-            for (int i = headerRow.FirstCellNum; i < cellCount; i++)
+            if (headerRow != null)
             {
-                if (headerRow.GetCell(i) == null || GetCellValue(headerRow.GetCell(i)) == "")
+                int cellCount = headerRow.LastCellNum;
+
+                for (int i = headerRow.FirstCellNum; i < cellCount; i++)
                 {
-                    // 如果遇到第一个空列，则不再继续向后读取
-                    cellCount = i + 1;
-                    break;
-                }
-                DataColumn column = new DataColumn(GetCellValue(headerRow.GetCell(i)));
-                table.Columns.Add(column);
-            }
-
-            for (int i = (headerRowIndex + 1); i <= sheet.LastRowNum; i++)
-            {
-                IRow row = sheet.GetRow(i);
-
-                if (row != null && !string.IsNullOrEmpty(GetCellValue(row.Cells[0])))
-                {
-                    DataRow dataRow = table.NewRow();
-
-                    for (int j = row.FirstCellNum; j < cellCount; j++)
+                    if (headerRow.GetCell(i) == null || GetCellValue(headerRow.GetCell(i)) == "")
                     {
-                        if (row.GetCell(j) != null)
-                        {
-                            dataRow[j] = GetCellValue(row.GetCell(j));
-                        }
+                        // 如果遇到第一个空列，则不再继续向后读取
+                        cellCount = i + 1;
+                        break;
                     }
+                    DataColumn column = new DataColumn(GetCellValue(headerRow.GetCell(i)));
+                    table.Columns.Add(column);
+                }
 
-                    table.Rows.Add(dataRow);
+                for (int i = (headerRowIndex + 1); i <= sheet.LastRowNum; i++)
+                {
+                    IRow row = sheet.GetRow(i);
+
+                    if (row != null && !string.IsNullOrEmpty(GetCellValue(row.Cells[0])))
+                    {
+                        DataRow dataRow = table.NewRow();
+
+                        for (int j = row.FirstCellNum; j < cellCount; j++)
+                        {
+                            if (row.GetCell(j) != null)
+                            {
+                                dataRow[j] = GetCellValue(row.GetCell(j));
+                            }
+                        }
+
+                        table.Rows.Add(dataRow);
+                    }
                 }
             }
-
             return table;
         }
         public static string GetCellValue(ICell cell)

@@ -66,6 +66,7 @@ namespace FCK.Studio.Tools
         {
             try
             {
+                this.Text = ProductName +" v"+ ProductVersion;
                 using (TenantsService objserv = new TenantsService())
                 {
                     var list = objserv.Reposity.GetAllList();
@@ -86,7 +87,7 @@ namespace FCK.Studio.Tools
             using (CategoriesService objserv = new CategoriesService())
             {
                 int tenantid = AppBase.CInt(comboBoxTenant.SelectedValue.ToString());
-                var list = objserv.Reposity.GetAllList(o => o.TenantId == tenantid && o.Layout == "Zone");
+                var list = objserv.Reposity.GetAllList(o => o.TenantId == tenantid && o.Layout == "Zone" && o.Level==3);
                 comboBoxCate.DataSource = list.Select(o => new { o.CategoryName, o.Id }).ToList();
                 comboBoxCate.DisplayMember = "CategoryName";
                 comboBoxCate.ValueMember = "Id";
