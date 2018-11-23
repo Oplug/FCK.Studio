@@ -18,37 +18,37 @@
         <div class="box-header with-border">
             <h3 class="box-title">管理员</h3>
         </div>
-        <form role="form" id="formEdit">
+        <form role="form" id="oplug">
             <div class="box-body">
                 <div class="form-group">
                     <label for="LoginName">登录名</label>
-                    <input type="text" class="form-control" v-model="Admin.LoginName" placeholder="Enter LoginName">
+                    <input type="text" class="form-control" v-model="datas.Admin.LoginName" placeholder="Enter LoginName">
                 </div>
-                <div class="form-group">
+                <div class="form-group" v-if="datas.Admin.Id==0">
                     <label for="Password">密码</label>
-                    <input type="password" class="form-control" v-model="Admin.Password" placeholder="Enter Password">
+                    <input type="password" class="form-control" v-model="datas.Admin.Password" placeholder="Enter Password">
+                </div>
+                <div class="form-group" v-else>
+                    <label for="Password">密码</label>
+                    <input type="password" class="form-control" v-model="datas.Admin.Password" placeholder="Enter Password" readonly>
                 </div>
                 <div class="form-group">
-                    <label for="Password2">确认密码</label>
-                    <input type="password" class="form-control" placeholder="Confirm Password">
-                </div>
-                <div class="form-group">
-                    <label for="TenantSelect">选择控制站点</label>
+                    <label for="TenantSelect">选择站点</label>
                     <select class="form-control TenantSelect" multiple="multiple">
-                        <option v-for="option in Tenants" v-bind:value="option.Id">{{option.TenantName}}</option>
+                        <option v-for="option in datas.Tenants" v-bind:value="option.Id">{{option.TenantName}}</option>
                     </select>
                 </div>
                 <div class="form-group">
-                    <label for="CateSelect">选择菜单权限</label>
-                    <select class="form-control CateSelect" multiple="multiple">
-                        <option v-for="option in Powers" v-bind:value="option.Id">{{option.CategoryName}}</option>
+                    <label for="PowerSelect">选择权限</label>
+                    <select class="form-control PowerSelect" multiple="multiple">
+                        <option v-for="option in datas.Powers" v-bind:value="option.Id">{{option.CategoryName}}</option>
                     </select>
                 </div>
             </div>
             <!-- /.box-body -->
             <div class="box-footer">
-                <input type="hidden" v-model="Admin.Id">
-                <input type="hidden" v-model="Admin.Powers">
+                <input type="hidden" v-model="datas.Admin.Id">
+                <input type="hidden" v-model="datas.Admin.Powers">
                 <button type="button" class="btn btn-primary" v-on:click="dosubmit">确定</button>
                 <a href="/Admins/" class="btn btn-default">返回</a>
             </div>
@@ -63,49 +63,63 @@
     <script src="/Content/bower_components/select2/dist/js/select2.full.min.js"></script>
     <script>
         var _Id = "@(ViewBag.Id)";
-        $.post('/Admins/GetModelWithSelect', { id: _Id }, function (response) {
-            var vm = new Vue({
-                el: "#formEdit",
-                data: function () { return response },
-                methods: {
-                    init: function () {
-                        $('.TenantSelect').select2({
-                            placeholder: '请选择站点',
-                            allowClear: true
-                        });
-                        if (response.Admin.ControlTenants != null)
-                            $(".TenantSelect").val(response.Admin.ControlTenants.split(",")).trigger('change');
+        oplug.datas = {
+            Admin: {},
+            Tenants: [],
+            Powers: []
+        }
+        oplug.onInit()
 
-                        $('.CateSelect').select2({
-                            placeholder: '请选择菜单权限',
-                            allowClear: true
-                        });
-                        if (response.Admin.Powers != null)
-                            $(".CateSelect").val(response.Admin.Powers.split(",")).trigger('change');
-                    },
-                    dosubmit: function () {
-                        var vals = $('.TenantSelect').select2("val").join(",");
-                        response.Admin.ControlTenants = vals;
-                        vals = $('.CateSelect').select2("val").join(",");
-                        response.Admin.Powers = vals;
-                        $.ajax({
-                            url: '/Admins/InsertOrUpdate',
-                            type: "POST",
-                            data: response.Admin,
-                            success: function (data) {
-                                if (data.code == 100)
-                                    toastr.success('保存成功！');
-                                else
-                                    toastr.error(data.message);
-                            }
-                        });
-                        return false;
-                    }
+        var dosubmit = function () {
+            oplug.request({
+                url: '/Admins/InsertOrUpdate',
+                async: true,
+                datas: oplug.datas.Admin,
+                success: function (resp) {
+                    if (resp.code == 100)
+                        oplug.OK('保存成功！');
+                    else
+                        oplug.Error(resp.message);
                 }
-            }).init();
-        });
-        $(function () {
+            })
+        }
+        oplug.post('/Admins/GetModel', { id: _Id }, function (response) {
+            oplug.datas.Admin = response
+        })
+        oplug.request({
+            url: '/Categories/GetTreeList',
+            async: true,
+            datas: { layout: 'Menus' },
+            success: function (response) {
+                oplug.datas.Powers = response.datas;
+            }
+        })
+        oplug.post('/Tenants/GetLists', { page: 0, pageSize: 0 }, function (response) {
+            oplug.datas.Tenants = response.datas            
+        })
+        oplug.setData(oplug.datas);
 
+        $(function () {
+            $('.TenantSelect').select2({
+                placeholder: '请选择站点',
+                allowClear: true
+            });
+            if (oplug.datas.Admin.ControlTenants != null)
+                $(".TenantSelect").val(oplug.datas.Admin.ControlTenants.split(",")).trigger('change');
+
+            $('.PowerSelect').select2({
+                placeholder: '请选择菜单权限',
+                allowClear: false
+            });
+            if (oplug.datas.Admin.Powers != null)
+                $(".PowerSelect").val(oplug.datas.Admin.Powers.split(",")).trigger('change');
+
+            $(".TenantSelect").on("change", function (e) {
+                oplug.datas.Admin.ControlTenants = $(this).select2("val").join(",");
+            })
+            $(".PowerSelect").on("change", function (e) {
+                oplug.datas.Admin.Powers = $(this).select2("val").join(",");
+            })
         });
 
     </script>

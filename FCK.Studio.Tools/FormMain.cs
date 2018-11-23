@@ -1,4 +1,6 @@
 ﻿using AutoMapper;
+using DevExpress.XtraEditors;
+using DevExpress.XtraGrid.Views.BandedGrid;
 using FCK.Studio.Application;
 using FCK.Studio.Core;
 using System;
@@ -13,7 +15,7 @@ using System.Windows.Forms;
 
 namespace FCK.Studio.Tools
 {
-    public partial class FormMain : Form
+    public partial class FormMain : XtraForm
     {
         private int totalRow = 0;
         private int compRow = 0;
@@ -101,8 +103,8 @@ namespace FCK.Studio.Tools
                                 //obj.Birthday = row.Cells["出生年月"].Value.ToString();
                                 obj.Age = AppBase.CInt(row.Cells["年龄"].Value);
                                 obj.Apartment = row.Cells["楼盘"].Value.ToString();
-                                obj.UnitNum = row.Cells["单元"].Value.ToString();
-                                obj.DoorCard = row.Cells["门牌号"].Value.ToString();
+                                obj.UnitNum = AppBase.CInt(row.Cells["单元"].Value);
+                                obj.DoorCard = AppBase.CInt(row.Cells["门牌号"].Value.ToString());
                                 obj.UserID = row.Cells["身份证号"].Value.ToString();
                                 obj.Address = row.Cells["现户籍地址"].Value.ToString();
                                 obj.Address2 = row.Cells["原户籍地址"].Value.ToString();
@@ -135,8 +137,8 @@ namespace FCK.Studio.Tools
                                 entity.Relations = row.Cells["关系"].Value.ToString();
                                 entity.Nation = row.Cells["民族"].Value.ToString();
                                 entity.Apartment = row.Cells["楼盘"].Value.ToString();
-                                entity.UnitNum = row.Cells["单元"].Value.ToString();
-                                entity.DoorCard = row.Cells["门牌号"].Value.ToString();
+                                entity.UnitNum = AppBase.CInt(row.Cells["单元"].Value);
+                                entity.DoorCard = AppBase.CInt(row.Cells["门牌号"].Value);
                                 entity.UserID = row.Cells["身份证号"].Value.ToString();
                                 entity.Address = row.Cells["现户籍地址"].Value.ToString();
                                 entity.Address2 = row.Cells["原户籍地址"].Value.ToString();
@@ -195,7 +197,7 @@ namespace FCK.Studio.Tools
                             toolBtnUpload.Enabled = progressBarM.Value == totalRow;
                             if (totalRow == progressBarM.Value)
                             {
-                                MessageBox.Show("导入完毕！", "提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                                XtraMessageBox.Show("导入完毕！", "提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
                             }
                         }));
                     }
@@ -231,8 +233,8 @@ namespace FCK.Studio.Tools
                     if (row != null)
                     {
                         string houseName = row.Cells["楼盘名称"].Value != null ? row.Cells["楼盘名称"].Value.ToString() : "0";
-                        string unitNum = row.Cells["单元号"].Value != null ? row.Cells["单元号"].Value.ToString() : "0";
-                        string doorCard = row.Cells["门牌号"].Value != null ? row.Cells["门牌号"].Value.ToString() : "0";
+                        int unitNum = AppBase.CInt(row.Cells["单元号"].Value);
+                        int doorCard = AppBase.CInt(row.Cells["门牌号"].Value);
                         try
                         {
                             var obj = houses.Where(o => o.HouseName == houseName && o.UnitNum == unitNum && o.DoorCard == doorCard).FirstOrDefault();
@@ -261,8 +263,8 @@ namespace FCK.Studio.Tools
                                 #region insert
                                 Houses entity = new Houses();
                                 entity.HouseName = row.Cells["楼盘名称"].Value.ToString();
-                                entity.UnitNum = row.Cells["单元号"].Value.ToString();
-                                entity.DoorCard = row.Cells["门牌号"].Value.ToString();
+                                entity.UnitNum = AppBase.CInt(row.Cells["单元号"].Value);
+                                entity.DoorCard = AppBase.CInt(row.Cells["门牌号"].Value);
                                 entity.HouseType = row.Cells["房屋属性"].Value.ToString();
                                 entity.HouseArea = row.Cells["房屋面积"].Value.ToString();
                                 entity.SaleStatus = row.Cells["销售状态"].Value.ToString();
@@ -299,7 +301,7 @@ namespace FCK.Studio.Tools
                             toolBtnUpload.Enabled = progressBarM.Value == totalRow;
                             if (totalRow == progressBarM.Value)
                             {
-                                MessageBox.Show("导入完毕！", "提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                                XtraMessageBox.Show("导入完毕！", "提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
                             }
                         }));
                     }
@@ -321,7 +323,10 @@ namespace FCK.Studio.Tools
                 this.toolFilePath.Text = file.FileName;
                 var ds = ExcelHelper.ImportFromExcel(file.FileName, 0);
                 if (tabControlMain.SelectedIndex == 0)
+                {
                     dgvMain.DataSource = ds.Tables[0];
+                    XtraDgvMain.DataSource = ds.Tables[0];
+                }
                 else
                     dgvHouse.DataSource = ds.Tables[0];
                 totalRow = ds.Tables[0].Rows.Count;
@@ -349,7 +354,7 @@ namespace FCK.Studio.Tools
                     {
                         labelTotal.Text = "总共：" + resp.Count;
                         var lists = Mapper.Map<List<Dto.HouseDto>>(resp);
-                        dgvHouse.DataSource = lists;
+                        dgvHouse.DataSource = AppBase.ToDataTable<Dto.HouseDto>(lists);
                         SetHeaderHs();
                     }
                 }
@@ -363,7 +368,8 @@ namespace FCK.Studio.Tools
                     {
                         labelTotal.Text = "总共：" + resp.Count;
                         var lists = Mapper.Map<List<Dto.MemberOutDto>>(resp);
-                        dgvMain.DataSource = lists;
+                        //dgvMain.DataSource = AppBase.ToDataTable<Dto.MemberOutDto>(lists);
+                        XtraDgvMain.DataSource = lists;
                         SetHeader();
                     }
                 }
@@ -372,12 +378,14 @@ namespace FCK.Studio.Tools
         }
         private void SetHeader()
         {
-            dgvMain.Columns[3].Frozen = true;
+            //dgvMain.Columns[3].Frozen = true;
             string[] headerArr = ("ID|姓名|关系|性别|民族|年龄|楼盘|单元|门牌号|身份证号|出生年月|现户籍地址|原户籍地址|是否兴塘社区户籍|服务处所|职务|联系电话1|联系电话2|政治面貌|党员所在支部|是否楼道组长|是否户代表|是否居民代表|是否居民组长|是否愿意参加公益|是否愿意从事居民事务|调查时间|特长备注").Split('|');
-            dgvMain.Columns[0].Visible = false;
+            XtraGridViewM.Columns[0].Visible = false;
+            
             for (int i = 0; i < headerArr.Length; i++)
             {
-                dgvMain.Columns[i].HeaderCell.Value = headerArr[i];
+                //dgvMain.Columns[i].HeaderCell.Value = headerArr[i];
+                XtraGridViewM.Columns[i].Caption = headerArr[i];
             }
         }
 
@@ -418,14 +426,14 @@ namespace FCK.Studio.Tools
             {
                 if (!columlist.Contains(item))
                 {
-                    MessageBox.Show("缺少必要字段" + item, "提示", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    XtraMessageBox.Show("缺少必要字段" + item, "提示", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     isvalid = false;
                     break;
                 }
             }
             if (isvalid)
             {
-                MessageBox.Show("验证通过！", "提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                XtraMessageBox.Show("验证通过！", "提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 toolBtnUpload.Enabled = true;
             }
             else

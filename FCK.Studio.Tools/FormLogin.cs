@@ -1,4 +1,5 @@
-﻿using FCK.Studio.Application;
+﻿using DevExpress.XtraEditors;
+using FCK.Studio.Application;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -11,7 +12,7 @@ using System.Windows.Forms;
 
 namespace FCK.Studio.Tools
 {
-    public partial class FormLogin : Form
+    public partial class FormLogin : DevExpress.XtraEditors.XtraForm
     {
         public FormLogin()
         {
@@ -26,17 +27,17 @@ namespace FCK.Studio.Tools
             int cateid = AppBase.CInt(comboBoxCate.SelectedValue);
             if (string.IsNullOrEmpty(username) || string.IsNullOrEmpty(password))
             {
-                MessageBox.Show("请输入用户名和密码！", "提示", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                XtraMessageBox.Show("请输入用户名和密码！", "提示", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
             if (tenantid == 0)
             {
-                MessageBox.Show("请选择站点！", "提示", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                XtraMessageBox.Show("请选择站点！", "提示", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
             if (cateid == 0)
             {
-                MessageBox.Show("请选择社区！", "提示", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                XtraMessageBox.Show("请选择社区！", "提示", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
             using (AdminsService admin = new AdminsService())
@@ -52,12 +53,12 @@ namespace FCK.Studio.Tools
                     }
                     else
                     {
-                        MessageBox.Show("密码错误！", "提示", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        XtraMessageBox.Show("密码错误！", "提示", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
                 }
                 else
                 {
-                    MessageBox.Show("用户不存在！", "提示", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    XtraMessageBox.Show("用户不存在！", "提示", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 }
             }
         }
@@ -87,7 +88,7 @@ namespace FCK.Studio.Tools
             using (CategoriesService objserv = new CategoriesService())
             {
                 int tenantid = AppBase.CInt(comboBoxTenant.SelectedValue.ToString());
-                var list = objserv.Reposity.GetAllList(o => o.TenantId == tenantid && o.Layout == "Zone" && o.Level==3);
+                var list = objserv.Reposity.GetAllList(o => o.TenantId == tenantid && o.Layout == "Zone");
                 comboBoxCate.DataSource = list.Select(o => new { o.CategoryName, o.Id }).ToList();
                 comboBoxCate.DisplayMember = "CategoryName";
                 comboBoxCate.ValueMember = "Id";

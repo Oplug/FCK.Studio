@@ -23,6 +23,37 @@ namespace FCK.Studio.Web.Controllers
             return View();
         }
 
+        public ActionResult MemberHouse(string id)
+        {
+            List<Dto.HouseDto> datas = new List<Dto.HouseDto>();
+            using (HouseService ObjServ = new HouseService())
+            {
+                var items = ObjServ.Reposity.GetAllList(o => (o.Owner == id || o.Owner2 == id || o.Owner3 == id || o.Owner4 == id || o.Owner5 == id) && o.TenantId == TenantId);
+                datas = Mapper.Map<List<Dto.HouseDto>>(items);
+            }
+            return View(datas);
+        }
+        public ActionResult HouseMembers(string id)
+        {
+            List<Dto.MemberOutDto> datas = new List<Dto.MemberOutDto>();
+            using (MembersService ObjServ = new MembersService())
+            {
+                string[] info = id.Split('|');
+                string apname = "";
+                int unitNum = 0;
+                int doorCard = 0;
+                if (info.Count() == 3)
+                {
+                    apname = info[0];
+                    unitNum = AppBase.Cint(info[1]);
+                    doorCard = AppBase.Cint(info[2]);
+                }
+                var items = ObjServ.Reposity.GetAllList(o => o.Apartment == apname && o.UnitNum == unitNum && o.DoorCard == doorCard && o.TenantId == TenantId);
+                datas = Mapper.Map<List<Dto.MemberOutDto>>(items);
+            }
+            return View(datas);
+        }
+
         public JsonResult Del(int id)
         {
             ResultDto<string> result = new ResultDto<string>();
@@ -177,8 +208,8 @@ namespace FCK.Studio.Web.Controllers
                                 try
                                 {
                                     string houseName = CellVal(headerRow, "楼盘名称", row);
-                                    string unitNum = CellVal(headerRow, "单元号", row);
-                                    string doorCard = CellVal(headerRow, "门牌号", row);
+                                    int unitNum = AppBase.Cint(CellVal(headerRow, "单元号", row));
+                                    int doorCard = AppBase.Cint(CellVal(headerRow, "门牌号", row));
                                     var obj = ObjServRead.Reposity.GetAllList(o => o.HouseName == houseName && o.UnitNum == unitNum && o.DoorCard == doorCard).FirstOrDefault();
                                     if (obj != null)
                                     {
@@ -202,8 +233,8 @@ namespace FCK.Studio.Web.Controllers
                                     {
                                         Houses entity = new Houses();
                                         entity.HouseName = CellVal(headerRow, "楼盘名称", row);
-                                        entity.UnitNum = CellVal(headerRow, "单元号", row);
-                                        entity.DoorCard = CellVal(headerRow, "门牌号", row);
+                                        entity.UnitNum = AppBase.Cint(CellVal(headerRow, "单元号", row));
+                                        entity.DoorCard = AppBase.Cint(CellVal(headerRow, "门牌号", row));
                                         entity.HouseType = CellVal(headerRow, "房屋属性", row);
                                         entity.HouseArea = CellVal(headerRow, "房屋面积", row);
                                         entity.SaleStatus = CellVal(headerRow, "销售状态", row);

@@ -137,7 +137,14 @@ namespace FCK.Studio.Tools
                         {
                             if (row.GetCell(j) != null)
                             {
-                                dataRow[j] = GetCellValue(row.GetCell(j));
+                                try
+                                {
+                                    dataRow[j] = GetCellValue(row.GetCell(j));
+                                }
+                                catch
+                                {
+                                    dataRow[j] = "";
+                                }
                             }
                         }
 

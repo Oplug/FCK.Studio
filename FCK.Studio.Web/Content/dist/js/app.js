@@ -25,7 +25,16 @@
             $("#DataTable input[name=obj]").prop("checked", false);
         }
     });
+
+    
 })
+
+$(document).ready(function () {
+    $('input[type="checkbox"].icheck, input[type="radio"].icheck').iCheck({
+        checkboxClass: 'icheckbox_flat-green',
+        radioClass: 'iradio_flat-green'
+    })
+});
 
 function getURL(_url, renderid) {
     $.ajax({

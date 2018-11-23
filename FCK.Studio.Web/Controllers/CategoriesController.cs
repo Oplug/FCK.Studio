@@ -69,13 +69,17 @@ namespace FCK.Studio.Web.Controllers
             return Json(result);
         }
 
-        public List<CategoryTree> GetCategoryTree(int tenandId = 0)
+        public List<CategoryTree> GetCategoryTree(int tenandId = 0, string lay = "")
         {
             CategoriesService Category = new CategoriesService();
             var result = Category.Reposity.GetAllList();
             if (tenandId > 0)
             {
                 result = result.Where(o => o.TenantId == tenandId).ToList();
+            }
+            if (!string.IsNullOrEmpty(lay))
+            {
+                result = result.Where(o => o.Layout == lay).ToList();
             }
             List<Categories> lists = new List<Categories>();
             CreateTree(lists, result);
@@ -120,7 +124,7 @@ namespace FCK.Studio.Web.Controllers
             return Json(model);
         }
 
-        public JsonResult GetModelWithParents(int id)
+        public JsonResult GetModelWithParents(int id, string lay = "")
         {
             CategoryWithParents dto = new CategoryWithParents();
             Categories entity = new Categories();
@@ -129,7 +133,7 @@ namespace FCK.Studio.Web.Controllers
             if (result != null)
                 entity = result;
             dto.Category = entity;
-            dto.ParentLists = GetCategoryTree(TenantId);
+            dto.ParentLists = GetCategoryTree(TenantId, lay);
             return Json(dto);
         }
 

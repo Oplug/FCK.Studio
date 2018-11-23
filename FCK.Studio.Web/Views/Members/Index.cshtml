@@ -18,21 +18,25 @@
 <section class="content">
     <div class="box">
         <div class="box-header with-border">
-            <h3 class="box-title">Members Manage</h3>
+            <h3 class="box-title"></h3>  
             <div class="box-tools pull-right">
+                <button type="button" class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="Collapse">
+                    <i class="fa fa-minus"></i>
+                </button>
+            </div>          
+        </div>
+        <div class="box-body">
+            <div class="box-header">
                 <div class="btn-group">
                     <button type="button" class="btn btn-default" data-toggle="tooltip" data-placement="top" title="保存" onclick="PatchSave()"><i class="fa fa-save"></i></button>
                     <button type="button" class="btn btn-default" data-toggle="tooltip" data-placement="top" title="新增" onclick="AddNew()"><i class="fa fa-plus"></i></button>
                     <button type="button" class="btn btn-default" data-toggle="tooltip" data-placement="top" title="刷新" onclick="GetDataList()"><i class="fa fa-refresh"></i></button>
-                    <button type="button" class="btn btn-default" data-toggle="tooltip" data-placement="top" title="导入"><i class="fa fa-upload" data-toggle="modal" data-target="#modal-default"></i></button>
+                    <button type="button" class="btn btn-default" data-toggle="modal" data-target="#modal-default"><i class="fa fa-upload"></i></button>
                     <button type="button" class="btn btn-default" data-toggle="tooltip" data-placement="top" title="导出" onclick="ExportExcel()"><i class="fa fa-download"></i></button>
                     <button type="button" class="btn btn-default" data-toggle="tooltip" data-placement="top" title="删除" onclick="PatchDel()"><i class="fa fa-remove"></i></button>
-                    <a href="/Content/v_member.xlsx" class="btn btn-default">透视表查询</a>
+                    <a href="/Content/v_member.xlsx" class="btn btn-default hidden">透视表查询</a>
                 </div>
-            </div>
-        </div>
-        <div class="box-body">
-            <div class="box-header">
+                <hr />
                 <form class="form-inline">
                     <div class="form-group">
                         <label for="Apartment">社区</label>
@@ -94,16 +98,14 @@
             </div>
 
             <div id="DataTable">
-                <div class="alert alert-block alert-dismissible" style="margin-bottom:0px">
-                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-                    <i class="icon fa fa-warning"></i><small class="text-danger"> 温馨提示! 下面表格可在线编辑。导入模板：姓名，关系，民族，身份证号，楼盘，单元，门牌号，现户籍地址，原户籍地址，服务处所，职务，联系电话1，联系电话2，政治面貌，党员所在支部，特长备注</small>
-                </div>
                 <div class="box-body table-responsive no-padding EditTable">
                     <table class="table table-hover" id="mLoading">
-                        <tr class="bg-success">
+                        <thead>
+                        <tr class="bg-gray-light">
                             <th class="text-center"><input type="checkbox" id="SelectAll"></th>
                             <th>用户名</th>
                             <th>姓名</th>
+                            <th></th>
                             <th>关系</th>
                             <th>性别</th>
                             <th>民族</th>
@@ -120,7 +122,6 @@
                             <th>职务</th>
                             <th>联系电话1</th>
                             <th>联系电话2</th>
-                            <th>职务</th>
                             <th>政治面貌</th>
                             <th>党员所在支部</th>
                             <th>楼道组长</th>
@@ -134,10 +135,14 @@
                             <th>审核</th>
                             <th>操作</th>
                         </tr>
+                        </thead>
                         <tr v-for="item in mydata" v-on:click="listenedit(item)" class="">
                             <td><div class="w40 text-center"><input type="checkbox" name="obj" class="orm-check-input" v-bind:value="item.Id"></div></td>
                             <td><input type="text" class="form-control input-sm w60" v-model="item.UserName" readonly /></td>
                             <td><input type="text" class="form-control input-sm w60" v-model="item.TrueName" /></td>
+                            <td>
+                                <a class="btn btn-success btn-xs" data-toggle="modal" data-target="#modal-House" v-on:click="sethouse(item.TrueName,item.UserID)">房产</a>
+                            </td>
                             <td><input type="text" class="form-control input-sm w40" v-model="item.Relations" /></td>
                             <td><input type="text" class="form-control input-sm w40" v-model="item.Sex" /></td>
                             <td><input type="text" class="form-control input-sm w40" v-model="item.Nation" /></td>
@@ -154,7 +159,6 @@
                             <td><input type="text" class="form-control input-sm w60" v-model="item.Duties" /></td>
                             <td><input type="text" class="form-control input-sm w80" v-model="item.Phone" /></td>
                             <td><input type="text" class="form-control input-sm w80" v-model="item.Phone2" /></td>
-                            <td><input type="text" class="form-control input-sm w60" v-model="item.Duties" /></td>
                             <td><input type="text" class="form-control input-sm w80" v-model="item.PoliticalRole" /></td>
                             <td><input type="text" class="form-control input-sm w100" v-model="item.PartyBranch" /></td>
                             <td><div class="w60 text-center"><input type="checkbox" class="orm-check-input" v-model="item.CorridorLeader"></div></td>
@@ -208,6 +212,24 @@
         </div>
     </div>
 </div>
+<div class="modal fade" id="modal-House">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="modal-title" id="HouseTit">房产信息</h4>
+                </div>
+                <div class="modal-body">
+                    <iframe frameborder="0" scrolling="yes" style="width:100%; height:240px" src="/Houses/MemberHouse/" id="HouseHref"></iframe>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                </div>
+            </div>
+        </div>
+    </div>
 @section css{
     <link href="/Content/Site.css?v=@(DateTime.Now.ToString("hhmmss"))" rel="stylesheet" />
     <link href="/Content/bower_components/jquery.mloading-master/src/jquery.mloading.css" rel="stylesheet" />
@@ -235,6 +257,10 @@
                     if (flag)
                         updateModel.push(obj);
                     Vue.set(vm, 'needUpdate', updateModel.length)
+                },
+                sethouse: function (uname, uid) {
+                    $('#HouseTit').text(uname + "");
+                    $('#HouseHref').attr("src", "/Houses/MemberHouse/" + uid);
                 },
                 chgpage: function (p) {
                     $('#pageindex').val(p);
@@ -278,7 +304,6 @@
         })
         function GetDataList() {
             $("#DataTable").mLoading({
-                text: "Processing,please wait...",
                 icon: "/Content/easyui/themes/default/images/loading.gif"
             });
             var _page = parseInt($('#pageindex').val())

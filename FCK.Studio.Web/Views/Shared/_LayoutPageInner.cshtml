@@ -15,6 +15,8 @@
     <link rel="stylesheet" href="/Content/bower_components/jqueryconfirm/jquery-confirm.css" />
     <!-- toastr -->
     <link rel="stylesheet" href="/Content/bower_components/toast/toastr.css" />
+    <link rel="stylesheet" href="/Content/plugins/iCheck/all.css" />
+    <link rel="stylesheet" href="/Content/bower_components/select2/dist/css/select2.min.css">
     @RenderSection("css", required: false)
     <!-- Theme style -->
     <link rel="stylesheet" href="/Content/dist/css/AdminLTE.min.css">
@@ -43,8 +45,11 @@
     <script src="/Content/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
     <script src="/Content/bower_components/jqueryconfirm/jquery-confirm.js"></script>
     <script src="/Content/bower_components/toast/toastr.min.js"></script>
+    <script src="/Content/plugins/iCheck/icheck.min.js"></script>
+    <script src="/Content/bower_components/select2/dist/js/select2.full.min.js"></script>
     <script src="/Content/dist/js/vue.min.js"></script>
     <script src="/Content/dist/js/app.js?v=@(DateTime.Now.ToString("hhmmss"))"></script>
+    <script src="/Content/oplug.js?v=@(DateTime.Now.ToString("hhmmss"))"></script>
     @RenderSection("scripts", required: false)
     <script>
         window.onload = function () {

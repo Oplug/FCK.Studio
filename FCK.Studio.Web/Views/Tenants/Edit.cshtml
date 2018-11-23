@@ -21,34 +21,38 @@
         <!-- /.box-header -->
         <!-- form start -->
 
-        <form role="form" id="formEdit">
+        <form role="form" id="oplug">
             <div class="box-body">
                 <div class="form-group">
                     <label for="TenantName">站点名称</label>
-                    <input type="text" class="form-control" v-model="TenantName" placeholder="Enter TenantName">
+                    <input type="text" class="form-control" v-model="datas.TenantName" placeholder="Enter TenantName">
                 </div>
                 <div class="form-group">
                     <label for="AppDomain">绑定域名</label>
-                    <input type="text" class="form-control" v-model="AppDomain" placeholder="Enter AppDomain">
+                    <input type="text" class="form-control" v-model="datas.AppDomain" placeholder="Enter AppDomain">
+                </div>
+                <div class="form-group">
+                    <label for="AppDomain">站点SecretKey</label>
+                    <input type="text" class="form-control" v-model="datas.SecretKey" readonly>
                 </div>
                 <div class="form-group">
                     <label for="WXAppId">微信APPId</label>
-                    <input type="text" class="form-control" v-model="WXAppId" placeholder="Enter WXAppId">
+                    <input type="text" class="form-control" v-model="datas.WXAppId" placeholder="Enter WXAppId">
                 </div>
                 <div class="form-group">
                     <label for="WXAppSecret">微信AppSecret</label>
-                    <input type="text" class="form-control" v-model="WXAppSecret" placeholder="Enter WXAppSecret">
+                    <input type="text" class="form-control" v-model="datas.WXAppSecret" placeholder="Enter WXAppSecret">
                 </div>
                 <div class="checkbox">
                     <label>
-                        <input type="checkbox" v-model="IsRoot"> 主站点
+                        <input type="checkbox" v-model="datas.IsRoot" class="IsRoot"> 主站点
                     </label>
                 </div>
             </div>
             <!-- /.box-body -->
             <div class="box-footer">
-                <input type="hidden" v-model="Id">
-                <input type="hidden" v-model="CreationTime">
+                <input type="hidden" v-model="datas.Id">
+                <input type="hidden" v-model="datas.CreationTime">
                 <button type="button" class="btn btn-primary" v-on:click="dosubmit">确定</button>
                 <a href="/Tenants/" class="btn btn-default">返回</a>
             </div>
@@ -59,27 +63,27 @@
 @section scripts{
 <script>
     var _Id = "@(ViewBag.Id)";
-    $.post('/Tenants/GetModel', { id: _Id }, function (response) {
-        new Vue({
-            el: "#formEdit",
-            data: function () { return response },
-            methods: {
-                dosubmit: function () {
-                    $.ajax({
-                        url: '/Tenants/InsertOrUpdate',
-                        type: "POST",
-                        data: response,
-                        success: function (data) {
-                            if (data.code == 100)
-                                toastr.success('保存成功！');
-                            else
-                                toastr.error(data.message);
-                        }
-                    });
-                    return false;
-                }
+    oplug.onInit()
+    var dosubmit = function () {
+        oplug.request({
+            url: '/Tenants/InsertOrUpdate',
+            async: true,
+            datas: oplug.datas,
+            success: function (data) {
+                if (data.code == 100)
+                    toastr.success('保存成功！');
+                else
+                    toastr.error(data.message);
             }
-        })
+        });
+        return false;
+    }
+    oplug.post('/Tenants/GetModel', { id: _Id }, function (response) {
+        oplug.datas = response;
+        oplug.setData(response);
+    });
+    $('input[type="checkbox"].IsRoot').on('ifChanged', function (event) {
+        oplug.datas.IsRoot = $(this).is(":checked");
     });
 </script>
 }

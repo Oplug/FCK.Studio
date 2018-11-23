@@ -11,6 +11,7 @@ namespace FCK.Studio.Web.XTSQ.Dto
         public string UserID { get; set; }
         public string UserName { get; set; }
         public string NickName { get; set; }
+        public string TrueName { get; set; }
         public string Photo { get; set; }
         public string Email { get; set; }
         public string Country { get; set; }
@@ -28,5 +29,6 @@ namespace FCK.Studio.Web.XTSQ.Dto
         public string Intro { get; set; }
         public string PoliticalRole { get; set; }
         public string CreationTime { get; set; }
+        public bool IsReger { get; set; }
     }
 }

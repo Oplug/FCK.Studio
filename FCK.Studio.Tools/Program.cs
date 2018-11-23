@@ -11,6 +11,9 @@ namespace FCK.Studio.Tools
         static void Main()
         {
             AutoMapper.Configuration.Configure();
+
+            DevExpress.Skins.SkinManager.EnableFormSkins();
+
             System.Windows.Forms.Application.EnableVisualStyles();
             System.Windows.Forms.Application.SetCompatibleTextRenderingDefault(false);
             System.Windows.Forms.Application.Run(new FormLogin());

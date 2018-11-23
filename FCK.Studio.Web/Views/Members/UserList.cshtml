@@ -22,6 +22,7 @@
                 <div class="btn-group">
                     <button type="button" class="btn btn-default" data-toggle="tooltip" data-placement="top" title="保存" onclick="PatchSave()"><i class="fa fa-save"></i></button>
                     <button type="button" class="btn btn-default" data-toggle="tooltip" data-placement="top" title="新增" onclick="AddNew()"><i class="fa fa-plus"></i></button>
+                    <button type="button" class="btn btn-default" data-toggle="tooltip" data-placement="top" title="导出" onclick="ExportExcel()"><i class="fa fa-download"></i></button>
                     <button type="button" class="btn btn-default" data-toggle="tooltip" data-placement="top" title="刷新" onclick="GetDataList()"><i class="fa fa-refresh"></i></button>
                     <button type="button" class="btn btn-default" data-toggle="tooltip" data-placement="top" title="删除" onclick="PatchDel()"><i class="fa fa-remove"></i></button>
                 </div>
@@ -39,34 +40,38 @@
         </div>
         <div class="box-body">
             <div id="DataTable">
-                <div class="box-body table-responsive no-padding EditTable">
+                <div class="box-body table-responsive no-padding ">
                     <table class="table table-hover" id="mLoading">
-                        <tr class="bg-success">
-                            <th class="text-center w40"><input type="checkbox" id="SelectAll"></th>
-                            <th class="w60">用户名</th>
-                            <th class="w60">姓名</th>
-                            <th class="w100">邮箱</th>
-                            <th class="w80">手机</th>
-                            <th class="w100">更新时间</th>
-                            <th class="text-center">审核</th>
-                            <th>操作</th>
-                        </tr>
-                        <tr v-for="item in mydata" v-on:click="listenedit(item)" class="">
-                            <td><div class="w40 text-center"><input type="checkbox" name="obj" class="orm-check-input" v-bind:value="item.Id"></div></td>
-                            <td><input type="text" class="form-control input-sm w60" v-model="item.UserName" readonly /></td>
-                            <td><input type="text" class="form-control input-sm w60" v-model="item.TrueName" /></td>
-                            <td><input type="text" class="form-control input-sm w100" v-model="item.Email" /></td>
-                            <td><input type="text" class="form-control input-sm w80" v-model="item.Mobile" /></td>
-                            <td><input type="text" class="form-control input-sm w100" v-model="item.UpdateTime" readonly /></td>                            
-                            <td class="text-center"><a v-bind:class="item.Approved? 'badge bg-green' : 'badge bg-red'" v-on:click="approve(item.Id)">{{item.Approved}}</a></td>
-                            <td>
-                                <div class="btn-group w80">
-                                    <button class="btn btn-danger btn-xs" type="button" v-on:click="udelete(item.Id)">删除</button>
-                                    <button class="btn btn-success btn-xs" type="button" v-on:click="update(item)">保存</button>
-                                </div>
-                            </td>
-                        </tr>
-                    </table>
+                        <thead>
+                            <tr>
+                                <th class="text-center w40"><input type="checkbox" id="SelectAll"></th>
+                                <th class="w60">用户名</th>
+                                <th class="w60">姓名</th>
+                                <th class="w60">积分</th>
+                                <th class="w100">邮箱</th>
+                                <th class="w80">手机</th>
+                                <th class="w100">更新时间</th>
+                                <th class="text-center">审核</th>
+                                <th>操作</th>
+                            </tr>
+                            </thead>
+                            <tr v-for="item in mydata" v-on:click="listenedit(item)" class="">
+                                <td><div class="w40 text-center"><input type="checkbox" name="obj" class="orm-check-input" v-bind:value="item.Id"></div></td>
+                                <td>{{item.UserName}}</td>
+                                <td><input type="text" class="form-control input-sm w60" v-model="item.TrueName" /></td>
+                                <td><input type="text" class="form-control input-sm w60" v-model="item.Points" /></td>
+                                <td><input type="text" class="form-control input-sm w100" v-model="item.Email" /></td>
+                                <td><input type="text" class="form-control input-sm w80" v-model="item.Mobile" /></td>
+                                <td><div class="w120">{{item.UpdateTime}}</div></td>
+                                <td class="text-center"><a v-bind:class="item.Approved? 'badge bg-green' : 'badge bg-red'" v-on:click="approve(item.Id)">{{item.Approved}}</a></td>
+                                <td>
+                                    <div class="btn-group w80">
+                                        <button class="btn btn-danger btn-xs" type="button" v-on:click="udelete(item.Id)">删除</button>
+                                        <button class="btn btn-success btn-xs" type="button" v-on:click="update(item)">保存</button>
+                                    </div>
+                                </td>
+                            </tr>
+</table>
                 </div>
                 <div class="box-footer clearfix">
                     <select onchange="selpage(this.value)">
@@ -172,14 +177,12 @@
             }
         })
         function GetDataList() {
-            $("#DataTable").mLoading({
-                text: "Processing,please wait...",
-                icon: "/Content/easyui/themes/default/images/loading.gif"
-            });
+            $("#DataTable").mLoading("show");
             var _page = parseInt($('#pageindex').val())
             var _keys = $('input[name=keywords]').val();
+            _keys = ",,,,,," + _keys + "";
             $.post('/Members/GetMemberList',
-                { page: _page, pageSize: 20, keywords: _keys, IsReger: true },
+                { page: _page, pageSize: 10, keywords: _keys, IsReger: true },
                 function (response) {
                     Vue.set(vm, 'mydata', response.datas)
                     Vue.set(vm, 'totalpages', response.pages)
@@ -229,7 +232,7 @@
             }
         }
         function ExportExcel() {
-            window.location.href = "/Members/ExportExcel";
+            window.location.href = "/Members/ExportRegUser";
         }
         function PatchDel() {
             confirmE('确定删除？', function () {

@@ -95,6 +95,31 @@ namespace FCK.Studio.Web.Controllers
             return Json(result);
         }
 
+        public JsonResult ResetSecretKey(Tenants input)
+        {
+            ResultDto<long> result = new ResultDto<long>();
+            try
+            {
+                using (TenantsService Tenant = new TenantsService())
+                {
+                    if (input != null && input.Id > 0)
+                    {
+                        input.SecretKey = Guid.NewGuid();
+                        Tenant.Reposity.Update(input);
+                        result.code = 100;
+                        result.message = "ok";
+                        result.datas = input.Id;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                result.code = 500;
+                result.message = ex.Message;
+            }
+            return Json(result);
+        }
+
         public JsonResult Del(int id)
         {
             Studio.Dto.ResultDto<string> result = new Studio.Dto.ResultDto<string>();

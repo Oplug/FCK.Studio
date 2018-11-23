@@ -2,6 +2,7 @@
 using FCK.Studio.Core;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
@@ -12,11 +13,21 @@ namespace FCK.Studio.Web.XTSQ.Controllers
 {
     public class BaseController : Controller
     {
-        public string AppSecretKey = "ca56f1ac-2f12-4884-ab53-49af1dfbaab5";
+        protected string wx_token = ConfigurationManager.AppSettings["wx_token"];
+        /// <summary>
+        /// 微信模板消息id
+        /// </summary>
+        public string wx_message_templateid = ConfigurationManager.AppSettings["wx_message_templateid"];
+
+        public string AppSecretKey = ConfigurationManager.AppSettings["AppSecretKey"];
+        /// <summary>
+        /// 租户
+        /// </summary>
         public Tenants tenant;
         private string DESKey = "123456";
         public int MemberId = 0;
         public Members Member;
+        public Encoding encode = Encoding.GetEncoding("UTF-8");
         public BaseController()
         {
             tenant = new Tenants();

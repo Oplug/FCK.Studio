@@ -82,13 +82,12 @@ namespace FCK.Studio.Core
         /// </summary>
         [MaxLength(20)]
         public string Apartment { get; set; }
-        [MaxLength(10)]
-        public string UnitNum { get; set; }
+        
+        public int UnitNum { get; set; }
         /// <summary>
         /// 门牌号
         /// </summary>
-        [MaxLength(20)]
-        public string DoorCard { get; set; }
+        public int DoorCard { get; set; }
         /// <summary>
         /// 联系地址
         /// </summary>

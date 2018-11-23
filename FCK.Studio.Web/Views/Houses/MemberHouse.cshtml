@@ -1,0 +1,36 @@
+﻿@model List<FCK.Studio.Web.Dto.HouseDto>
+@{
+    ViewBag.Title = "MemberHouse";
+    Layout = "~/Views/Shared/_LayoutPageInner.cshtml";
+}
+<section class="content">
+    <div class="card">
+        <!-- /.card-header -->
+        <div class="card-body table-responsive p-0">
+            <table class="table table-hover">
+                <tbody>
+                    <tr>
+                        <th>社区名称</th>
+                        <th>楼盘名称</th>
+                        <th>单元号</th>
+                        <th>门牌号</th>
+                        <th>房屋属性</th>
+                        <th>房屋面积</th>
+                    </tr>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>@(item.Category.CategoryName)</td>
+                            <td>@(item.HouseName)</td>
+                            <td>@(item.UnitNum)</td>
+                            <td>@(item.DoorCard)</td>
+                            <td>@(item.HouseType)</td>
+                            <td>@(item.HouseArea )</td>
+                        </tr>
+                    }                    
+                </tbody>
+            </table>
+        </div>
+        <!-- /.card-body -->
+    </div>
+</section>

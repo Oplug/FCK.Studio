@@ -209,7 +209,7 @@ namespace FCK.Studio.Web.XTSQ.Controllers
                         result.code = 100;
                         result.message = "ok";
                         SetCookie("MemberId", model.Id.ToString(), 5);
-                        SetCookie("UserName", model.UserName, 5);
+                        SetCookie("UserName", HttpUtility.UrlEncode(model.UserName, encode), 5);
                     }
                 }
                 else

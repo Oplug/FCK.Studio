@@ -12,27 +12,32 @@
         <li class="active">站点管理</li>
     </ol>
 </section>
-<section class="content">
+<section class="content" id="oplug">
     <div class="box">
         <div class="box-header">
             <h3 class="box-title">所有站点</h3>
         </div>
         <!-- /.box-header -->
         <div class="box-body no-padding">
-            <table class="table table-condensed" id="DataTable">
+            <table class="table table-condensed">
                 <tr>
                     <th style="width: 20px"> </th>
                     <th>站点名称</th>
-                    <th>微信AppID</th>                   
+                    <th>WXAppID</th>
+                    <th>AppSecretKey</th>                   
                     <th style="width: 100px">操作</th>
                 </tr>
-                <tr v-for="item in mydata">
+                <tr v-for="item in datas.mydata">
                     <td><input type="checkbox" value="item.Id" /></td>
                     <td>
-                        <a v-bind:href="item.AppDomain" target="_blank"><i class="fa fa-external-link text-info"></i></a>
+                        <a v-bind:href="'http://'+item.AppDomain" target="_blank"><i class="fa fa-external-link text-info"></i></a>
                         {{item.TenantName}} <span v-if="item.IsRoot" class="text-green"><i class="fa fa-globe" title="主站点"></i></span>                    
                     </td>
                     <td>{{item.WXAppId}}</td>
+                    <td>
+                        <a class="badge bg-yellow" v-on:click="resetkey(item)">重设</a>
+                        <a class="badge bg-green" v-on:click="viewkey(item.SecretKey)" data-toggle="modal" data-target="#modal-default">查看</a>
+                    </td>
                     <td>
                         <a class="btn btn-danger btn-xs" href="#" v-on:click="udelete(item.Id)">删除</a>
                         <a class="btn btn-primary btn-xs" href="#" v-on:click="updateu(item.Id)">编辑</a>
@@ -45,40 +50,81 @@
             <a href="/Tenants/Edit/0" class="btn btn-default pull-right" onclick="AddModel(0)"><i class="fa fa-plus"></i> 添加站点</a>
         </div>
     </div>
+    <div class="modal fade" id="modal-default">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="modal-title">AppSecretKey</h4>
+                </div>
+                <div class="modal-body">
+                    <p>{{datas.SecretKey}}</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-success pull-right" data-dismiss="modal">ok</button>
+                </div>
+            </div>
+        </div>
+    </div>
 </section>
 @section scripts{
 <script>
-    var LocalDatas = {
-        mydata: {}
+    oplug.datas = {
+        mydata: {},
+        SecretKey:''
     }
-    GetDatas();
-    function GetDatas() {
-        $.post('/Tenants/GetLists', { page: 1, pageSize: 0 }, function (response) {
-            LocalDatas.mydata = response.datas;
-        });
-    }
-    var vm = new Vue({
-        el: '#DataTable',
-        data: LocalDatas,
-        methods: {
-            udelete: function (_id) //删除
-            {
-                confirmE('确定删除？', function () {
-                    $.ajax({
-                        url: '/Tenants/Del',
-                        type: "POST",
-                        data: { id: _id },
-                        success: function (resp) {
-                            $.alert('删除成功!');
-                            GetDatas();
-                        }
-                    });
-                });
-            },
-            updateu: function (_id) {
-                window.location = '/Tenants/Edit/' + _id;
+    oplug.onInit()
+    loadData();
+
+    function loadData() {
+        oplug.request({
+            url: '/Tenants/GetLists',
+            async: true,
+            datas: { page: 1, pageSize: 0 },
+            success: function (resp) {
+                oplug.datas.mydata = resp.datas;
             }
-        }
-    });
+        })
+    }
+
+    var udelete = function (_id)
+    {
+        oplug.confirm('确定删除？', function () {
+            oplug.request({
+                url: '/Tenants/Del',
+                async: true,
+                datas: { id: _id },
+                success: function (resp) {
+                    oplug.alert('删除成功!');
+                    loadData();
+                }
+            })
+        })
+    }
+    var viewkey = function (datas) {
+        oplug.datas.SecretKey = datas;
+    }
+    var resetkey = function (obj) {
+        oplug.confirm('确定重设？', function () {
+            oplug.request({
+                url: '/Tenants/ResetSecretKey',
+                async: true,
+                datas: obj,
+                success: function (resp) {
+                    if (resp.code == 100) {
+                        oplug.alert('删除成功!');
+                        loadData();
+                    }
+                    else
+                        oplug.alert(resp.message);
+                }
+            })
+        })
+    }
+    var updateu = function (_id) {
+        window.location = '/Tenants/Edit/' + _id;
+    }
 </script>
 }

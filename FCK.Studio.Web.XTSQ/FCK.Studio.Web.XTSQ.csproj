@@ -62,6 +62,12 @@
     <Reference Include="Newtonsoft.Json">
       <HintPath>..\packages\Newtonsoft.Json.11.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
+    <Reference Include="Senparc.Weixin">
+      <HintPath>..\packages\Senparc.Weixin.4.5.20\lib\net45\Senparc.Weixin.dll</HintPath>
+    </Reference>
+    <Reference Include="Senparc.Weixin.MP">
+      <HintPath>..\packages\Senparc.Weixin.MP.13.8.4\lib\net45\Senparc.Weixin.MP.dll</HintPath>
+    </Reference>
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
@@ -327,6 +333,7 @@
     <Compile Include="Controllers\LiveController.cs" />
     <Compile Include="Controllers\MemberController.cs" />
     <Compile Include="Controllers\ProductController.cs" />
+    <Compile Include="Controllers\WeixinController.cs" />
     <Compile Include="Dto\ArticleDto.cs" />
     <Compile Include="Dto\CategoryDto.cs" />
     <Compile Include="Dto\CommentDto.cs" />
@@ -383,6 +390,9 @@
     <Content Include="Views\Election\Detail.cshtml" />
     <Content Include="Views\Activity\SignIn.cshtml" />
     <Content Include="Views\Home\ForgetPsw.cshtml" />
+    <Content Include="Views\Member\MyProfileReg.cshtml" />
+    <Content Include="Views\Member\UptPsw.cshtml" />
+    <Content Include="Views\Weixin\WeixinAuth.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

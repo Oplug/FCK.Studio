@@ -9,16 +9,17 @@
         <small>Article Manage</small>
     </h1>
     <ol class="breadcrumb">
-        <li><a href="/Home/"><i class="fa fa-dashboard"></i> Home</a></li>
+        <li><a href="/Home/Dashboard/"><i class="fa fa-dashboard"></i> Home</a></li>
         <li class="active">内容管理</li>
     </ol>
 </section>
 <!-- Main content -->
-<section class="content" id="DataTable">
+<section class="content" id="oplug">
     <div class="box">
         <div class="box-header  with-border">
             <div class="btn-group">
-                <button type="button" class="btn btn-default btn-sm"><i class="fa fa-trash-o"></i></button>
+                <a href="/Articles/Edit/0" class="btn btn-success  btn-sm"><i class="fa fa-plus"></i> 添加内容</a>
+                <button type="button" class="btn btn-danger btn-sm"><i class="fa fa-remove"></i> 删除</button>
                 <button type="button" class="btn btn-default btn-sm"><i class="fa fa-reply"></i></button>
                 <button type="button" class="btn btn-default btn-sm"><i class="fa fa-share"></i></button>
             </div>
@@ -29,8 +30,7 @@
                         <button type="button" class="btn btn-info" onclick="GetDataList()"><i class="fa fa-search"></i></button>
                     </span>
                 </div>
-            </div>
-            
+            </div>            
             <input type="hidden" value="1" id="pageindex" />
         </div>
         <!-- /.box-header -->
@@ -48,7 +48,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr v-for="item in mydata">
+                    <tr v-for="item in datas.mydata">
                         <td>{{item.Id}}</td>
                         <td>{{item.Title}}</td>
                         <td>{{item.Category.CategoryName}}</td>
@@ -68,94 +68,84 @@
     </div>
     <div class="box-footer clearfix">        
         <ul class="pagination pagination-sm no-margin pull-right">
-            <li v-bind:class="pageindex<=1? 'hidden' : ''"><a href="#" onclick="turnpage(-1)">&laquo;</a></li>
-            <li v-for="value in pages" v-bind:class="value==pageindex? 'active' : ''"><a href="#" v-on:click="chgpage(value)">{{value}}</a></li>
-            <li v-bind:class="pageindex==totalpages? 'hidden' : ''"><a href="#" onclick="turnpage(1)">&raquo;</a></li>
+            <li v-bind:class="datas.pageindex<=1? 'hidden' : ''"><a href="#" onclick="turnpage(-1)">&laquo;</a></li>
+            <li v-for="value in datas.pages" v-bind:class="value==datas.pageindex? 'active' : ''"><a href="#" v-on:click="chgpage(value)">{{value}}</a></li>
+            <li v-bind:class="datas.pageindex==datas.totalpages? 'hidden' : ''"><a href="#" onclick="turnpage(1)">&raquo;</a></li>
         </ul>
     </div>
 </section>
 <!-- /.content -->
 @section css{
-    <!-- DataTables -->
-    <link rel="stylesheet" href="/Content/bower_components/datatables.net-bs/css/dataTables.bootstrap.min.css">
     <link href="/Content/bower_components/jquery.mloading-master/src/jquery.mloading.css" rel="stylesheet" />
 }
 @section scripts{
-    <script src="/Content/bower_components/datatables.net/js/jquery.dataTables.min.js"></script>
-    <script src="/Content/bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
     <script src="/Content/bower_components/jquery.mloading-master/src/jquery.mloading.js"></script>
     <script>
-        $(function () {
-
-        })
-        var vm = new Vue({
-            el: '#DataTable',
-            data: {
-                mydata: [],
-                pages: 0,
-                totalpages: 0,
-                pageindex: 1
-            },
-            methods: {
-                udelete: function (_id) //删除
-                {
-                    confirmE('确定删除？', function () {
-                        $.ajax({
-                            url: '/Articles/Del',
-                            type: "POST",
-                            data: { id: _id },
-                            success: function (resp) {
-                                $.alert('删除成功!');
-                                window.location.reload();
-                            }
-                        });
-                    });
-                },
-                updateu: function (_id) //更新
-                {
-                    window.location = '/Articles/Edit/' + _id;
-                },
-                recommend: function (_id) {
-                    $.post('/Articles/Recommend', { ids: _id }, function (response) {
-                        if (response.code == 100) {
-                            GetDataList();
-                        }
-                        else
-                            $.alert(response.message);
-                    });
-                    return false;
-                },
-                chgpage: function (p) {
-                    $('#pageindex').val(p);
-                    GetDataList();
-                    return false;
+        oplug.datas = {
+            mydata: [],
+            pages: 0,
+            totalpages: 0,
+            pageindex: 1
+        }       
+        oplug.onInit()
+        var udelete= function (_id)
+        {
+            oplug.confirm('确定删除？', function () {
+                oplug.request({
+                    url: '/Articles/Del',
+                    datas: { id: _id },
+                    success: function (resp) {
+                        oplug.alert('删除成功!');
+                    }
+                })
+            })
+        }
+        var updateu = function (_id) 
+        {
+            window.location = '/Articles/Edit/' + _id;
+        }
+        var recommend = function (_id) {
+            oplug.request({
+                url: '/Articles/Recommend',
+                datas: { ids: _id },
+                success: function (response) {
+                    if (response.code == 100) {
+                        GetDataList();
+                    }
+                    else
+                        oplug.alert(response.message);
                 }
-            }
-        });
+            })
+        }
+        var chgpage = function (p) {
+            $('#pageindex').val(p);
+            GetDataList();
+            return false;
+        }
+
         GetDataList();
 
         function GetDataList() {
-            $("#mLoading").mLoading({
-                text: "Processing,please wait...",
-                icon: "/Content/easyui/themes/default/images/loading.gif"
-            });
+            $("#mLoading").mLoading("show");
             var _page = parseInt($('#pageindex').val())
-            $.post('/Articles/GetPageLists', { page: _page, pageSize: 10, keywords: $('input[name=keywords]').val() }, function (response) {
-                Vue.set(vm, 'mydata', response.datas);
-                Vue.set(vm, 'totalpages', response.pages)
-                Vue.set(vm, 'pages', response.pages > 10 ? 10 : response.pages)
-                Vue.set(vm, 'pageindex', _page)
-                $("#mLoading").mLoading("hide");
-            });
-            //$('#DataTable').dataTable({
-            //    "order": [[3, "desc"]],
-            //    'language': DataTableLanguage
-            //});
+            var _keywds = $('input[name=keywords]').val()
+            oplug.request({
+                url: '/Articles/GetPageLists',
+                async: true,
+                datas: { page: _page, pageSize: 10, keywords: _keywds },
+                success: function (response) {
+                    oplug.datas.mydata = response.datas;
+                    oplug.datas.totalpages = response.pages;
+                    oplug.datas.pages = response.pages > 10 ? 10 : response.pages;
+                    oplug.datas.pageindex = _page;
+                    $("#mLoading").mLoading("hide");
+                }
+            })
         }
         function turnpage(val) {
-            var _page = parseInt($('#pageindex').val());
-            _page = _page + val;
-            $('#pageindex').val(_page);
+            var p = parseInt($('#pageindex').val());
+            p = p + val;
+            $('#pageindex').val(p);
             GetDataList();
             return false;
         }

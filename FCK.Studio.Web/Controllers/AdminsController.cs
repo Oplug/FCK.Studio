@@ -113,6 +113,7 @@ namespace FCK.Studio.Web.Controllers
                     if (input.Id == 0)
                     {
                         input.CreationTime = DateTime.Now;
+                        input.Password = AppBase.MD5(input.Password);
                     }
                     Admin.Reposity.InsertOrUpdate(input);
                     result.code = 100;
@@ -127,6 +128,38 @@ namespace FCK.Studio.Web.Controllers
             }
             return Json(result);
         }
+
+        public JsonResult ResetPsw(int adminId, string oldPassword, string newPassword)
+        {
+            ResultDto<int> result = new ResultDto<int>();
+            try
+            {
+                using (AdminsService Admin = new AdminsService())
+                {
+                    var obj = Admin.Reposity.Get(adminId);
+                    if (AppBase.MD5(oldPassword) != obj.Password)
+                    {
+                        result.code = 500;
+                        result.message = "original password error";
+                    }
+                    else
+                    {
+                        obj.Password = AppBase.MD5(newPassword);
+                        Admin.Reposity.Update(obj);
+                        result.code = 100;
+                        result.datas = obj.Id;
+                        result.message = "ok";
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                result.code = 500;
+                result.message = ex.Message;
+            }
+            return Json(result);
+        }
+
 
         public JsonResult Del(int id)
         {

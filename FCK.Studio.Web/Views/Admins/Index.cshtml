@@ -8,29 +8,30 @@
         <small>Admins Manage</small>
     </h1>
     <ol class="breadcrumb">
-        <li><a href="/Home/" name="syclink"><i class="fa fa-dashboard"></i> Home</a></li>
+        <li><a href="/Home/Dashboard/" name="syclink"><i class="fa fa-dashboard"></i> Home</a></li>
         <li class="active">管理员</li>
     </ol>
 </section>
-<section class="content">
+<section class="content" id="oplug">
     <div class="box">
         <div class="box-header">
-            <h3 class="box-title">管理员</h3>
+            <h3 class="box-title"><a href="/Admins/Edit" class="btn btn-success pull-right"><i class="fa fa-plus"></i> 添加管理员</a></h3>
         </div>
         <!-- /.box-header -->
         <div class="box-body no-padding">
-            <table class="table table-condensed table-hover" id="DataTable">
+            <table class="table table-condensed table-hover">
                 <tr>
                     <th style="width: 20px"> </th>
                     <th>登录名</th>
                     <th>创建时间</th>
-                    <th style="width: 100px">操作</th>
+                    <th style="width: 200px"></th>
                 </tr>
-                <tr v-for="item in mydata">
+                <tr v-for="item in datas.lists">
                     <td></td>
-                    <td>{{item.LoginName}}</td>
-                    <td>{{item.CreationTime}}</td>
+                    <td><span class="text-aqua">{{item.LoginName}}</span></td>
+                    <td><span class="text-muted">{{item.CreationTime}}</span></td>
                     <td>
+                        <a class="btn btn-warning btn-xs" v-on:click="openChgPsw(item.Id)" data-toggle="modal" data-target="#modal-default">密码重置</a> 
                         <a class="btn btn-danger btn-xs" href="#" v-on:click="udelete(item.Id)">删除</a>
                         <a class="btn btn-primary btn-xs" href="#" v-on:click="updateu(item.Id)">编辑</a>
                     </td>
@@ -39,43 +40,98 @@
         </div>
         <!-- /.box-body -->
         <div class="box-footer clearfix no-border">
-            <a href="/Admins/Edit" class="btn btn-default pull-right"><i class="fa fa-plus"></i> 添加管理员</a>
+            
+        </div>
+    </div>
+    <div class="modal fade" id="modal-default">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="modal-title">修改密码</h4>
+                </div>
+                <div class="modal-body">
+                    <form role="form">
+                        <!-- text input -->
+                        <div class="form-group">
+                            <label>原密码</label>
+                            <input type="password" class="form-control" v-model="datas.oldPwd">
+                        </div>
+                        <div class="form-group">
+                            <label>新密码</label>
+                            <input type="password" class="form-control" v-model="datas.newPwd">
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default pull-left" data-dismiss="modal">关闭</button>
+                    <button type="button" class="btn btn-primary" v-on:click="resetpsw">确定更改</button>
+                </div>
+            </div>
         </div>
     </div>
 </section>
+
+
 @section scripts{
 <script>
-    $(function () {
+    oplug.datas = {
+        lists: [],
+        modelId: 0,
+        oldPwd: '',
+        newPwd: ''
+    }
+    oplug.onInit()
+    loadData()
 
-        $.post('/Admins/GetLists', { page: 1, pageSize: 0 }, function (response) {
-            var vm = new Vue({
-                el: '#DataTable',
-                data: {
-                    mydata: response.datas
-                },
-                methods: {
-                    udelete: function (_id)
-                    {
-                        confirmE('确定删除？', function () {
-                            $.ajax({
-                                url: '/Admins/Del',
-                                type: "POST",
-                                data: { id: _id },
-                                success: function (resp) {
-                                    $.alert('删除成功!');
-                                    window.location.reload();
-                                }
-                            });
-                        });
-                    },
-                    updateu: function (_id)
-                    {
-                        window.location = '/Admins/Edit/' + _id;
-                    }
+    var udelete = function (_id) {
+        oplug.confirm('确定删除？', function () {
+            oplug.request({
+                url: '/Admins/Del',
+                async: true,
+                datas: { id: _id },
+                success: function (resp) {
+                    oplug.OK('删除成功!');
+                    loadData();
                 }
-            });
-        });
-
-    })
+            })
+        })
+    }
+    var updateu = function (_id) {
+        window.location = '/Admins/Edit/' + _id;
+    }
+    var openChgPsw = function (_id) {
+        oplug.datas.modelId = _id;
+    }
+    var resetpsw = function () {
+        if (oplug.datas.newPwd == '') {
+            oplug.Warning('请设置一个密码!');
+        }
+        else {
+            oplug.request({
+                url: '/Admins/ResetPsw',
+                async: true,
+                datas: {
+                    adminId: oplug.datas.modelId,
+                    oldPassword: oplug.datas.oldPwd,
+                    newPassword: oplug.datas.newPwd
+                },
+                success: function (resp) {
+                    if (resp.code == 100) {
+                        oplug.OK('密码修改成功!');
+                    }
+                    else
+                        oplug.Error(resp.message);
+                }
+            })
+        }
+    }
+    function loadData() {
+        oplug.post('/Admins/GetLists', { page: 1, pageSize: 0 }, function (response) {
+            oplug.datas.lists = response.datas;
+        })
+    }    
 </script>
 }

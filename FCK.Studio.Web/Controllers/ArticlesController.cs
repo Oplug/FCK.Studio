@@ -45,7 +45,7 @@ namespace FCK.Studio.Web.Controllers
             return Json(model);
         }
 
-        public JsonResult GetModelWithCategory(long id)
+        public JsonResult GetModelWithCategory(long id, string lay = "")
         {
             ArticleWithCategory result = new ArticleWithCategory();
             Articles model = new Articles();
@@ -65,7 +65,7 @@ namespace FCK.Studio.Web.Controllers
 
             var lists = Category.Reposity.GetPageList(1, 0, (o => o.TenantId == TenantId));
             result.Article = Mapper.Map<Dto.ArticleInput>(model);
-            result.Category = cateCtrl.GetCategoryTree(TenantId);
+            result.Category = cateCtrl.GetCategoryTree(TenantId, lay);
             return Json(result);
         }
 

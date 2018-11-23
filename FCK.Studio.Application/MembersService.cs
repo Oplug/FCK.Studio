@@ -38,12 +38,12 @@ namespace FCK.Studio.Application
                 if (!string.IsNullOrEmpty(condis[2]))
                 {
                     s = condis[2];
-                    query = query.Where(o => o.UnitNum != null && o.UnitNum.Contains(s)).ToList();
+                    query = query.Where(o => o.UnitNum == int.Parse(s)).ToList();
                 }
                 if (!string.IsNullOrEmpty(condis[3]))
                 {
                     s = condis[3];
-                    query = query.Where(o => o.DoorCard != null && o.DoorCard.Contains(s)).ToList();
+                    query = query.Where(o => o.DoorCard == int.Parse(s)).ToList();
                 }
                 if (!string.IsNullOrEmpty(condis[4]))
                 {

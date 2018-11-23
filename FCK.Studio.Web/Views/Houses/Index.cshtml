@@ -19,8 +19,7 @@
         <div class="box-header with-border">
             <h3 class="box-title"></h3>
             <div class="box-tools pull-right">
-                <button type="button" class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip"
-                        title="Collapse">
+                <button type="button" class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="Collapse">
                     <i class="fa fa-minus"></i>
                 </button>
             </div>
@@ -94,15 +93,17 @@
                 </form>
             </div>
             <div id="DataTable">
-                <div class="box-body table-responsive no-padding EditTable" style="height:610px;border:1px solid #ccc">
+                <div class="box-body table-responsive no-padding EditTable">
                     <div class="loading"></div>
                     <table class="table table-hover">
-                        <tr class="bg-success">
+                        <thead>
+                        <tr class="bg-gray-light">
                             <th class="text-center"><input type="checkbox" id="SelectAll"></th>
                             <th>社区名称</th>
                             <th>楼盘名称</th>
                             <th>单元号</th>
                             <th>门牌号</th>
+                            <th></th>
                             <th>房屋属性</th>
                             <th>房屋面积</th>
                             <th>销售状态</th>
@@ -118,6 +119,7 @@
                             <th>备注</th>
                             <th>操作</th>
                         </tr>
+                        </thead>
                         <tr v-for="item in mydata" v-on:click="listenedit(item)" class="">
                             <td><div class="w40 text-center"><input type="checkbox" name="obj" class="orm-check-input"  v-bind:value="item.Id" ></div></td>
                             <td>
@@ -126,6 +128,9 @@
                             <td><input type="text" class="form-control input-sm w60" v-model="item.HouseName" /></td>
                             <td><input type="text" class="form-control input-sm w60" v-model="item.UnitNum" /></td>
                             <td><input type="text" class="form-control input-sm w60" v-model="item.DoorCard" /></td>
+                            <td>
+                                <a class="btn btn-success btn-xs" data-toggle="modal" data-target="#modal-House" v-on:click="sethouse(item.HouseName,item.UnitNum,item.DoorCard)">户籍</a>
+                            </td>
                             <td><input type="text" class="form-control input-sm w60" v-model="item.HouseType" disabled /></td>
                             <td><input type="text" class="form-control input-sm w80" v-model="item.HouseArea" /></td>
                             <td><input type="text" class="form-control input-sm w60" v-model="item.SaleStatus" /></td>
@@ -183,6 +188,24 @@
         </div>
     </div>
 </div>
+<div class="modal fade" id="modal-House">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title" id="HouseTit">户籍信息</h4>
+            </div>
+            <div class="modal-body">
+                <iframe frameborder="0" scrolling="yes" style="width:100%; height:240px" src="/Houses/HouseMembers/" id="HouseHref"></iframe>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+            </div>
+        </div>
+    </div>
+</div>
 @section css{
     <link href="/Content/Site.css?v=@(DateTime.Now.ToString("hhmmss"))" rel="stylesheet" />
     <link href="/Content/bower_components/jquery.mloading-master/src/jquery.mloading.css" rel="stylesheet" />
@@ -210,6 +233,10 @@
                     if (flag)
                         updateModel.push(obj);
                     Vue.set(vm, 'needUpdate', updateModel.length)
+                },
+                sethouse: function (a1, a2, a3) {
+                    $('#HouseTit').text(a1 + "-" + a2 + "号" + a3+"室");
+                    $('#HouseHref').attr("src", "/Houses/HouseMembers/" + a1 + "|" + a2 + "|" + a3);
                 },
                 chgpage: function (p) {
                     $('#pageindex').val(p);
@@ -247,7 +274,6 @@
         })
         function GetDataList() {
             $("#DataTable").mLoading({
-                text: "Processing,please wait...",
                 icon: "/Content/easyui/themes/default/images/loading.gif"
             });
             var _page = parseInt($('#pageindex').val())

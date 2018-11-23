@@ -7,7 +7,7 @@
     }
     if (HttpContext.Current.Request.Cookies["UserName"] != null)
     {
-        username = HttpContext.Current.Request.Cookies["UserName"].Value;
+        username = HttpUtility.UrlDecode(HttpContext.Current.Request.Cookies["UserName"].Value, System.Text.Encoding.GetEncoding("UTF-8"));
     }
 }
 <!DOCTYPE html>
@@ -35,6 +35,7 @@
             height: auto;
             max-width: 100%;
         }
+        .hidden{display:none}
     </style>
     @RenderSection("css", required: false)
 </head>
@@ -53,46 +54,36 @@
                     <a href="/Home/Contact" class="nav-link">联系我们</a>
                 </li>
             </ul>
-            <!-- SEARCH FORM -->
-            <form class="form-inline ml-3 w-50">
-                <div class="input-group input-group-sm">
-                    <input class="form-control form-control-navbar" type="search" placeholder="产权证书办理" aria-label="Search">
-                    <div class="input-group-append">
-                        <button class="btn btn-navbar" type="submit">
-                            <i class="fa fa-search"></i>
-                        </button>
-                    </div>
-                </div>
-            </form>
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item">
                     <a class="nav-link" href="/Home/">
-                        <i class="fa fa-home"></i>
+                        <i class="fa fa-home"></i> 首页
                     </a>
                 </li>
-                <li class="nav-item">
-                    @{
-                        if (memberid > 0)
-                        {
-                            <a class="nav-link" href="#" id="Logout"><i class="fa fa-sign-out"></i></a>
-                        }
-                        else
-                        {
-                            <a class="nav-link" href="/Home/Login"><i class="fa fa-user"></i></a>
-                        }
-                    }
-                </li>
-
                 @{
 
                     if (memberid > 0)
                     {
                         <li class="nav-item">
-                            <a class="nav-link" href="/Member/">@(username)</a>
+                            <a class="nav-link" href="/Member/"><i class="fa fa-user"></i> @(username)</a>
                         </li>
                     }
 
                 }
+                <li class="nav-item">
+                    @{
+                        if (memberid > 0)
+                        {
+                            <a class="btn btn-default" href="#" id="Logout">登出</a>
+                        }
+                        else
+                        {
+                            <a class="btn btn-success" href="/Home/Login">登录</a>
+                        }
+                    }
+                </li>
+
+                
 
             </ul>
         </nav>

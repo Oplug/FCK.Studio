@@ -225,6 +225,10 @@
     <Compile Include="Migrations\201808042352451_UptEntitySignUpBespeakAddSignIn.Designer.cs">
       <DependentUpon>201808042352451_UptEntitySignUpBespeakAddSignIn.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201809020717117_UptUnitAndDoorcard.cs" />
+    <Compile Include="Migrations\201809020717117_UptUnitAndDoorcard.Designer.cs">
+      <DependentUpon>201809020717117_UptUnitAndDoorcard.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -367,6 +371,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201808042352451_UptEntitySignUpBespeakAddSignIn.resx">
       <DependentUpon>201808042352451_UptEntitySignUpBespeakAddSignIn.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201809020717117_UptUnitAndDoorcard.resx">
+      <DependentUpon>201809020717117_UptUnitAndDoorcard.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

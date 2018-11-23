@@ -5,6 +5,8 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
+using System.Security.Cryptography;
+using System.Text;
 using System.Web;
 
 namespace FCK.Studio.Web
@@ -162,6 +164,23 @@ namespace FCK.Studio.Web
             MemoryStream ms = new MemoryStream();
             qrCodeImage.Save(ms, ImageFormat.Jpeg);
             return qrCodeImage;
+        }
+
+        public static int Cint(object val)
+        {
+            try
+            {
+                return Convert.ToInt32(val);
+            }
+            catch { return 0; }
+        }
+
+        public static string MD5(string value)
+        {
+            byte[] result = Encoding.UTF8.GetBytes(value);
+            MD5 md5 = new MD5CryptoServiceProvider();
+            byte[] output = md5.ComputeHash(result);
+            return BitConverter.ToString(output).Replace("-", "");
         }
     }
 

@@ -1,0 +1,12 @@
+﻿@model FCK.Studio.Core.Members
+@{
+    ViewBag.Title = "微信授权登录";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<section class="content">
+    <h2 class="text-center">Hello, @Model.NickName!</h2>
+    <p class="text-center">微信授权成功！</p>
+    <p class="text-center"><a class="btn btn-primary btn-block" href="/Member/" role="button">登录会员中心</a></p>
+    <p class="text-center"><a class="btn btn-success btn-block" href="/Home/" role="button">返回首页</a></p>
+</section>
+

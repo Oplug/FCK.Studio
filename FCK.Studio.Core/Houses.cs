@@ -19,13 +19,11 @@ namespace FCK.Studio.Core
         /// <summary>
         /// 单元号
         /// </summary>
-        [MaxLength(50)]
-        public string UnitNum { get; set; }
+        public int UnitNum { get; set; }
         /// <summary>
         /// 门牌号
         /// </summary>
-        [MaxLength(50)]
-        public string DoorCard { get; set; }
+        public int DoorCard { get; set; }
         /// <summary>
         /// 类型，住宅/商品房
         /// </summary>

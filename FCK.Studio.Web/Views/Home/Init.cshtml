@@ -1,0 +1,114 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>AdminLTE Login</title>
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <!-- Bootstrap 3.3.7 -->
+    <link rel="stylesheet" href="/Content/bower_components/bootstrap/dist/css/bootstrap.min.css">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="/Content/bower_components/font-awesome/css/font-awesome.min.css">
+    <!-- Ionicons -->
+    <link rel="stylesheet" href="/Content/bower_components/Ionicons/css/ionicons.min.css">
+    <!-- Theme style -->
+    <link rel="stylesheet" href="/Content/dist/css/AdminLTE.min.css">
+    <!-- iCheck -->
+    <link rel="stylesheet" href="/Content/plugins/iCheck/all.css">
+    <link rel="stylesheet" href="/Content/bower_components/jqueryconfirm/jquery-confirm.css" />
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <!-- Google Font -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
+</head>
+<body class="hold-transition login-page" style="height:100%; overflow:hidden">
+    <div class="login-box">
+        <div class="login-logo">
+            <a href="/Home/"><b>Oplug</b></a>
+        </div>
+        <!-- /.login-logo -->
+        <div class="login-box-body" id="oplug">
+            <p class="login-box-msg">系统初始化</p>
+            <form>
+                <div class="form-group">
+                    <input type="text" class="form-control" name="LoginName" v-model="datas.admin.LoginName" placeholder="管理员">
+                    <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
+                </div>
+                <div class="form-group">
+                    <input type="password" class="form-control" name="Password" v-model="datas.admin.Password" placeholder="密码">
+                    <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+                </div>
+                <div class="form-group">
+                    <input type="password" class="form-control" name="Password2" v-model="datas.Password2" placeholder="确认密码">
+                    <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+                </div>
+                <div class="form-group">
+                    <input type="text" class="form-control" name="TenantName" v-model="datas.tenant.TenantName" placeholder="站点名称">
+                    <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+                </div>
+                <div class="row">
+                    <div class="col-xs-12">
+                        <button type="button" class="btn btn-primary btn-block btn-flat btn-block" v-on:click="onSubmit" id="btnok">确定</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- jQuery 3 -->
+    <script src="/Content/bower_components/jquery/dist/jquery.min.js"></script>
+    <!-- Bootstrap 3.3.7 -->
+    <script src="/Content/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+    <!-- vue.js -->
+    <script src="/Content/dist/js/vue.min.js"></script>
+    <!-- iCheck -->
+    <script src="/Content/plugins/iCheck/icheck.min.js"></script>
+    <script src="/Content/bower_components/jqueryconfirm/jquery-confirm.js"></script>
+    <script src="/Content/oplug.js?v=@(DateTime.Now.ToString("hhmmss"))"></script>
+    <script>
+        oplug.datas = {
+            admin: {},
+            tenant: {},
+            Password2: ''
+        }        
+        oplug.onInit()
+
+        var onSubmit = function () {
+            if (oplug.datas.admin.Password != oplug.datas.Password2) {
+                oplug.alert('两次密码输入不一致');
+            }
+            else {
+                $('#btnok').text('初始化中...');
+                $('#btnok').prop('disabled', true);
+                oplug.request({
+                    url: '/SysManage/InitSys',
+                    async: true,
+                    datas: oplug.datas,
+                    success: function (response) {
+                        if (response.code == 100) {
+                            oplug.alert('初始化成功！ ');
+                            window.location.href = "/Home/login";
+                        }
+                        else {
+                            oplug.alert('用户或密码错误！Details: ' + response.message);
+                        }
+                        $('#btnok').text('确定');
+                        $('#btnok').prop('disabled', false);
+                    }
+                })
+            }
+        }
+
+    </script>
+</body>
+</html>

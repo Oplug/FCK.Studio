@@ -21,6 +21,14 @@ namespace FCK.Studio.Web.XTSQ.Controllers
         {
             return View();
         }
+        public ActionResult MyProfileReg()
+        {
+            return View();
+        }
+        public ActionResult UptPsw()
+        {
+            return View();
+        }
 
         public JsonResult GetModel()
         {
@@ -37,7 +45,7 @@ namespace FCK.Studio.Web.XTSQ.Controllers
             }
             var entity = Mapper.Map<Dto.MemberDto>(model);
             ObjServ.Dispose();
-            return Json(model);
+            return Json(entity);
         }
 
         public JsonResult GetList()
@@ -93,10 +101,49 @@ namespace FCK.Studio.Web.XTSQ.Controllers
             return Json(result);
         }
 
+        public JsonResult UpdatePsw(string OldPsw, string NewPsw)
+        {
+            ResultDto<int> result = new ResultDto<int>();
+            try
+            {
+                MembersService ObjServ = new MembersService();
+                var item = ObjServ.Reposity.Get(MemberId);
+                if (item == null)
+                {
+                    result.code = 500;
+                    result.message = "用户不存在";
+                }
+                else
+                {
+                    if (MD5(OldPsw) != item.Password)
+                    {
+                        result.code = 500;
+                        result.message = "原密码错误";
+                    }
+                    else
+                    {
+                        var input = item;
+                        input.Password = MD5(NewPsw);
+                        input.UpdateTime = DateTime.Now;
+                        ObjServ.Reposity.Update(input);
+                        result.code = 100;
+                        result.message = "ok";
+                    }
+                }
+                ObjServ.Dispose();
+            }
+            catch (Exception ex)
+            {
+                result.code = 500;
+                result.message = ex.Message;
+            }
+            return Json(result);
+        }
+
         public JsonResult GetCreditRec(int memberid)
         {
             CreditRecordService ObjServ = new CreditRecordService();
-            var result = ObjServ.Reposity.GetPageList(1, 20, o => o.TenantId == tenant.Id && o.MemberId==memberid);
+            var result = ObjServ.Reposity.GetPageList(1, 20, o => o.TenantId == tenant.Id && o.MemberId == memberid);
             result.datas = result.datas.OrderByDescending(o => o.Id).ToList();
             ObjServ.Dispose();
             return Json(result);

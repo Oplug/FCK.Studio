@@ -20,13 +20,13 @@
 <section class="content" id="DataList">
     <div class="card card-primary card-outline">
         <div class="card-body box-profile">
-            <div class="text-center">
+            <div v-bind:class="Model.Photo==null?'hidden':'text-center'">
                 <img class="profile-user-img img-fluid img-circle" v-bind:src="Model.Photo" alt="User profile picture">
             </div>
 
-            <h3 class="profile-username text-center">{{Model.NickName}}</h3>
+            <h3 class="profile-username text-center">{{Model.TrueName}}</h3>
 
-            <p class="text-muted text-center">{{Model.UserName}} - {{Model.PoliticalRole}}</p>
+            <p class="text-muted text-center">{{Model.UserName}} - {{Model.CreationTime}}</p>
 
             <ul class="list-group list-group-unbordered mb-3">
                 <li class="list-group-item">
@@ -35,14 +35,23 @@
                 <li class="list-group-item">
                     <b>积分</b> <a class="float-right">{{Model.Points}}</a>
                 </li>
-                <li class="list-group-item">
-                    <b>户籍地址</b> <a class="float-right">{{Model.District}}-{{Model.Community}}-{{Model.Apartment}}</a>
+                <li v-bind:class="Model.IsReger?'list-group-item':'hidden'">
+                <b>坐标</b> <a class="float-right">{{Model.State}}-{{Model.City}}</a>
+                </li>
+                <li v-bind:class="Model.IsReger?'hidden':'list-group-item'">
+                    <b>户籍地址</b> <a class="float-right">{{Model.Community}}-{{Model.Apartment}}-{{Model.UnitNum}}</a>
                 </li>
             </ul>
 
-            <a v-bind:href="'/Member/MyProfile/'+Model.Id" class="btn btn-primary btn-block"><b>个人资料修改</b></a>
-            <a href="/Election/" class="btn btn-danger btn-block"><b>投票选举</b></a>
-        </div>
+            <p><a v-bind:href="'/Member/MyProfile/'+Model.Id" v-bind:class="Model.IsReger?'hidden':'btn btn-primary btn-block'"><b>户籍资料修改</b></a></p>
+            <p>
+                <a v-bind:href="'/Member/MyProfileReg/'+Model.Id" v-bind:class="Model.IsReger?'btn btn-primary btn-block':'hidden'"><b>个人资料修改</b></a>
+            </p>
+            <p>
+                <a href="/Election/" v-bind:class="Model.IsReger?'hidden':'btn btn-success btn-block' "><b>投票选举</b></a>
+            </p>
+            <p><a href="/Member/UptPsw" class="btn btn-danger btn-block"><b>修改密码</b></a></p>
+</div>
         <!-- /.card-body -->
     </div>
 </section>

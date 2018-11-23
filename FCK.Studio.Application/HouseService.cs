@@ -37,12 +37,12 @@ namespace FCK.Studio.Application
                 if (!string.IsNullOrEmpty(condis[2]))
                 {
                     s = condis[2];
-                    query = query.Where(o => o.UnitNum != null && o.UnitNum.Contains(s)).ToList();
+                    query = query.Where(o => o.UnitNum == int.Parse(s)).ToList();
                 }
                 if (!string.IsNullOrEmpty(condis[3]))
                 {
                     s = condis[3];
-                    query = query.Where(o => o.DoorCard != null && o.DoorCard.Contains(s)).ToList();
+                    query = query.Where(o => o.DoorCard == int.Parse(s)).ToList();
                 }
                 if (!string.IsNullOrEmpty(condis[4]))
                 {
@@ -97,12 +97,12 @@ namespace FCK.Studio.Application
                 if (!string.IsNullOrEmpty(condis[2]))
                 {
                     s = condis[2];
-                    Sql += " and UnitNum like '%" + s + "%'";
+                    Sql += " and UnitNum =" + s;
                 }
                 if (!string.IsNullOrEmpty(condis[3]))
                 {
                     s = condis[3];
-                    Sql += " and DoorCard like '%" + s + "%'";
+                    Sql += " and DoorCard =" + s;
                 }
                 if (!string.IsNullOrEmpty(condis[4]))
                 {

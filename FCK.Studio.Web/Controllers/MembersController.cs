@@ -343,8 +343,8 @@ namespace FCK.Studio.Web.Controllers
                                         //obj.Birthday = CellVal(headerRow, "出生年月", row);
                                         obj.Age = int.Parse(CellVal(headerRow, "年龄", row));
                                         obj.Apartment = CellVal(headerRow, "楼盘", row);
-                                        obj.UnitNum = CellVal(headerRow, "单元", row);
-                                        obj.DoorCard = CellVal(headerRow, "门牌号", row);
+                                        obj.UnitNum = AppBase.Cint(CellVal(headerRow, "单元", row));
+                                        obj.DoorCard = AppBase.Cint(CellVal(headerRow, "门牌号", row));
                                         obj.UserID = CellVal(headerRow, "身份证号", row);
                                         obj.Address = CellVal(headerRow, "现户籍地址", row);
                                         obj.Address2 = CellVal(headerRow, "原户籍地址", row);
@@ -378,8 +378,8 @@ namespace FCK.Studio.Web.Controllers
                                         //entity.Birthday = CellVal(headerRow, "出生年月", row);
                                         //entity.Age = int.Parse(CellVal(headerRow, "年龄", row));
                                         entity.Apartment = CellVal(headerRow, "楼盘", row);
-                                        entity.UnitNum = CellVal(headerRow, "单元", row);
-                                        entity.DoorCard = CellVal(headerRow, "门牌号", row);
+                                        entity.UnitNum = AppBase.Cint(CellVal(headerRow, "单元", row));
+                                        entity.DoorCard = AppBase.Cint(CellVal(headerRow, "门牌号", row));
                                         entity.UserID = CellVal(headerRow, "身份证号", row);
                                         entity.Address = CellVal(headerRow, "现户籍地址", row);
                                         entity.Address2 = CellVal(headerRow, "原户籍地址", row);
@@ -448,7 +448,7 @@ namespace FCK.Studio.Web.Controllers
             ISheet sheet1 = book.CreateSheet("Sheet1");
             MembersService ShipServ = new MembersService();
 
-            var DataLists = ShipServ.Reposity.GetAllList();
+            var DataLists = ShipServ.Reposity.GetAllList(o => o.TenantId == TenantId);
 
 
             IRow rowhead = sheet1.CreateRow(0);
@@ -500,6 +500,45 @@ namespace FCK.Studio.Web.Controllers
             return File(ms, "application/vnd.ms-excel", "Members" + DateTime.Now.ToString("yyyyMMddhhmmss") + ".xls");
         }
 
+        public FileResult ExportRegUser(string keywords = "")
+        {
+            HSSFWorkbook book = new HSSFWorkbook();
+            ISheet sheet1 = book.CreateSheet("Sheet1");
+            MembersService ShipServ = new MembersService();
 
+            var DataLists = ShipServ.Reposity.GetAllList(o => o.TenantId == TenantId && o.IsReger);
+
+
+            IRow rowhead = sheet1.CreateRow(0);
+            string[] colums = ("编号|用户名|姓名|积分|邮箱|手机|省份|城市|审核|联系地址|注册时间").Split('|');
+            for (int i = 0; i < colums.Length; i++)
+            {
+                rowhead.CreateCell(i).SetCellValue(colums[i]);
+            }
+
+            int RowNum = 0;
+            foreach (var item in DataLists)
+            {
+                IRow row = sheet1.CreateRow(RowNum + 1);
+                row.CreateCell(0).SetCellValue(RowNum + 1);
+                row.CreateCell(1).SetCellValue(item.UserName);
+                row.CreateCell(2).SetCellValue(item.TrueName);
+                row.CreateCell(3).SetCellValue(item.Points);
+                row.CreateCell(4).SetCellValue(item.Email == "00" ? "" : item.Email);
+                row.CreateCell(5).SetCellValue(item.Mobile);
+                row.CreateCell(6).SetCellValue(item.State);
+                row.CreateCell(7).SetCellValue(item.City);
+                row.CreateCell(8).SetCellValue(item.Approved ? "是" : "否");
+                row.CreateCell(9).SetCellValue(item.Address);
+                row.CreateCell(10).SetCellValue(item.CreationTime.ToString());
+                RowNum++;
+            }
+
+            MemoryStream ms = new MemoryStream();
+            book.Write(ms);
+            ms.Seek(0, SeekOrigin.Begin);
+            ShipServ.Dispose();
+            return File(ms, "application/vnd.ms-excel", "RegUser" + DateTime.Now.ToString("yyyyMMddhhmmss") + ".xls");
+        }
     }
 }

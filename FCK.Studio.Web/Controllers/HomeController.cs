@@ -56,6 +56,10 @@ namespace FCK.Studio.Web.Controllers
         {
             return View();
         }
+        public ActionResult Init()
+        {
+            return View();
+        }
         public JsonResult Logout()
         {
             ResultDto<string> result = new ResultDto<string>();
@@ -122,12 +126,15 @@ namespace FCK.Studio.Web.Controllers
             using (AdminsService admin = new AdminsService())
             {
                 var model = admin.Reposity.Get(AdminId);
-                if (model != null && model.Powers != null)
+                if (model != null)
                 {
                     AdminName = model.LoginName;
-                    foreach (var item in model.Powers.Split(','))
+                    if (model.Powers != null)
                     {
-                        powers.Add(int.Parse(item));
+                        foreach (var item in model.Powers.Split(','))
+                        {
+                            powers.Add(int.Parse(item));
+                        }
                     }
                 }
             }

@@ -1,0 +1,82 @@
+﻿
+@{
+    ViewBag.Title = "密码修改";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<section class="content-header">
+    <div class="container-fluid">
+        <ol class="breadcrumb pull-right">
+            <li class="breadcrumb-item"><a href="/Home/"><span class="fa fa-home"></span> 首页</a></li>
+            <li class="breadcrumb-item"><a href="/Member/">会员中心</a></li>
+            <li class="breadcrumb-item active">密码修改</li>
+        </ol>
+        <div class="clearfix"></div>
+    </div>
+</section>
+<section class="content">
+    <div class="card">
+        <div class="card-body register-card-body" id="formEdit">
+            <div class="alert alert-info alert-dismissible">
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                <h5><i class="icon fa fa-info"></i> 提示!</h5>
+                微信首次登录原始密码：123456.
+            </div>
+            <form action="/Home/DoRegist" method="post">
+                <div class="form-group">
+                    <label for="TrueName">原密码</label>
+                    <input type="password" class="form-control" v-model="OldPsw" placeholder="">
+                </div>
+                <div class="form-group">
+                    <label for="Email">新密码</label>
+                    <input type="password" class="form-control" v-model="NewPsw" placeholder="">
+                </div>
+                <div class="form-group">
+                    <label for="Mobile">确认密码</label>
+                    <input type="password" class="form-control" v-model="NewPsw2" placeholder="">
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-12">
+                        <button type="button" class="btn btn-primary  pull-right" v-on:click="dosubmit">确定</button>
+                    </div>
+                </div>
+            </form>
+
+        </div>
+    </div>
+</section>
+@section scripts{
+    <script>
+        var mydata = {
+            OldPsw:'',
+            NewPsw: '',
+            NewPsw2: ''
+        }
+        var vm = new Vue({
+            el: "#formEdit",
+            data: mydata,
+            methods: {
+                dosubmit: function () {
+                    if (mydata.NewPsw == "") {
+                        toastr.error("新密码不允许为空"); return false;
+                    }
+                    if (mydata.NewPsw != mydata.NewPsw2) {
+                        toastr.error("两次密码输入不相同"); return false;
+                    }
+                    $.ajax({
+                        url: '/Member/UpdatePsw',
+                        type: "POST",
+                        data: mydata,
+                        success: function (data) {
+                            if (data.code == 100)
+                                toastr.success("密码修改成功！");
+                            else
+                                toastr.error(data.message);
+                        }
+                    });
+                    return false;
+                }
+            }
+        })
+    </script>
+}
+
